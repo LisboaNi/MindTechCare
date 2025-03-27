@@ -1,20 +1,31 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Empresa(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     nome = models.CharField(max_length=255)
     cnpj = models.CharField(max_length=18, unique=True, db_index=True)
+    email = models.EmailField(unique=True, null=True, blank=True)
+    senha = models.CharField(max_length=255, null=True, blank=True)
     criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.nome
+        return f"{self.nome}"
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            user = User.objects.create_user(username=self.email, email=self.email, password=self.senha)
+            self.user = user
+        super(Empresa, self).save(*args, **kwargs)
 
 class Profissional(models.Model):
     empresa = models.ForeignKey(Empresa, on_delete=models.SET_NULL, null=True, blank=True)
+    nome = models.CharField(max_length=255)
     cargo = models.CharField(max_length=100)
     criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.cargo}"
+        return f"{self.nome}"
 
 class AtividadeGitHub(models.Model):
     profissional = models.ForeignKey(Profissional, on_delete=models.CASCADE)
@@ -22,7 +33,7 @@ class AtividadeGitHub(models.Model):
     data_commit = models.DateTimeField()
 
     def __str__(self):
-        return f"{self.profissional.usuario.username} - {self.commit_mensagem[:50]}..."
+        return f"{self.profissional.nome} - {self.commit_mensagem[:50]}..."
 
 class TarefaJira(models.Model):
     STATUS_CHOICES = [

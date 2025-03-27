@@ -1,0 +1,11 @@
+<h2>Perfil da Empresa</h2>
+<p>{{ empresa.nome }}</p>
+<p>{{ empresa.cnpj }}</p>
+<p>{{ empresa.email }}</p>
+
+<h3>Profissionais Cadastrados:</h3>
+<ul>
+    {% for profissional in profissionais %}
+        <li>{{ profissional.nome }} - {{ profissional.cargo }}</li>
+    {% endfor %}
+</ul>

@@ -1,6 +1,6 @@
 import requests
 
-GITHUB_TOKEN = "SEU_TOKEN_AQUI"
+GITHUB_TOKEN = "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"
 
 def get_github_commits(username, repo):
     url = f"https://api.github.com/repos/{username}/{repo}/commits"
