@@ -1,6 +1,6 @@
 # forms.py
 from django import forms
-from .models import Empresa, Profissional
+from .models import Empresa, Profissional, RepositorioGitHub
 
 class EmpresaForm(forms.ModelForm):
     class Meta:
@@ -16,4 +16,9 @@ class LoginEmpresaForm(forms.Form):
 class ProfissionalForm(forms.ModelForm):
     class Meta:
         model = Profissional
-        fields = ['nome', 'cargo']
+        fields = ['nome', 'cargo', 'email', 'senha']  # Adicionado email e senha
+
+class RepositorioGitHubForm(forms.ModelForm):
+    class Meta:
+        model = RepositorioGitHub
+        fields = ['nome_repositorio', 'github_username']

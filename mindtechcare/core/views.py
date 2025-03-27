@@ -1,14 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import AuthenticationForm
 
 from django.contrib.auth.decorators import login_required
 
 from .integrations import get_github_commits, get_jira_tasks
-from .forms import EmpresaForm, LoginEmpresaForm, ProfissionalForm
+from .forms import EmpresaForm, LoginEmpresaForm, ProfissionalForm, RepositorioGitHubForm
 from .models import Profissional, Empresa
 
-
+def index(request):
+    return render(request, 'index.html')
 
 def github_dashboard(request):
     commits = get_github_commits("usuario_github", "repositorio")
@@ -35,19 +35,16 @@ def login_empresa(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             senha = form.cleaned_data['senha']
-            
-            # Buscar a empresa pelo email
             try:
-                empresa = Empresa.objects.get(email=email)  # Busca a empresa pelo email
-                # Autentica a empresa com email e senha
+                empresa = Empresa.objects.get(email=email) 
                 user = authenticate(request, username=email, password=senha)
-                if user is not None and user == empresa.user:  # Verifica se o user existe e é o correto
-                    login(request, user)  # Realiza o login
-                    return redirect('perfil_empresa')  # Redireciona para o perfil da empresa
+                if user is not None and user == empresa.user:  
+                    login(request, user)  
+                    return redirect('perfil_empresa')  
                 else:
-                    form.add_error(None, 'Email ou senha inválidos')  # Se a senha estiver errada ou o usuário não for encontrado
+                    form.add_error(None, 'Email ou senha inválidos')  
             except Empresa.DoesNotExist:
-                form.add_error(None, 'Email não encontrado')  # Caso não encontre a empresa pelo email
+                form.add_error(None, 'Email não encontrado') 
 
     else:
         form = LoginEmpresaForm()
@@ -56,22 +53,39 @@ def login_empresa(request):
 
 @login_required
 def cadastrar_profissional(request):
-    empresa = request.user.empresa  # Supondo que você tenha configurado um perfil de empresa para o usuário
+    empresa = request.user.empresa  # Supondo que você tenha um perfil de empresa para o usuário
 
     if request.method == 'POST':
         form = ProfissionalForm(request.POST)
         if form.is_valid():
+            # Salva o profissional e associa à empresa
             profissional = form.save(commit=False)
-            profissional.empresa = empresa  # Associando o profissional à empresa logada
+            profissional.empresa = empresa
             profissional.save()
+
+            # Agora, cria o formulário para os repositórios
+            repositorio_form = RepositorioGitHubForm(request.POST)
+            if repositorio_form.is_valid():
+                repositorio = repositorio_form.save(commit=False)
+                repositorio.profissional = profissional  # Associa o repositório ao profissional
+                repositorio.save()
+
             return redirect('perfil_empresa')  # Redireciona para o perfil da empresa
     else:
         form = ProfissionalForm()
+        repositorio_form = RepositorioGitHubForm()
 
-    return render(request, 'cadastrar_profissional.html', {'form': form})
+    return render(request, 'cadastrar_profissional.html', {'form': form, 'repositorio_form': repositorio_form})
 
 @login_required
 def perfil_empresa(request):
-    empresa = request.user.empresa  # Supondo que o usuário tenha um perfil de empresa
+    empresa = request.user.empresa  
     profissionais = Profissional.objects.filter(empresa=empresa)
     return render(request, 'perfil_empresa.html', {'empresa': empresa, 'profissionais': profissionais})
+
+@login_required
+def perfil_profissional(request, profissional_id):
+    # Buscar o profissional pelo ID
+    profissional = get_object_or_404(Profissional, id=profissional_id)
+
+    return render(request, 'perfil_profissional.html', {'profissional': profissional})
