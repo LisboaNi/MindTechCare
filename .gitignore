@@ -1,0 +1,7 @@
+# Ignorar arquivos compilados
+__pycache__/
+*.py[cod]
+
+# Ignorar ambiente virtual
+venv/
+mindtechcare/db.sqlite3
