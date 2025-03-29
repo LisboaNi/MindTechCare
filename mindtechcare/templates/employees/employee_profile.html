@@ -16,7 +16,10 @@
                 <a href="{% url 'employee-edit' employees.pk %}">Editar Perfil</a> |
                 <a href="{% url 'employee-delete' employees.pk %}">Deletar Perfil</a>
             </li>
-          </ul>
+        </ul>
+        <p>Você ainda não tem um perfil de profissional. <a href="{% url 'repositorio_list' %}">Criar Profissional</a></p>
     {% else %}
+        <!-- Se o usuário não tiver perfil de empregado -->
+        <p>Você ainda não tem um perfil de empregado. <a href="{% url 'employee-create' %}">Criar Perfil de Empregado</a></p>
     {% endif %}
 {% endif %}

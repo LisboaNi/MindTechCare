@@ -6,6 +6,7 @@ urlpatterns = [
     path('repositorio/<int:pk>/update/', views.update_repositorio, name='repositorio_update'),
     path('repositorio/<int:pk>/delete/', views.delete_repositorio, name='repositorio_delete'),
     path('repositorio/', views.list_repositorios, name='repositorio_list'),
+    path('repositorios/<str:username>/<str:repo>/atualizar_commits/', views.atualizar_commits, name='atualizar_commits'),
 
     path('atividade/create/', views.create_atividade, name='atividade_create'),
     path('atividade/<int:pk>/update/', views.update_atividade, name='atividade_update'),
