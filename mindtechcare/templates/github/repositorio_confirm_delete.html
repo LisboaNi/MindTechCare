@@ -1,0 +1,12 @@
+{% extends "github/base_generic.html" %}
+
+{% block content %}
+  <h2>Confirmar exclusão do repositório</h2>
+  <p>Você tem certeza de que deseja excluir o repositório "{{ repositorio.nome_repositorio }}"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Sim, excluir</button>
+  </form>
+  <br>
+  <a href="{% url 'repositorio_list' %}">Cancelar</a>
+{% endblock %}

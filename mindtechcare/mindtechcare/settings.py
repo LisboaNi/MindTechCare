@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'validations',
     'employees',
+    'github',
 ]
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')

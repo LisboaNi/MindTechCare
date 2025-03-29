@@ -1,0 +1,12 @@
+{% extends "github/base_generic.html" %}
+
+{% block content %}
+  <h2>Criar Repositório GitHub</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar</button>
+  </form>
+  <br>
+  <a href="{% url 'repositorio_list' %}">Voltar para a lista de repositórios</a>
+{% endblock %}
