@@ -1,0 +1,23 @@
+<h1>Meu Perfil</h1>
+
+{% if user.is_authenticated %}
+    <p>Bem-vindo, {{ user.username }} | <a href="{% url 'user_logout' %}">Sair</a></p>
+{% else %}
+    <a href="{% url 'login' %}">Entrar</a>
+{% endif %}
+
+{% if user.is_authenticated %}
+    {% if users %}
+        <ul>
+            <li>
+                <strong>Nome:</strong> {{ users.name }} <br>
+                <strong>CNPJ:</strong> {{ users.cnpj }} <br>
+                <strong>Email:</strong> {{ users.email }} <br>
+                <a href="{% url 'user_update' users.pk %}">Editar Perfil</a> |
+                <a href="{% url 'user_delete' users.pk %}">Deletar Perfil</a>
+            </li>
+          </ul>
+          <p>Você ainda não tem um perfil de profissional. <a href="{% url 'employee-create' %}">Criar Profissional</a></p>
+    {% else %}
+    {% endif %}
+{% endif %}

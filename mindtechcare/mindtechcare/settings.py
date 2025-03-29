@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,10 +38,30 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user',
+    'adminDev',
+    'accounts',
     'rest_framework',
     'validations',
+    'employees',
 ]
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+
+# settings.py
+import sys
+import os
+
+# Adiciona o diretório 'src' ao PYTHONPATH para que o Django encontre os apps
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
+
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # exemplo de servidor de e-mail (ajuste conforme seu provedor)
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'itjobs.pim@gmail.com'  # seu e-mail
+EMAIL_HOST_PASSWORD = 'bdkgasbhgbxhxgex'  # sua senha de e-mail
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,6 +76,10 @@ MIDDLEWARE = [
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
 
 ROOT_URLCONF = 'mindtechcare.urls'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',   
+]
 
 
 TEMPLATES = [

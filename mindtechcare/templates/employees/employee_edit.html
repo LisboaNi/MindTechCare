@@ -1,0 +1,9 @@
+<!-- templates/employee_edit.html -->
+<form method="POST" action="{% url 'employee-edit' employee.id %}">
+    {% csrf_token %}
+    <input type="text" name="name" value="{{ employee.name }}">
+    <input type="email" name="email" value="{{ employee.email }}">
+    <input type="password" name="password" placeholder="Senha">
+    <input type="text" name="function" value="{{ employee.function }}">
+    <button type="submit">Atualizar</button>
+</form>

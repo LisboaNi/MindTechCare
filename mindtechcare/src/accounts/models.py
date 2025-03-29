@@ -15,13 +15,10 @@ class UserModel(TimestampMixin):
     
     def save(self, *args, **kwargs):
         if not self.id:
-            # Criação do usuário apenas se o ID ainda não existir
             user = User.objects.create_user(username=self.email, email=self.email, password=self.password)
             self.user = user
 
-        # Encrypta a senha antes de salvar no banco
         if self.password:
             self.password = encrypt_password(self.password)
 
-        # Salva o objeto UserModel
         super(UserModel, self).save(*args, **kwargs)
