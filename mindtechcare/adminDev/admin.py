@@ -1,7 +1,8 @@
 from django.contrib import admin
 from accounts.models import UserModel
 from employees.models import Employee
-from github.models import RepositorioGitHub, AtividadeGitHub
+from github.models import RepositorioGitHub, AtividadeGitHub 
+from trello.models import BoardTrello, CardTrello
 
 @admin.register(UserModel)
 class UserModelAdmin(admin.ModelAdmin):
@@ -21,4 +22,10 @@ class AtividadeGitHubAdmin(admin.ModelAdmin):
 class RepositorioGitHub(admin.ModelAdmin):
     list_display = ('id', 'employee', 'nome_repositorio', 'github_username') 
 
+@admin.register(BoardTrello)
+class BoardTrelloAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nome_board', 'trello_board_id', 'employee')
 
+@admin.register(CardTrello)
+class CardTrelloAdmin(admin.ModelAdmin):
+    list_display = ('id', 'board', 'nome_card', 'data_criacao', 'trello_card_id', 'employee')

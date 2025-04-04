@@ -1,0 +1,21 @@
+<h1>Boards Trello</h1>
+
+<a href="{% url 'board-create' %}">Criar novo board</a>
+
+<ul>
+    {% for board in boards %}
+        <li>
+            <strong>{{ board.nome_board }}</strong> - 
+            <a href="{{ board.url }}" target="_blank">{{ board.url }}</a>
+            <br>
+            <a href="{% url 'board-update' board.pk %}">Editar</a> |
+            <a href="{% url 'board-delete' board.pk %}">Excluir</a> |
+            <form method="post" action="{% url 'atualizar-cards-trello' board.trello_board_id %}" style="display:inline;" onsubmit="return confirm('Deseja atualizar os cards e atividades deste board?');">
+                {% csrf_token %}
+                <button type="submit">Atualizar Cards</button>
+            </form>
+        </li>
+    {% empty %}
+        <li>Nenhum board cadastrado.</li>
+    {% endfor %}
+</ul>

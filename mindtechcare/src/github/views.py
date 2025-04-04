@@ -95,4 +95,4 @@ class AtualizarCommitsView(View):
                     data_commit=commit["date"]
                 )
 
-        return JsonResponse(commits, safe=False)
+        return JsonResponse({"success": "Commits atualizados com sucesso!"})
