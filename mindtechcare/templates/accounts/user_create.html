@@ -1,7 +1,50 @@
-<h2>Cadastro</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Cadastrar</button>
-</form>
+{% extends "base.html" %}
+{% block content %}
+    {% if form.non_field_errors %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+        </div>
+    {% endif %}
+    <section class="min-h-screen flex items-center justify-center text-black px-4">
+        <div class="flex w-full max-w-6xl h-[600px] shadow-2xl rounded-2xl relative overflow-hidden bg-white/5 backdrop-blur-lg border border-white/10">
+            <!-- Botão de voltar -->
+            <div class="absolute top-4 left-5">
+                <a href="{% url 'home' %}"
+                   class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-arrow-left text-[#047857] text-xl"></i>
+                </a>
+            </div>
 
+            <!-- Lado esquerdo com imagem e texto -->
+            <div class="w-1/2 bg-[url('/static/images/bg.png')] bg-cover bg-center flex flex-col items-start px-12 gap-6 pt-20">
+                <h1 class="text-5xl font-extrabold leading-tight drop-shadow-md text-white mx-auto">
+                    Se torne um <span class="text-[#a7f3d0]">Minder</span>
+                </h1>
+                <p class="text-xl leading-relaxed text-white/90">Crie sua conta e comece sua jornada de bem-estar no mundo dev.</p>
+            </div>
+
+            <!-- Formulário de cadastro -->
+            <div class="w-1/2 flex flex-col items-center justify-center px-10 py-12 gap-6">
+                <form method="post"
+                      class="formulario-login w-full max-w-md flex flex-col gap-4">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <button type="submit"
+                            class="w-full bg-[#047857] hover:bg-[#064e3b] transition-colors text-white font-bold py-3 rounded-xl shadow-lg mt-4">
+                        Cadastrar
+                    </button>
+                </form>
+
+                <div class="flex flex-col gap-2 text-lg text-black/70 text-center mt-4">
+                    <p>
+                        Já tem uma conta?
+                        <a href="{% url 'login' %}"
+                           class="text-primary font-bold hover:underline">Fazer login</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+{% endblock content %}

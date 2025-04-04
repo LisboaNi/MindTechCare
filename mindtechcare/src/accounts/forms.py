@@ -2,8 +2,9 @@ from django import forms
 from django.contrib.auth import authenticate
 from .models import UserModel
 
+
 class UserModelForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput, label='Senha')
 
     class Meta:
         model = UserModel

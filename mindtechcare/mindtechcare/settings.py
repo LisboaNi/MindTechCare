@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'employees',
     'github',
     'trello',
-    'rest_framework.authtoken', 
+    'rest_framework.authtoken',
 ]
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
@@ -55,11 +55,15 @@ import sys
 import os
 
 # Adiciona o diretório 'src' ao PYTHONPATH para que o Django encontre os apps
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
+)
 
 # settings.py
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # exemplo de servidor de e-mail (ajuste conforme seu provedor)
+EMAIL_HOST = (
+    'smtp.gmail.com'  # exemplo de servidor de e-mail (ajuste conforme seu provedor)
+)
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'itjobs.pim@gmail.com'  # seu e-mail
@@ -81,7 +85,7 @@ CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
 ROOT_URLCONF = 'mindtechcare.urls'
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',   
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 
@@ -89,9 +93,9 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'templates',  
+            BASE_DIR / 'templates',
         ],
-        'APP_DIRS': True,  
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -152,7 +156,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

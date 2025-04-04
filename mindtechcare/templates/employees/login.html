@@ -1,8 +1,47 @@
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
+{% extends "base.html" %}
+{% block content %}
+    <section class="min-h-screen flex items-center justify-center  text-black px-4">
+        <div class="flex w-full max-w-6xl h-[600px] shadow-2xl rounded-2xl relative overflow-hidden bg-white/5 backdrop-blur-lg border border-white/10">
+            <div class="absolute top-4 left-5">
+                <a href="{% url 'home' %}"
+                   class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-arrow-left text-[#047857] text-xl"></i>
+                </a>
+            </div>
 
-<p>Esqueceu a senha? <a href="{% url 'password_reset' %}">Recuperar senha</a></p>
+
+            <!-- Lado esquerdo com imagem -->
+            <div class="w-1/2 bg-[url('/static/images/bg.png')] bg-cover  bg-center flex flex-col items-start px-12 gap-6 pt-20">
+                <h1 class="text-5xl font-extrabold leading-tight drop-shadow-md text-white mx-auto">
+                    Welcome, <span class="text-[#a7f3d0]">Minder</span>
+                </h1>
+                <p class="text-xl leading-relaxed text-white/90">
+                    Cuide da mente enquanto cuida do código. Sua jornada de bem-estar começa aqui.
+                </p>
+            </div>
+
+            <!-- Formulário de login -->
+            <div class="w-1/2 flex flex-col items-center justify-center px-10 py-12 gap-6">
+                <form method="post"
+                      class="formulario-login w-full max-w-md flex flex-col gap-4">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <button type="submit"
+                            class="w-full bg-[#047857] hover:bg-[#064e3b] transition-colors text-white font-bold py-3 rounded-xl shadow-lg mt-4">
+                        Entrar
+                    </button>
+                </form>
+
+                <div class="flex flex-col gap-2 text-lg text-black/70 text-center mt-4">
+                    <p>
+                        Esqueceu a senha?
+                        <a href="{% url 'password_reset' %}"
+                           class="text-primary font-bold hover:underline">Recuperar senha</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+{% endblock content %}

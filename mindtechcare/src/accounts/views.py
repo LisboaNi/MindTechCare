@@ -1,5 +1,11 @@
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, FormView
+from django.views.generic import (
+    CreateView,
+    UpdateView,
+    DeleteView,
+    DetailView,
+    FormView,
+)
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -11,11 +17,13 @@ from .forms import UserModelForm, UserLoginForm
 from .serializers import UserModelSerializer
 from django.contrib.auth import logout
 
+
 # UserModel API ViewSet
 class UserModelViewSet(viewsets.ModelViewSet):
     queryset = UserModel.objects.all()
     serializer_class = UserModelSerializer
     permission_classes = [IsAuthenticated]
+
 
 # Login
 class UserLoginView(FormView):
@@ -37,9 +45,11 @@ class UserLoginView(FormView):
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
 
+
 # Logout
 class UserLogoutView(LogoutView):
     next_page = reverse_lazy('login')
+
 
 # Profile
 class UserProfileView(LoginRequiredMixin, DetailView):
@@ -50,12 +60,14 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     def get_object(self):
         return self.request.user.usermodel
 
+
 # Create User
 class UserCreateView(CreateView):
     model = UserModel
     form_class = UserModelForm
     template_name = 'accounts/user_create.html'
     success_url = reverse_lazy('login')
+
 
 # Edit User
 class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -69,6 +81,7 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         return self.request.user == self.get_object().user
+
 
 # Delete User
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -94,4 +107,3 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         user.delete()
 
         return redirect(self.success_url)
-
