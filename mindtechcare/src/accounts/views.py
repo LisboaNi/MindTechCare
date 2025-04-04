@@ -1,93 +1,97 @@
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, FormView
+from django.contrib.auth.views import LogoutView
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import redirect
 from rest_framework import viewsets
-from .models import UserModel
-from .serializers import UserModelSerializer
 from rest_framework.permissions import IsAuthenticated
+from .models import UserModel
+from .forms import UserModelForm, UserLoginForm
+from .serializers import UserModelSerializer
+from django.contrib.auth import logout
 
-
+# UserModel API ViewSet
 class UserModelViewSet(viewsets.ModelViewSet):
     queryset = UserModel.objects.all()
     serializer_class = UserModelSerializer
     permission_classes = [IsAuthenticated]
 
+# Login
+class UserLoginView(FormView):
+    template_name = "accounts/login.html"
+    form_class = UserLoginForm
+    success_url = reverse_lazy('user_profile')
 
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import UserModel
-from .forms import UserModelForm, UserLoginForm
-from django.contrib.auth.models import User
-
-
-def user_login(request):
-    if request.method == "POST":
-        form = UserLoginForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data["email"]
-            password = form.cleaned_data["password"]
-            user = authenticate(request, username=email, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect("user_list")
-            else:
-                try:
-                    user_exists = User.objects.filter(username=email).exists()
-                    if not user_exists:
-                        form.add_error(
-                            None, "Cadastro não encontrado. Verifique seu email."
-                        )
-                    else:
-                        form.add_error(None, "Email ou senha inválidos.")
-                except User.DoesNotExist:
-                    form.add_error(
-                        None, "Erro ao verificar o usuário. Tente novamente."
-                    )
+    def form_valid(self, form):
+        email = form.cleaned_data["email"]
+        password = form.cleaned_data["password"]
+        user = authenticate(self.request, username=email, password=password)
+        if user is not None:
+            login(self.request, user)
+            return super().form_valid(form)
         else:
-            form.add_error(None, "Dados inválidos!")
-    else:
-        form = UserLoginForm()
-    return render(request, "accounts/login.html", {"form": form})
+            form.add_error(None, "Email ou senha inválidos.")
+            return self.form_invalid(form)
 
-@login_required
-def user_logout(request):
-    logout(request)
-    return redirect("user_login")
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
 
-@login_required
-def user_list(request):
-    user = request.user
-    users = UserModel.objects.filter(user=user).first()
+# Logout
+class UserLogoutView(LogoutView):
+    next_page = reverse_lazy('login')
 
-    return render(request, "accounts/user_list.html", {"users": users})
+# Profile
+class UserProfileView(LoginRequiredMixin, DetailView):
+    model = UserModel
+    template_name = 'accounts/user_profile.html'
+    context_object_name = 'profile'
 
-def user_create(request):
-    if request.method == 'POST':
-        form = UserModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('user_login')
-    else:
-        form = UserModelForm()
-    return render(request, 'accounts/user_form.html', {'form': form})
+    def get_object(self):
+        return self.request.user.usermodel
 
-def user_update(request, pk):
-    user = get_object_or_404(UserModel, pk=pk)
-    if request.method == 'POST':
-        form = UserModelForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
-            return redirect('user_list')
-    else:
-        form = UserModelForm(instance=user)
-    return render(request, 'accounts/user_form.html', {'form': form})
+# Create User
+class UserCreateView(CreateView):
+    model = UserModel
+    form_class = UserModelForm
+    template_name = 'accounts/user_create.html'
+    success_url = reverse_lazy('login')
 
-def user_delete(request, pk):
-    user_model = get_object_or_404(UserModel, pk=pk)
-    
-    if request.method == 'POST':
-        if user_model.user: 
-            user_model.user.delete()  
-                
-        return redirect('user_login')
-    
-    return render(request, 'accounts/user_confirm_delete.html', {'user': user_model})
+# Edit User
+class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = UserModel
+    form_class = UserModelForm
+    template_name = 'accounts/user_edit.html'
+    success_url = reverse_lazy('user_profile')
+
+    def get_object(self):
+        return self.request.user.usermodel
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
+
+# Delete User
+class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = UserModel
+    template_name = 'accounts/user_delete.html'
+    success_url = reverse_lazy('login')
+
+    def get_object(self):
+        return self.request.user.usermodel
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
+
+    def post(self, request, *args, **kwargs):
+        user_model_instance = self.get_object()
+        user = user_model_instance.user
+
+        # Faz logout do usuário
+        logout(request)
+
+        # Deleta o UserModel e depois o User padrão
+        user_model_instance.delete()
+        user.delete()
+
+        return redirect(self.success_url)
 

@@ -6,4 +6,5 @@ urlpatterns = [
     path('api/', include('accounts.urls')),
     path('api/', include('employees.urls')),
     path('api/', include('github.urls')),
+    path('api/', include('trello.urls')),
 ]

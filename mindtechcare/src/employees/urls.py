@@ -1,19 +1,20 @@
-# urls.py
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import EmployeeViewSet
-from . import views
-
-router = DefaultRouter()
-router.register(r'employees', EmployeeViewSet)
+from django.urls import path
+from .views import (
+    EmployeeLoginView,
+    EmployeeLogoutView,
+    EmployeeProfileView,
+    EmployeeCreateView,
+    EmployeeListView,
+    EmployeeEditView,
+    EmployeeDeleteView,
+)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
-    path('employees/', views.employee_list, name='employee_list'),
-    path('employee/profile/', views.employee_profile, name='employee_profile'),
-    path('employee/create/', views.employee_create, name='employee-create'),
-    path('employee/edit/<int:id>/', views.employee_edit, name='employee-edit'),
-    path('employee/delete/<int:id>/', views.employee_delete, name='employee-delete'),
-    path("employee/login/", views.employee_login, name="employee_login"),
-    path("employee/logout/", views.employee_logout, name="employee_logout"),
+    path('employee/login/', EmployeeLoginView.as_view(), name='employee_login'),
+    path('employee/logout/', EmployeeLogoutView.as_view(), name='employee_logout'),
+    path('employee/profile/', EmployeeProfileView.as_view(), name='employee_profile'),
+    path('employee/create/', EmployeeCreateView.as_view(), name='employee_create'),
+    path('employee/list/', EmployeeListView.as_view(), name='employee_list'),
+    path('employee/edit/<int:pk>/', EmployeeEditView.as_view(), name='employee_edit'),
+    path('employee/delete/<int:pk>/', EmployeeDeleteView.as_view(), name='employee_delete'),
 ]

@@ -1,9 +1,5 @@
-<!-- templates/employee_create.html -->
-<form method="POST" action="{% url 'employee-create' %}">
+<form method="post">
     {% csrf_token %}
-    <input type="text" name="name" placeholder="Nome">
-    <input type="email" name="email" placeholder="Email">
-    <input type="password" name="password" placeholder="Senha">
-    <input type="text" name="function" placeholder="Função">
+    {{ form.as_p }}
     <button type="submit">Criar</button>
 </form>

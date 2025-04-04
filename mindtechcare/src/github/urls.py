@@ -1,15 +1,20 @@
 from django.urls import path
-from . import views
+from .views import (
+    RepositorioCreateView, RepositorioUpdateView, RepositorioDeleteView, RepositorioListView,
+    # AtividadeCreateView, AtividadeUpdateView, AtividadeDeleteView, AtividadeListView,
+    AtualizarCommitsView
+)
 
 urlpatterns = [
-    path('repositorio/create/', views.create_repositorio, name='repositorio_create'),
-    path('repositorio/<int:pk>/update/', views.update_repositorio, name='repositorio_update'),
-    path('repositorio/<int:pk>/delete/', views.delete_repositorio, name='repositorio_delete'),
-    path('repositorio/', views.list_repositorios, name='repositorio_list'),
-    path('repositorios/<str:username>/<str:repo>/atualizar_commits/', views.atualizar_commits, name='atualizar_commits'),
+    path('repositorio/create/', RepositorioCreateView.as_view(), name='repositorio_create'),
+    path('repositorio/update/<int:pk>/', RepositorioUpdateView.as_view(), name='repositorio_update'),
+    path('repositorio/delete/<int:pk>/', RepositorioDeleteView.as_view(), name='repositorio_delete'),
+    path('repositorios/', RepositorioListView.as_view(), name='repositorio_list'),
+    
+    # path('atividade/create/', AtividadeCreateView.as_view(), name='atividade_create'),
+    # path('atividade/update/<int:pk>/', AtividadeUpdateView.as_view(), name='atividade_update'),
+    # path('atividade/delete/<int:pk>/', AtividadeDeleteView.as_view(), name='atividade_delete'),
+    # path('atividades/', AtividadeListView.as_view(), name='atividade_list'),
 
-    path('atividade/create/', views.create_atividade, name='atividade_create'),
-    path('atividade/<int:pk>/update/', views.update_atividade, name='atividade_update'),
-    path('atividade/<int:pk>/delete/', views.delete_atividade, name='atividade_delete'),
-    path('atividade/', views.list_atividades, name='atividade_list'),
+    path('commits/<str:username>/<str:repo>/', AtualizarCommitsView.as_view(), name='atualizar_commits'),
 ]

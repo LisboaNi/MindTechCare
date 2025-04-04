@@ -1,25 +1,8 @@
-<h1>Meu Perfil</h1>
+<h2>Perfil do Funcionário</h2>
+<p>Nome: {{ employee.name }}</p>
+<p>Email: {{ employee.email }}</p>
+<p>Função: {{ employee.function }}</p>
 
-{% if user.is_authenticated %}
-    <p>Bem-vindo, {{ user.username }} | <a href="{% url 'user_logout' %}">Sair</a></p>
-{% else %}
-    <a href="{% url 'login' %}">Entrar</a>
-{% endif %}
-
-{% if user.is_authenticated %}
-    {% if employees %}
-        <ul>
-            <li>
-                <strong>Nome:</strong> {{ employees.name }} <br>
-                <strong>Função:</strong> {{ employees.function }} <br>
-                <strong>Email:</strong> {{ employees.email }} <br>
-                <a href="{% url 'employee-edit' employees.pk %}">Editar Perfil</a> |
-                <a href="{% url 'employee-delete' employees.pk %}">Deletar Perfil</a>
-            </li>
-        </ul>
-        <p>Você ainda não tem um perfil de profissional. <a href="{% url 'repositorio_list' %}">Criar Profissional</a></p>
-    {% else %}
-        <!-- Se o usuário não tiver perfil de empregado -->
-        <p>Você ainda não tem um perfil de empregado. <a href="{% url 'employee-create' %}">Criar Perfil de Empregado</a></p>
-    {% endif %}
-{% endif %}
+<a href="{% url 'repositorio_list' %}">Criar Repositorio</a>
+<a href="{% url 'employee_edit' employee.pk %}">Editar Perfil</a> 
+<a href="{% url 'employee_logout' %}">Sair</a>

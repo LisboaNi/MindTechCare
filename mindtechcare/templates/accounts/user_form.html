@@ -1,6 +1,0 @@
-<h1>{% if form.instance.pk %}Edit{% else %}Create{% endif %} User</h1>
-<form method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Save</button>
-</form>

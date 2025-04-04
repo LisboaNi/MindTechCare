@@ -1,24 +1,7 @@
-<!-- templates/employee_list.html -->
-<table>
-  <thead>
-      <tr>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Função</th>
-          <th>Ações</th>
-      </tr>
-  </thead>
-  <tbody>
-      {% for employee in employees %}
-      <tr>
-          <td>{{ employee.name }}</td>
-          <td>{{ employee.email }}</td>
-          <td>{{ employee.function }}</td>
-          <td>
-              <a href="{% url 'employee-edit' employee.id %}">Editar</a> |
-              <a href="{% url 'employee-delete' employee.id %}">Excluir</a>
-          </td>
-      </tr>
-      {% endfor %}
-  </tbody>
-</table>
+<h2>Lista de Funcionários</h2>
+<ul>
+    {% for employee in employees %}
+        <li>{{ employee.name }} - <a href="{% url 'employee_edit' employee.id %}">Editar</a> | 
+            <a href="{% url 'employee_delete' employee.id %}">Excluir</a></li>
+    {% endfor %}
+</ul>
