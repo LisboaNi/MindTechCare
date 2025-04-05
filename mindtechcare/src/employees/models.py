@@ -11,7 +11,8 @@ class Employee(TimestampMixin):
     email = models.EmailField(unique=True, null=True)
     password = models.CharField(max_length=255, null=True)
     function = models.CharField(max_length=50, null=True)
-    trello_username = models.CharField(max_length=255, null=True, blank=True)  # Novo campo
+    trello_username = models.CharField(max_length=255, null=True, blank=True)  
+    trello_token = models.CharField(max_length=255, blank=True, null=True) 
 
     def __str__(self):
         return f"{self.name}"

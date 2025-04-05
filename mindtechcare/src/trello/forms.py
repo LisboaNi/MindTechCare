@@ -4,7 +4,7 @@ from .models import CardTrello, BoardTrello
 class BoardTrelloForm(forms.ModelForm):
     class Meta:
         model = BoardTrello
-        fields = ['nome_board', 'trello_board_id', 'trello_token']
+        fields = ['nome_board', 'trello_board_id']
 
 class CardTrelloForm(forms.ModelForm):
     class Meta:

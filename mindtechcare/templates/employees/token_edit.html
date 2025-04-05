@@ -1,0 +1,15 @@
+<h2>Configuração do Token do Trello</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar token</button>
+</form>
+
+{% if trello_auth_url %}
+    <p>
+        Para integrar com o Trello,
+        <a href="{{ trello_auth_url }}" target="_blank">
+            clique aqui para gerar seu token Trello
+        </a> e cole no campo abaixo.
+    </p>
+{% endif %}

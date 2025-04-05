@@ -3,22 +3,21 @@ import requests
 
 API_KEY = "43370450ff380ecd3ddb2617c30b9841"
 
-def get_trello_cards(board):
-    if not board.trello_token:
-        return {"error": "O board ainda não foi autorizado no Trello"}
+def get_trello_cards(board_id, token):
+    if not token:
+        return {"error": "O token do Trello é obrigatório."}
 
-    url = f"https://api.trello.com/1/boards/{board.trello_board_id}/cards"
+    url = f"https://api.trello.com/1/boards/{board_id}/cards"
     params = {
-    "key": API_KEY,
-    "token": board.trello_token,
-    "fields": "name,idList,dateLastActivity,desc",
-    "members": "true",
-    "member_fields": "username"
+        "key": API_KEY,
+        "token": token,
+        "fields": "name,idList,dateLastActivity,desc",
+        "members": "true",
+        "member_fields": "username"
     }
 
-    response = requests.get(url, params=params)
-
     try:
+        response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.HTTPError:
@@ -28,7 +27,7 @@ def get_trello_cards(board):
 
 def get_trello_lists(board_id, token):
     if not token:
-        return {"error": "O board ainda não foi autorizado no Trello"}
+        return {"error": "O token do Trello é obrigatório."}
 
     url = f"https://api.trello.com/1/boards/{board_id}/lists"
     params = {
@@ -36,9 +35,8 @@ def get_trello_lists(board_id, token):
         "token": token
     }
 
-    response = requests.get(url, params=params)
-
     try:
+        response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.HTTPError:
@@ -47,6 +45,9 @@ def get_trello_lists(board_id, token):
         return {"error": "Resposta não é um JSON válido"}
 
 def get_card_members(card_id, token):
+    if not token:
+        return []
+
     url = f"https://api.trello.com/1/cards/{card_id}/members"
     params = {
         "key": API_KEY,
@@ -58,10 +59,6 @@ def get_card_members(card_id, token):
         response.raise_for_status()
         data = response.json()
 
-        if isinstance(data, list):
-            return data
-        else:
-            return []
-
-    except requests.exceptions.RequestException as e:
+        return data if isinstance(data, list) else []
+    except requests.exceptions.RequestException:
         return []

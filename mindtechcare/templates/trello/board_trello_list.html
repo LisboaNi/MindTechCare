@@ -9,8 +9,7 @@
 <ul>
     {% for board in boards %}
         <li>
-            <strong>{{ board.nome_board }}</strong> - 
-            <a href="{{ board.url }}" target="_blank">{{ board.url }}</a>
+            <strong>{{ board.nome_board }}</strong>
             <br>
             <a href="{% url 'board-update' board.pk %}">Editar</a> |
             <a href="{% url 'board-delete' board.pk %}">Excluir</a>

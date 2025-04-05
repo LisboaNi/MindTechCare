@@ -3,10 +3,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, UpdateView, View, DeleteView
 from django.urls import reverse_lazy
 from .models import Employee
-from .forms import EmployeeForm, EmployeeLoginForm
+from .forms import EmployeeForm, EmployeeLoginForm, TokenForm
 from accounts.models import UserModel
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from trello.integrations import API_KEY
 
 # Login
 class EmployeeLoginView(LoginView):
@@ -78,7 +79,8 @@ class EmployeeEditView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['employee'] = self.get_object()
+        employee = self.get_object()
+        context['employee'] = employee
         return context
 
 # Delete Employee
@@ -94,3 +96,27 @@ class EmployeeDeleteView(DeleteView):
         if user:
             user.delete()
         return redirect(self.success_url)
+
+#Token Trello
+class TokenUpdateView(UpdateView):
+    model = Employee
+    form_class = TokenForm
+    template_name = 'employees/token_edit.html'
+    success_url = reverse_lazy('employee_profile')
+
+    def get_object(self):
+        return get_object_or_404(Employee, user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        employee = self.get_object()
+        context['employee'] = employee
+
+        # Só gera o link se ainda não tiver token
+        if not employee.trello_token:
+            context['trello_auth_url'] = (
+                f"https://trello.com/1/authorize?"
+                f"expiration=never&name=MindTechCare"
+                f"&scope=read,write&response_type=token&key={API_KEY}"
+            )
+        return context
