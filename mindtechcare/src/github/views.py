@@ -75,14 +75,21 @@ class AtividadeListView(ListView):
 
 # View para Atualizar Commits do GitHub (integrada com a API do GitHub)
 class AtualizarCommitsView(View):
-     def post(self, request):
+    def post(self, request):
         employee = request.user.employees
-        repositorios = RepositorioGitHub.objects.filter(employee=employee)
+
+        github_username = employee.github_username
+        github_token = employee.github_token
+
+        if not github_username:
+            return JsonResponse({"error": "GitHub username não configurado no perfil."}, status=400)
+
+        # Buscando todos os repositórios vinculados ao employee
+        repositorios = employee.repositorios.all()  # Certifique-se de que há related_name='repositorios' no modelo RepositorioGitHub
 
         total_commits = 0
         for repo in repositorios:
-            token = repo.git_token if repo.git_token else None
-            commits = get_github_commits(repo.github_username, repo.nome_repositorio, token)
+            commits = get_github_commits(github_username, repo.nome_repositorio, github_token)
 
             if "error" in commits:
                 continue

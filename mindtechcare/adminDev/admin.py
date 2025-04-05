@@ -20,7 +20,7 @@ class AtividadeGitHubAdmin(admin.ModelAdmin):
 
 @admin.register(RepositorioGitHub)
 class RepositorioGitHub(admin.ModelAdmin):
-    list_display = ('id', 'employee', 'nome_repositorio', 'github_username') 
+    list_display = ('id', 'employee', 'nome_repositorio') 
 
 @admin.register(BoardTrello)
 class BoardTrelloAdmin(admin.ModelAdmin):

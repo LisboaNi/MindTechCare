@@ -16,7 +16,7 @@ class EmployeeLoginForm(AuthenticationForm):
 class TokenForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = ['trello_username','trello_token']
+        fields = ['trello_username','trello_token', 'github_username', 'github_token']
         widgets = {
             'trello_token': forms.TextInput(attrs={'placeholder': 'Cole aqui seu token do Trello'}),
         }

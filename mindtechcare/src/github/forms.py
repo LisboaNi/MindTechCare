@@ -4,7 +4,7 @@ from .models import RepositorioGitHub, AtividadeGitHub
 class RepositorioGitHubForm(forms.ModelForm):
     class Meta:
         model = RepositorioGitHub
-        fields = ['nome_repositorio', 'github_username', 'git_token']
+        fields = ['nome_repositorio']
 
 class AtividadeGitHubForm(forms.ModelForm):
     class Meta:
