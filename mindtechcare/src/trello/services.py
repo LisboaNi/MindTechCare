@@ -2,12 +2,13 @@ from datetime import datetime
 from django.utils import timezone
 from .integrations import get_trello_cards, get_trello_lists, get_card_members
 from .models import CardTrello
+from validations.validators import decrypt_token
 
 def sync_trello_cards_for_employee(employee):
     boards = employee.boards_trello.all()
 
     for board in boards:
-        token = employee.trello_token  # ✅ Token vem do employee
+        token = decrypt_token(employee.trello_token)
         board_id = board.trello_board_id
 
         listas = get_trello_lists(board_id, token)

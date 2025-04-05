@@ -1,5 +1,17 @@
 from django.contrib.auth.hashers import make_password
 import re
+from cryptography.fernet import Fernet
+
+import os
+FERNET_KEY = os.getenv('FERNET_KEY', 'Y-6hAW5hjPPlhqWtfT4Rer-9nbrKtWiFuDR9Qu7d4D0=')
+
+fernet = Fernet(FERNET_KEY.encode())
+
+def encrypt_token(token):
+    return fernet.encrypt(token.encode()).decode()
+
+def decrypt_token(token):
+    return fernet.decrypt(token.encode()).decode()
 
 def encrypt_password(password):
     return make_password(password)

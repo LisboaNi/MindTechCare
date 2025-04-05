@@ -7,7 +7,7 @@ from .models import RepositorioGitHub, AtividadeGitHub
 from .forms import RepositorioGitHubForm, AtividadeGitHubForm
 from .integrations import get_github_commits
 from employees.models import Employee
-
+from validations.validators import decrypt_token
 
 # CRUD para RepositorioGitHub
 class RepositorioCreateView(CreateView):
@@ -79,7 +79,8 @@ class AtualizarCommitsView(View):
         employee = request.user.employees
 
         github_username = employee.github_username
-        github_token = employee.github_token
+        github_token = decrypt_token(employee.github_token)
+
 
         if not github_username:
             return JsonResponse({"error": "GitHub username não configurado no perfil."}, status=400)

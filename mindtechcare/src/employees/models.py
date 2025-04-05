@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from utils.models import TimestampMixin
-from validations.validators import encrypt_password
+from validations.validators import encrypt_password, encrypt_token, decrypt_token
 from accounts.models import UserModel
 
 class Employee(TimestampMixin):
@@ -27,7 +27,14 @@ class Employee(TimestampMixin):
         if self.password:
             self.password = encrypt_password(self.password)
 
-        super(Employee, self).save(*args, **kwargs)
+        # Criptografar tokens se estiverem presentes e não estiverem criptografados
+        if self.trello_token and not self.trello_token.startswith('gAAAA'):  # Fernet tokens começam assim
+            self.trello_token = encrypt_token(self.trello_token)
+
+        if self.github_token and not self.github_token.startswith('gAAAA'):
+            self.github_token = encrypt_token(self.github_token)
+
+        super().save(*args, **kwargs)
 
         if self.accounts is None:  # Verificando se 'accounts' está vazio
             self.accounts = UserModel.objects.get(user=self.user)  # Atribui o UserModel associado ao User
