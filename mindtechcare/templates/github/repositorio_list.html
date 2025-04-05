@@ -1,15 +1,21 @@
+{% load static %}
+<script src="{% static 'js/github.js' %}"></script>
+
 {% block content %}
     <h2>Lista de Repositórios GitHub</h2>
+
     <a href="{% url 'repositorio_create' %}">Criar novo repositório</a>
+
+    <button onclick="atualizarTodosCommits()"> Atualizar TODOS os Commits</button>
+
     <ul>
         {% for repositorio in repositorios %}
             <li>
-                <a href="{% url 'repositorio_update' repositorio.id %}">{{ repositorio.github_username }}/{{ repositorio.nome_repositorio }}</a>
+                <a href="{% url 'repositorio_update' repositorio.id %}">
+                    {{ repositorio.github_username }}/{{ repositorio.nome_repositorio }}
+                </a>
                 - <a href="{% url 'repositorio_delete' repositorio.id %}">Excluir</a>
                 - <a href="{% url 'repositorio_update' repositorio.id %}">Editar</a>
-                - <a href="{% url 'atualizar_commits' username=repositorio.github_username repo=repositorio.nome_repositorio %}">
-                    <button>Atualizar Commits</button>
-                </a>
             </li>
         {% empty %}
             <li>Nenhum repositório encontrado.</li>

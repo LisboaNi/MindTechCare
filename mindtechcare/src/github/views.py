@@ -75,24 +75,25 @@ class AtividadeListView(ListView):
 
 # View para Atualizar Commits do GitHub (integrada com a API do GitHub)
 class AtualizarCommitsView(View):
-    def get(self, request, username, repo):
-        try:
-            repositorio = RepositorioGitHub.objects.get(github_username=username, nome_repositorio=repo)
-        except RepositorioGitHub.DoesNotExist:
-            return JsonResponse({"error": "Repositório não encontrado."}, status=404)
+     def post(self, request):
+        employee = request.user.employees
+        repositorios = RepositorioGitHub.objects.filter(employee=employee)
 
-        token = repositorio.git_token if repositorio.git_token else None
-        commits = get_github_commits(username, repo, token)
+        total_commits = 0
+        for repo in repositorios:
+            token = repo.git_token if repo.git_token else None
+            commits = get_github_commits(repo.github_username, repo.nome_repositorio, token)
 
-        if "error" in commits:
-            return JsonResponse(commits, status=400)
+            if "error" in commits:
+                continue
 
-        for commit in commits:
-            if not AtividadeGitHub.objects.filter(commit_mensagem=commit["message"], data_commit=commit["date"]).exists():
-                AtividadeGitHub.objects.create(
-                    employee=repositorio.employee,
+            for commit in commits:
+                criado, _ = AtividadeGitHub.objects.get_or_create(
+                    employee=employee,
                     commit_mensagem=commit["message"],
                     data_commit=commit["date"]
                 )
+                if criado:
+                    total_commits += 1
 
-        return JsonResponse({"success": "Commits atualizados com sucesso!"})
+        return JsonResponse({"success": f"{total_commits} commits atualizados."})

@@ -16,5 +16,6 @@ urlpatterns = [
     # path('atividade/delete/<int:pk>/', AtividadeDeleteView.as_view(), name='atividade_delete'),
     # path('atividades/', AtividadeListView.as_view(), name='atividade_list'),
 
-    path('commits/<str:username>/<str:repo>/', AtualizarCommitsView.as_view(), name='atualizar_commits'),
+    path('employee/github/update-all/', AtualizarCommitsView.as_view(), name='atualizar_todos_commits'),
+
 ]

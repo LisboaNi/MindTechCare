@@ -97,7 +97,7 @@ class EmployeeDeleteView(DeleteView):
             user.delete()
         return redirect(self.success_url)
 
-#Token Trello
+#Token
 class TokenUpdateView(UpdateView):
     model = Employee
     form_class = TokenForm
