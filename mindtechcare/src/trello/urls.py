@@ -1,9 +1,10 @@
 from django.urls import path
 from .views import (
     BoardTrelloCreateView, BoardTrelloListView, BoardTrelloUpdateView, BoardTrelloDeleteView,
-    CardTrelloCreateView, CardTrelloListView, CardTrelloUpdateView, CardTrelloDeleteView,
-    AtualizarCardsTrelloView,
+    # CardTrelloCreateView, CardTrelloListView, CardTrelloUpdateView, CardTrelloDeleteView,
 )
+from . import views
+
 
 urlpatterns = [
     # BoardTrello
@@ -18,6 +19,6 @@ urlpatterns = [
     # path('card/update/<pk>/', CardTrelloUpdateView.as_view(), name='card-update'),
     # path('card/delete/<pk>/', CardTrelloDeleteView.as_view(), name='card-delete'),
 
-    path('boards/<str:board_id>/atualizar/', AtualizarCardsTrelloView.as_view(), name='atualizar-cards-trello'),
+    path('sync-trello/<int:employee_id>/', views.atualizar_cards, name='atualizar-cards-trello'),
 
 ]

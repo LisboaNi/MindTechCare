@@ -1,6 +1,10 @@
 <h1>Boards Trello</h1>
 
+{% load static %}
+<script src="{% static 'js/trello.js' %}"></script>
+
 <a href="{% url 'board-create' %}">Criar novo board</a>
+<a href="#" onclick="atualizarCards({{ employee.id }})">Atualizar todos os cards</a>
 
 <ul>
     {% for board in boards %}
@@ -9,11 +13,7 @@
             <a href="{{ board.url }}" target="_blank">{{ board.url }}</a>
             <br>
             <a href="{% url 'board-update' board.pk %}">Editar</a> |
-            <a href="{% url 'board-delete' board.pk %}">Excluir</a> |
-            <form method="post" action="{% url 'atualizar-cards-trello' board.trello_board_id %}" style="display:inline;" onsubmit="return confirm('Deseja atualizar os cards e atividades deste board?');">
-                {% csrf_token %}
-                <button type="submit">Atualizar Cards</button>
-            </form>
+            <a href="{% url 'board-delete' board.pk %}">Excluir</a>
         </li>
     {% empty %}
         <li>Nenhum board cadastrado.</li>
