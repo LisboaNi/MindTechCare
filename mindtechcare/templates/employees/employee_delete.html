@@ -1,0 +1,6 @@
+<p>Tem certeza que deseja excluir {{ employee.name }}?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Sim, excluir</button>
+    <a href="{% url 'employee_profile' %}">Cancelar</a>
+</form>

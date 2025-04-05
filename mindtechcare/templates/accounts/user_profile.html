@@ -1,0 +1,15 @@
+<h2>Perfil do Usuário</h2>
+
+<ul>
+    <li><strong>Nome:</strong> {{ profile.name }}</li>
+    <li><strong>Email:</strong> {{ profile.email }}</li>
+    <li><strong>CNPJ:</strong> {{ profile.cnpj }}</li>
+</ul>
+
+<a href="{% url 'user_update' profile.pk %}">Editar Perfil</a> |
+<a href="{% url 'user_delete' profile.pk %}">Excluir Conta</a> |
+<a href="{% url 'user_logout' %}">Sair</a> |
+<a href="{% url 'employee_create' %}">Criar Profissional</a>
+<a href="{% url 'employee_list' %}">Profissionais</a>
+<a href="{% url 'dashboard_geral' %}">Dashboard Geral</a>
+

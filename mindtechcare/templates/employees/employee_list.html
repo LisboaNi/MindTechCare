@@ -1,0 +1,8 @@
+<h2>Lista de Funcionários</h2>
+<ul>
+    {% for employee in employees %}
+        <li>{{ employee.name }} - <a href="{% url 'employee_edit' employee.id %}">Editar</a> | 
+            <a href="{% url 'employee_delete' employee.id %}">Excluir</a></li> |
+            <a href="{% url 'dashboard_funcionario' employee.pk %}">Ver Dashboard do Funcionário</a>
+    {% endfor %}
+</ul>

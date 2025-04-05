@@ -1,0 +1,20 @@
+<h1>Boards Trello</h1>
+
+{% load static %}
+<script src="{% static 'js/trello.js' %}"></script>
+
+<a href="{% url 'board-create' %}">Criar novo board</a>
+<a href="#" onclick="atualizarCards({{ employee.id }})">Atualizar todos os cards</a>
+
+<ul>
+    {% for board in boards %}
+        <li>
+            <strong>{{ board.nome_board }}</strong>
+            <br>
+            <a href="{% url 'board-update' board.pk %}">Editar</a> |
+            <a href="{% url 'board-delete' board.pk %}">Excluir</a>
+        </li>
+    {% empty %}
+        <li>Nenhum board cadastrado.</li>
+    {% endfor %}
+</ul>

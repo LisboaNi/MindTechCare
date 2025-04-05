@@ -1,0 +1,10 @@
+
+<h1>Editar Board</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Atualizar</button>
+</form>
+
+<p><a href="{% url 'board-list' %}">Voltar para a lista</a></p>

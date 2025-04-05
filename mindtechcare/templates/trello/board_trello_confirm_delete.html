@@ -1,0 +1,10 @@
+<h1>Excluir Board Trello</h1>
+
+<p>Tem certeza que deseja excluir o board: "{{ object.nome }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmar Exclusão</button>
+</form>
+
+<p><a href="{% url 'board-list' %}">Cancelar</a></p>

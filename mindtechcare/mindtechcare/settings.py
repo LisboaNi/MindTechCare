@@ -38,8 +38,38 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
+    'adminDev',
+    'accounts',
+    'rest_framework',
+    'validations',
+    'employees',
+    'github',
+    'trello',
+    'dashboard',
+    'rest_framework.authtoken',
 ]
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+
+# settings.py
+import sys
+import os
+
+# Adiciona o diretório 'src' ao PYTHONPATH para que o Django encontre os apps
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
+)
+
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = (
+    'smtp.gmail.com'  # exemplo de servidor de e-mail (ajuste conforme seu provedor)
+)
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'itjobs.pim@gmail.com'  # seu e-mail
+EMAIL_HOST_PASSWORD = 'bdkgasbhgbxhxgex'  # sua senha de e-mail
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,14 +85,18 @@ CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
 
 ROOT_URLCONF = 'mindtechcare.urls'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates'), 
+            BASE_DIR / 'templates',
         ],
-        'APP_DIRS': True,  #
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -73,6 +107,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'mindtechcare.wsgi.application'
 
@@ -122,9 +157,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}

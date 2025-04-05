@@ -1,0 +1,9 @@
+<h1>Criar novo Board Trello</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar</button>
+</form>
+
+<p><a href="{% url 'board-list' %}">Voltar para a lista</a></p>

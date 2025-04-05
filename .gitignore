@@ -5,3 +5,4 @@ __pycache__/
 # Ignorar ambiente virtual
 venv/
 mindtechcare/db.sqlite3
+node_modules
