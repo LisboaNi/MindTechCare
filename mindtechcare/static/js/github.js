@@ -1,5 +1,5 @@
 function atualizarTodosCommits() {
-    fetch("/api/employee/github/update-all/", {
+    fetch("/github/update-all/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

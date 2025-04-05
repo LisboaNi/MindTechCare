@@ -8,10 +8,10 @@ from . import views
 
 urlpatterns = [
     # BoardTrello
-    path('board/create/', BoardTrelloCreateView.as_view(), name='board-create'),
-    path('boards/', BoardTrelloListView.as_view(), name='board-list'),
-    path('board/update/<pk>/', BoardTrelloUpdateView.as_view(), name='board-update'),
-    path('board/delete/<pk>/', BoardTrelloDeleteView.as_view(), name='board-delete'),
+    path('create/', BoardTrelloCreateView.as_view(), name='board-create'),
+    path('', BoardTrelloListView.as_view(), name='board-list'),
+    path('update/<pk>/', BoardTrelloUpdateView.as_view(), name='board-update'),
+    path('delete/<pk>/', BoardTrelloDeleteView.as_view(), name='board-delete'),
 
     # # CardTrello
     # path('card/create/', CardTrelloCreateView.as_view(), name='card-create'),

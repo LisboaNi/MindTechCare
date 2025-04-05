@@ -1,0 +1,66 @@
+{% block content %}
+<h2>Dashboard do Funcionário</h2>
+
+<form method="get">
+    <label>Filtrar por data:</label>
+    <select name="data">
+        <option value="7">Últimos 7 dias</option>
+        <option value="30">Últimos 30 dias</option>
+    </select>
+    <label>Tipo:</label>
+    <select name="tipo">
+        <option value="todos">Todos</option>
+        <option value="github">GitHub</option>
+        <option value="trello">Trello</option>
+    </select>
+    <button type="submit">Filtrar</button>
+</form>
+
+<h3>{{ employee.name }}</h3>
+<p>Total de Commits: {{ employee.total_commits }}</p>
+<p>Total de Cards: {{ employee.total_cards }}</p>
+<ul>
+    {% for alerta in employee.alertas %}
+        <li>{{ alerta }}</li>
+    {% endfor %}
+</ul>
+
+<canvas id="graficoAlertas"></canvas>
+
+<!-- Adiciona o Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const alertCtx = document.getElementById('graficoAlertas').getContext('2d');
+new Chart(alertCtx, {
+    type: 'bar',
+    data: {
+        labels: {{ grafico_alert_labels|safe }},
+        datasets: [{
+            label: 'Alertas por Tipo',
+            data: {{ grafico_alert_data|safe }},
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true
+            },
+            title: {
+                display: true,
+                text: 'Alertas de Sobrecarga e Burnout'
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from .views import (
     UserLoginView,
     UserLogoutView,
@@ -19,11 +19,10 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
 
-    path('api/', include(router.urls)),
-    path("accounts/login/", UserLoginView.as_view(), name="login"),
-    path('accounts/login/', UserLogoutView.as_view(), name='user_logout'),
-    path('accounts/profile/', UserProfileView.as_view(), name='user_profile'),
-    path('accounts/create/', UserCreateView.as_view(), name='user_create'),
-    path('accounts/update/<int:pk>/', UserUpdateView.as_view(), name='user_update'),
-    path('accounts/delete/<int:pk>/', UserDeleteView.as_view(), name='user_delete'),
+    path("login/", UserLoginView.as_view(), name="login"),
+    path('login/', UserLogoutView.as_view(), name='user_logout'),
+    path('profile/', UserProfileView.as_view(), name='user_profile'),
+    path('create/', UserCreateView.as_view(), name='user_create'),
+    path('update/<int:pk>/', UserUpdateView.as_view(), name='user_update'),
+    path('delete/<int:pk>/', UserDeleteView.as_view(), name='user_delete'),
 ]

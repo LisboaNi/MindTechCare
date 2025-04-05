@@ -1,5 +1,5 @@
 function atualizarCards(employeeId) {
-    fetch(`/api/sync-trello/${employeeId}/`)
+    fetch(`/board/sync-trello/${employeeId}/`)
         .then(response => response.json())
         .then(data => {
             alert(data.mensagem);

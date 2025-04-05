@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 
 
 class TimestampMixin(models.Model):
@@ -10,3 +9,5 @@ class TimestampMixin(models.Model):
 
     class Meta:
         abstract = True
+
+

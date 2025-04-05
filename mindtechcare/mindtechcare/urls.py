@@ -6,9 +6,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('accounts.urls')),
-    path('api/', include('employees.urls')),
-    path('api/', include('github.urls')),
-    path('api/', include('trello.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('employees/', include('employees.urls')),
+    path('github/', include('github.urls')),
+    path('board/', include('trello.urls')),
+    path('dashboard/', include('dashboard.urls')),
     path("", HomePageView, name="home"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

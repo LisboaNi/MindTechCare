@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'employees',
     'github',
     'trello',
+    'dashboard',
     'rest_framework.authtoken',
 ]
 
