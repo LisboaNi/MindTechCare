@@ -76,6 +76,14 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'accounts/user_edit.html'
     success_url = reverse_lazy('user_profile')
 
+    def form_valid(self, form):
+        profile_image = self.request.FILES.get('profile_image')
+        if profile_image:
+            form.instance.profile_image = profile_image
+            print("Imagem atualizada no model!")
+
+        return super().form_valid(form)
+
     def get_object(self):
         return self.request.user.usermodel
 

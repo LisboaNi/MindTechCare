@@ -18,10 +18,11 @@
    source venv/bin/activate
 
 3. Instalar as dependências:
-   Após ativar o ambiente virtual, execute o comando para instalar as dependências:
+   Após ativar o ambiente virtual, execute o comando para instalar as dependências do Python e do Node:
 
    pip install -r requirements.txt
    python.exe -m pip install --upgrade pip
+   npm i 
 
 4. Entrar na pasta do projeto:
    Navegue até a pasta do projeto usando o comando:

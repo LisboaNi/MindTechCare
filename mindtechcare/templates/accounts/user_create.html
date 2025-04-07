@@ -5,7 +5,7 @@
             {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
         </div>
     {% endif %}
-    <section class="min-h-screen flex items-center justify-center text-black px-4">
+    <section class="min-h-screen flex flex-col items-center justify-center text-black px-4">
         <div class="flex w-full max-w-6xl h-[600px] shadow-2xl rounded-2xl relative overflow-hidden bg-white/5 backdrop-blur-lg border border-white/10">
             <!-- Botão de voltar -->
             <div class="absolute top-4 left-5">
@@ -44,7 +44,9 @@
                     </p>
                 </div>
             </div>
-
         </div>
+        <p class="text-xl text-primary text-center mt-24">
+            © 2025 MindTechCare. Todos os direitos reservados. Desenvolvido com visão, propósito e tecnologia.
+        </p>
     </section>
 {% endblock content %}

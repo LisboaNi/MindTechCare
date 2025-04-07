@@ -1,15 +1,47 @@
-<h2>Perfil do Usuário</h2>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
 
-<ul>
-    <li><strong>Nome:</strong> {{ profile.name }}</li>
-    <li><strong>Email:</strong> {{ profile.email }}</li>
-    <li><strong>CNPJ:</strong> {{ profile.cnpj }}</li>
-</ul>
+    <header class="py-3 shadow-md">
+        <a href="{% url 'user_update' profile.pk %}">Editar Perfil</a> |
+        <a href="{% url 'user_delete' profile.pk %}">Excluir Conta</a> |
+        <a href="{% url 'user_logout' %}">Sair</a> |
+        <a href="{% url 'employee_create' %}">Criar Profissional</a>
+        <a href="{% url 'employee_list' %}">Profissionais</a>
+        <a href="{% url 'dashboard_geral' %}">Dashboard Geral</a>
+    </header>
+    <main class="w-full h-screen flex">
+        <aside class="min-h-screen bg-primary">
+            <ul>
 
-<a href="{% url 'user_update' profile.pk %}">Editar Perfil</a> |
-<a href="{% url 'user_delete' profile.pk %}">Excluir Conta</a> |
-<a href="{% url 'user_logout' %}">Sair</a> |
-<a href="{% url 'employee_create' %}">Criar Profissional</a>
-<a href="{% url 'employee_list' %}">Profissionais</a>
-<a href="{% url 'dashboard_geral' %}">Dashboard Geral</a>
+                <li>
+                    {% if profile.profile_image %}
+                        <img src="{{ profile.profile_image.url }}"
+                             alt="Imagem de Perfil"
+                             style="max-height: 200px;
+                                    border-radius: 10px;
+                                    object-fit: cover">
+                    {% else %}
+                        <img src="{% static "images/user-default.png" %}"
+                             alt="Imagem de perfil default">
+                    {% endif %}
+                </li>
+                <li>
+                    <strong>Nome:</strong> {{ profile.name }}
+                </li>
+                <li>
+                    <strong>Email:</strong> {{ profile.email }}
+                </li>
+                <li>
+                    <strong>CNPJ:</strong> {{ profile.cnpj }}
+                </li>
+            </ul>
+        </aside>
+        <section>
+            Oi
+        </section>
+    </main>
 
+
+
+{% endblock content %}
