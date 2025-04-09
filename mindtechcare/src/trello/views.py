@@ -87,5 +87,4 @@ def atualizar_cards(request, employee_id):
         sync_trello_cards_for_employee(employee)
         return JsonResponse({"mensagem": "Sincronização concluída com sucesso!"})
     except Exception as e:
-        print("Erro na sincronização:", e)
         return JsonResponse({"mensagem": "Erro durante a sincronização."}, status=500)

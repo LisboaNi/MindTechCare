@@ -15,13 +15,7 @@ class EmployeeLoginView(LoginView):
     form_class = EmployeeLoginForm
 
     def get_success_url(self):
-        return reverse_lazy('employee_profile')  # Redireciona para o perfil do funcionário
-
-    def get_form_kwargs(self):
-        """Remove argumentos inesperados ao instanciar o formulário"""
-        kwargs = super().get_form_kwargs()
-        kwargs.pop("request", None)  
-        return kwargs
+        return reverse_lazy('employee_profile')
 
 # Logout
 class EmployeeLogoutView(View):
@@ -51,9 +45,8 @@ class EmployeeCreateView(LoginRequiredMixin, View):
 
         if form.is_valid():
             employee = form.save(commit=False)
-
-            # Associa a conta da empresa ao Employee
             try:
+                employee.user = request.user
                 employee.accounts = request.user.usermodel
             except UserModel.DoesNotExist:
                 form.add_error(None, "Conta de empresa não encontrada.")
@@ -63,7 +56,7 @@ class EmployeeCreateView(LoginRequiredMixin, View):
             return redirect('employee_list')
 
         return render(request, self.template_name, {'form': form})
-    
+
 # List Employees
 class EmployeeListView(ListView):
     model = Employee

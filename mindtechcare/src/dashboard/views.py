@@ -26,9 +26,9 @@ class DashboardGeralView(View):
 
             # Filtro por tipo
             if tipo_atividade == "github":
-                cards = []
+                cards = CardTrello.objects.none()
             elif tipo_atividade == "trello":
-                commits = []
+                commits = AtividadeGitHub.objects.none()
 
             total_commits = commits.count()
             total_cards = cards.count()
@@ -49,7 +49,7 @@ class DashboardGeralView(View):
             data_commits.append(total_commits)
             data_cards.append(total_cards)
             alert_labels.append(employee.name)
-            alert_data.append(len(alertas))  # total de alertas
+            alert_data.append(len(alertas)) # total de alertas
 
             # Atributos extras pro template
             employee.total_commits = total_commits
@@ -66,7 +66,7 @@ class DashboardGeralView(View):
         }
 
         return render(request, "dashboard/geral.html", context)
-
+    
 class DashboardFuncionarioView(View):
     def get(self, request, pk):
         filtro_dias = int(request.GET.get("data", 7))
@@ -78,9 +78,9 @@ class DashboardFuncionarioView(View):
         cards = CardTrello.objects.filter(employee=employee, data_criacao__gte=data_limite)
 
         if tipo_atividade == "github":
-            cards = []
+            cards = CardTrello.objects.none()
         elif tipo_atividade == "trello":
-            commits = []
+            commits = AtividadeGitHub.objects.none()
 
         total_commits = commits.count()
         total_cards = cards.count()

@@ -20,15 +20,21 @@ class Employee(TimestampMixin):
         return f"{self.name}"
     
     def save(self, *args, **kwargs):
-        if not self.id:
+        # Criar um User apenas se um ainda não estiver associado e se o email e senha estiverem definidos
+        if not self.user and self.email and self.password:
             user = User.objects.create_user(username=self.email, email=self.email, password=self.password)
-            self.user = user  
+            self.user = user
+        # Atualizar o email do User se o email do Employee mudar
+        elif self.user and self.email and self.user.email != self.email:
+            self.user.email = self.email
+            self.user.username = self.email # Importante atualizar o username também
+            self.user.save()
 
-        if self.password:
+        if self.password and not self.password.startswith('pbkdf2_sha256'):
             self.password = encrypt_password(self.password)
 
         # Criptografar tokens se estiverem presentes e não estiverem criptografados
-        if self.trello_token and not self.trello_token.startswith('gAAAA'):  # Fernet tokens começam assim
+        if self.trello_token and not self.trello_token.startswith('gAAAA'):
             self.trello_token = encrypt_token(self.trello_token)
 
         if self.github_token and not self.github_token.startswith('gAAAA'):
@@ -36,9 +42,14 @@ class Employee(TimestampMixin):
 
         super().save(*args, **kwargs)
 
-        if self.accounts is None:  # Verificando se 'accounts' está vazio
-            self.accounts = UserModel.objects.get(user=self.user)  # Atribui o UserModel associado ao User
-            self.save()  # Salva novamente após atribuição
+        # Garantir que 'accounts' esteja sempre associado após a criação do Employee
+        if self.accounts is None and self.user:
+            try:
+                self.accounts = UserModel.objects.get(user=self.user)
+                super().save(update_fields=['accounts']) # Salvar apenas o campo 'accounts' para evitar loops
+            except UserModel.DoesNotExist:
+                # Lidar com o caso em que o UserModel não existe para o User (pode ser um erro na lógica)
+                pass
 
-        if self.accounts:
+        elif self.accounts:
             self.accounts.save()

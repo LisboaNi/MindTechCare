@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, View
 from django.http import JsonResponse
 from django.views import View
+from django.http import HttpResponseForbidden
 from .models import RepositorioGitHub, AtividadeGitHub
 from .forms import RepositorioGitHubForm, AtividadeGitHubForm
 from .integrations import get_github_commits
@@ -17,13 +18,19 @@ class RepositorioCreateView(CreateView):
     success_url = reverse_lazy('repositorio_list')
 
     def form_valid(self, form):
-        repo = form.save(commit=False) 
-        employee_instance = Employee.objects.get(user=self.request.user)
-        repo.employee = employee_instance
-        repo.save()
-        return super().form_valid(form)
-
-
+        if self.request.user.is_authenticated:
+            try:
+                employee_instance = Employee.objects.get(user=self.request.user)
+                repo = form.save(commit=False)
+                repo.employee = employee_instance
+                repo.save()
+                return super().form_valid(form)
+            except Employee.DoesNotExist:
+                form.add_error(None, "Não foi possível associar o repositório ao seu funcionário.")
+                return super().form_invalid(form)
+        else:
+            return HttpResponseForbidden("Usuário não autenticado.")
+        
 class RepositorioUpdateView(UpdateView):
     model = RepositorioGitHub
     form_class = RepositorioGitHubForm
@@ -43,9 +50,15 @@ class RepositorioListView(ListView):
     context_object_name = 'repositorios'
 
     def get_queryset(self):
-        """Filtra os repositórios apenas do employee logado."""
-        return RepositorioGitHub.objects.filter(employee__user=self.request.user)
-
+        if self.request.user.is_authenticated:
+            try:
+                employee_instance = Employee.objects.get(user=self.request.user)
+                return RepositorioGitHub.objects.filter(employee=employee_instance)
+            except Employee.DoesNotExist:
+                return RepositorioGitHub.objects.none() # Retorna um queryset vazio
+        else:
+            return RepositorioGitHub.objects.none()
+        
 # CRUD para AtividadeGitHub
 class AtividadeCreateView(CreateView):
     model = AtividadeGitHub
