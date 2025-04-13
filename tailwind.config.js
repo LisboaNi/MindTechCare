@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./mindtechcare/templates/**/*.html", "./mindtechcare/static/**/*.js"],
+  content: ["**/templates/**/*.html", "**/static/**/*.js"],
   theme: {
     extend: {
       backgroundImage: {
