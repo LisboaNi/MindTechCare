@@ -1,0 +1,12 @@
+<h2>Perfil do Funcionário</h2>
+<p>Nome: {{ employee.name }}</p>
+<p>Email: {{ employee.email }}</p>
+<p>Função: {{ employee.function }}</p>
+
+<a href="{% url 'repositorio_list' %}">Criar Repositorio</a>
+<a href="{% url 'board-list' %}">Criar Trello</a>
+<a href="{% url 'employee_edit' employee.pk %}">Editar Perfil</a> 
+<a href="{% url 'employee_logout' %}">Sair</a>
+<a href="{% url 'token_edit' %}">Configurar Token's</a>
+<a href="{% url 'dashboard_funcionario' employee.pk %}">Ver Dashboard</a>
+

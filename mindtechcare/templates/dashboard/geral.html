@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block content %}
+    <section class="min-h-screen bg-white text-black px-6 py-10">
+        <div class="max-w-7xl mx-auto space-y-10">
+
+            <div class="flex items-center justify-between">
+                <h2 class="text-4xl font-bold text-[#047857]">Dashboard Geral</h2>
+                <a href="{% url 'user_profile' %}"
+                   class="text-sm text-[#047857] hover:underline">← Voltar para a Home</a>
+            </div>
+
+            <!-- Filtros -->
+            <form method="get"
+                  class="bg-white/60 p-6 rounded-xl shadow-lg flex flex-wrap gap-6 items-end border border-white/20 backdrop-blur-md">
+                <div class="flex flex-col">
+                    <label for="data" class="text-sm font-semibold text-gray-700">Filtrar por data</label>
+                    <select name="data"
+                            id="data"
+                            class="px-4 py-2 rounded-lg border-gray-300 focus:ring-[#047857] focus:border-[#047857]">
+                        <option value="7">Últimos 7 dias</option>
+                        <option value="30">Últimos 30 dias</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="tipo" class="text-sm font-semibold text-gray-700">Tipo</label>
+                    <select name="tipo"
+                            id="tipo"
+                            class="px-4 py-2 rounded-lg border-gray-300 focus:ring-[#047857] focus:border-[#047857]">
+                        <option value="todos">Todos</option>
+                        <option value="github">GitHub</option>
+                        <option value="trello">Trello</option>
+                    </select>
+                </div>
+
+                <button type="submit"
+                        class="bg-[#047857] hover:bg-[#064e3b] text-white font-semibold px-6 py-2 rounded-xl transition-all">
+                    Filtrar
+                </button>
+            </form>
+
+            <!-- Gráficos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Atividades por Funcionário</h3>
+                    <canvas id="graficoGeral"></canvas>
+                </div>
+
+                <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Alertas de Sobrecarga e Burnout</h3>
+                    <canvas id="graficoAlertas"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+        const ctx = document.getElementById('graficoGeral').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ grafico_labels|safe }},
+                datasets: [
+                    {
+                        label: 'Commits por Funcionário',
+                        data: {{ grafico_data|safe }},
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Cards Trello por Funcionário',
+                        data: {{ grafico_cards|safe }},
+                        backgroundColor: 'rgba(255, 159, 64, 0.5)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const alertCtx = document.getElementById('graficoAlertas').getContext('2d');
+        new Chart(alertCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ grafico_alert_labels|safe }},
+                datasets: [{
+                    label: 'Alertas por Funcionário',
+                    data: {{ grafico_alert_data|safe }},
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        </script>
+    </section>
+{% endblock content %}
