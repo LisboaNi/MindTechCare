@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 
 class EmployeeForm(forms.ModelForm):
     password = forms.CharField(
+        required=False,
         widget=forms.PasswordInput(attrs={"placeholder": "Digite sua nova senha"}),
         label="Senha",
     )

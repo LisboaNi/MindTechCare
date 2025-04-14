@@ -5,7 +5,11 @@ from django.contrib.auth.forms import AuthenticationForm
 
 
 class UserModelForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput, label="Senha")
+    password = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(attrs={"placeholder": "Digite sua nova senha"}),
+        label="Senha",
+    )
 
     class Meta:
         model = UserModel
