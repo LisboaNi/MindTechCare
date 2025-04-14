@@ -1,9 +1,27 @@
-<p>Tem certeza que deseja excluir {{ employee.name }}?</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Sim, excluir</button>
+{% extends "base.html" %}
+{% load static %}
 
-    {% if request.user.usermodel %}
-        <a href="{% url 'employee_list' %}">Cancelar</a>
-    {% endif %}
-</form>
+{% block content %}
+    <section class="flex items-center justify-center h-screen bg-gray-100">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
+            <h2 class="text-2xl font-semibold text-red-600 mb-4">Confirmar Exclusão</h2>
+            <p class="text-gray-700 mb-6">
+                Tem certeza que deseja excluir <strong>{{ employee.name }}</strong>?
+            </p>
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                <button type="submit"
+                        class="w-full bg-red-600 hover:bg-red-800 text-white py-2 px-4 rounded transition-all">
+                    Sim, excluir
+                </button>
+
+                {% if request.user.usermodel %}
+                    <a href="{% url 'employee_list' %}"
+                       class="inline-block w-full text-center border border-gray-400 text-gray-600 py-2 px-4 rounded hover:bg-gray-100 transition-all">
+                        Cancelar
+                    </a>
+                {% endif %}
+            </form>
+        </div>
+    </section>
+{% endblock content %}
