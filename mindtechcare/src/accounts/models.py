@@ -2,6 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from utils.models import TimestampMixin
 from validations.validators import validate_cnpj, encrypt_password
+from uuid import uuid4
+import os
+
+
+def user_directory_path(instance, filename):
+    ext = filename.split(".")[-1]
+    filename = f"{uuid4()}.{ext}"
+    return os.path.join('profile_images', filename)
 
 
 class UserModel(TimestampMixin):
@@ -16,6 +24,12 @@ class UserModel(TimestampMixin):
     )
     email = models.EmailField(unique=True, null=True)
     password = models.CharField(max_length=255, null=True, verbose_name="Senha")
+    profile_image = models.ImageField(
+        upload_to=user_directory_path,
+        null=True,
+        blank=True,
+        verbose_name="Imagem de Perfil",
+    )
 
     def __str__(self):
         return f"{self.name}"
@@ -30,7 +44,7 @@ class UserModel(TimestampMixin):
         # Atualizar o email do User se o email do UserModel mudar
         elif self.user and self.email and self.user.email != self.email:
             self.user.email = self.email
-            self.user.username = self.email # Importante atualizar o username também
+            self.user.username = self.email  # Importante atualizar o username também
             self.user.save()
 
         if self.password and not self.password.startswith('pbkdf2_sha256'):
