@@ -107,6 +107,12 @@ class AtualizarCommitsView(View):
         total_commits = 0
 
         for repo in repositorios:
+            # Prioriza o github_username do repositório, senão usa o do employee
+            github_username = repo.github_username or employee.github_username
+
+            if not github_username:
+                continue  # pula se nenhum username estiver disponível
+
             commits = get_github_commits(
                 github_username, repo.nome_repositorio, github_token
             )
