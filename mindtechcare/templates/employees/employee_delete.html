@@ -2,5 +2,8 @@
 <form method="post">
     {% csrf_token %}
     <button type="submit">Sim, excluir</button>
-    <a href="{% url 'employee_profile' %}">Cancelar</a>
+
+    {% if request.user.usermodel %}
+        <a href="{% url 'employee_list' %}">Cancelar</a>
+    {% endif %}
 </form>

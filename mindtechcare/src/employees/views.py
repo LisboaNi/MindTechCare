@@ -92,13 +92,20 @@ class EmployeeListView(ListView):
     template_name = "employees/employee_list.html"
     context_object_name = "employees"
 
+    def get_queryset(self):
+        user = self.request.user
+        try:
+            user_model = user.usermodel
+            return Employee.objects.filter(accounts=user_model)
+        except UserModel.DoesNotExist:
+            return Employee.objects.none()
+
 
 # Edit Employee
 class EmployeeEditView(UpdateView):
     model = Employee
     form_class = EmployeeForm
     template_name = "employees/employee_edit.html"
-    success_url = reverse_lazy("employee_profile")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -106,12 +113,19 @@ class EmployeeEditView(UpdateView):
         context["employee"] = employee
         return context
 
+    def get_success_url(self):
+        user = self.request.user
+        # Se o usuário logado é um UserModel (empresa), redireciona para a lista
+        if hasattr(user, "usermodel"):
+            return reverse_lazy("employee_list")
+        # Senão, redireciona para o perfil do próprio funcionário
+        return reverse_lazy("employee_profile")
+
 
 # Delete Employee
 class EmployeeDeleteView(DeleteView):
     model = Employee
     template_name = "employees/employee_delete.html"
-    success_url = reverse_lazy("employee_list")
 
     def post(self, request, *args, **kwargs):
         employee = self.get_object()
@@ -119,7 +133,15 @@ class EmployeeDeleteView(DeleteView):
         employee.delete()
         if user:
             user.delete()
-        return redirect(self.success_url)
+        return redirect(self.get_success_url())  # Aqui chamamos o método corretamente
+
+    def get_success_url(self):
+        user = self.request.user
+        # Se o usuário logado é um UserModel (empresa), redireciona para a lista
+        if hasattr(user, "usermodel"):
+            return reverse_lazy("employee_list")
+        # Senão, redireciona para o perfil do próprio funcionário
+        return reverse_lazy("employee_profile")
 
 
 # Token
