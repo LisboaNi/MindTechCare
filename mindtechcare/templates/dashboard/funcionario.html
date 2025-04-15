@@ -22,8 +22,8 @@
                     <select name="data"
                             id="data"
                             class="px-4 py-2 rounded-lg border-gray-300 focus:ring-[#047857] focus:border-[#047857]">
-                        <option value="7">Últimos 7 dias</option>
-                        <option value="30">Últimos 30 dias</option>
+                        <option value="7" {% if request.GET.data == "7" %}selected{% endif %}>Últimos 7 dias</option>
+                        <option value="30" {% if request.GET.data == "30" %}selected{% endif %}>Últimos 30 dias</option>
                     </select>
                 </div>
 
@@ -32,9 +32,11 @@
                     <select name="tipo"
                             id="tipo"
                             class="px-4 py-2 rounded-lg border-gray-300 focus:ring-[#047857] focus:border-[#047857]">
-                        <option value="todos">Todos</option>
-                        <option value="github">GitHub</option>
-                        <option value="trello">Trello</option>
+                        <option value="todos" {% if request.GET.tipo == "todos" %}selected{% endif %}>Todos</option>
+                        <option value="github"
+                                {% if request.GET.tipo == "github" %}selected{% endif %}>GitHub</option>
+                        <option value="trello"
+                                {% if request.GET.tipo == "trello" %}selected{% endif %}>Trello</option>
                     </select>
                 </div>
 
@@ -55,36 +57,38 @@
                 </p>
 
                 {% if alertas %}
-                <div>
-                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Alertas:</h4>
-                    <ul class="list-disc list-inside text-sm text-red-600 space-y-1">
-                        {% for alerta in alertas %}
-                            <li>{{ alerta }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-800 mb-2">Alertas:</h4>
+                        <ul class="list-disc list-inside text-sm text-red-600 space-y-1">
+                            {% for alerta in alertas %}<li>{{ alerta }}</li>{% endfor %}
+                        </ul>
+                    </div>
                 {% else %}
                     <p class="text-sm text-gray-500">Nenhum alerta detectado neste período.</p>
                 {% endif %}
             </div>
 
-            <!-- Gráfico de Alertas -->
-            <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Alertas de Sobrecarga e Burnout</h3>
-                <canvas id="graficoAlertas"></canvas>
+            <!-- Grid dos Gráficos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Gráfico de Alertas -->
+                <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Alertas de Sobrecarga e Burnout</h3>
+                    <canvas id="graficoAlertas"></canvas>
+                </div>
+
+                <!-- Gráfico de Commits -->
+                <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Commits Realizados</h3>
+                    <canvas id="graficoCommits"></canvas>
+                </div>
+
+                <!-- Gráfico de Cards -->
+                <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10 md:col-span-2">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Cards Criados</h3>
+                    <canvas id="graficoCards"></canvas>
+                </div>
             </div>
 
-            <!-- Gráfico de Commits -->
-            <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10 mt-8">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Commits Realizados</h3>
-                <canvas id="graficoCommits"></canvas>
-            </div>
-
-            <!-- Gráfico de Cards -->
-            <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10 mt-8">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Cards Criados</h3>
-                <canvas id="graficoCards"></canvas>
-            </div>
 
         </div>
         <!-- Chart.js -->

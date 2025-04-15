@@ -1,23 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
-    <section class="min-h-screen flex items-center justify-center  text-black px-4">
+    <section class="min-h-screen flex flex-col items-center justify-center  text-black px-4">
         <div class="flex w-full max-w-6xl h-[600px] shadow-2xl rounded-2xl relative overflow-hidden bg-white/5 backdrop-blur-lg border border-white/10">
-            <div class="absolute top-4 left-5">
+            <div class="absolute top-4 left-5 z-20">
                 <a href="{% url 'home' %}"
                    class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition">
                     <i class="fa-solid fa-arrow-left text-[#047857] text-xl"></i>
                 </a>
             </div>
 
-
             <!-- Lado esquerdo com imagem -->
-            <div class="w-1/2 bg-[url('/static/images/bg.png')] bg-cover  bg-center flex flex-col items-start px-12 gap-6 pt-20">
-                <h1 class="text-5xl font-extrabold leading-tight drop-shadow-md text-white mx-auto">
-                    Welcome, <span class="text-[#a7f3d0]">Minder</span>
-                </h1>
-                <p class="text-xl leading-relaxed text-white/90">
-                    Cuide da mente enquanto cuida do código. Sua jornada de bem-estar começa aqui.
-                </p>
+            <div class="relative w-1/2 bg-[url('/static/images/bg.png')] bg-cover bg-center flex flex-col items-start px-12 gap-6 pt-20 text-white">
+                <!-- Overlay escuro -->
+                <div class="absolute inset-0 bg-black/15 z-0"></div>
+
+                <!-- Conteúdo -->
+                <div class="relative z-10 space-y-4 text-justify">
+                    <h1 class="text-5xl font-extrabold leading-tight drop-shadow-md mx-auto">Bem-vindo à sua área de bem-estar</h1>
+
+                    <p class="text-xl text-white/90 leading-relaxed font-semibold">
+                        Aqui, você acompanha sua jornada profissional com mais consciência e equilíbrio.
+                    </p>
+
+                    <p class="text-xl text-white/90 leading-relaxed">
+                        A <strong>MindTechCare</strong> está ao seu lado para te ajudar a identificar sinais de sobrecarga, prevenir o burnout e promover uma rotina mais saudável no trabalho.
+                    </p>
+
+                    <p class="text-xl text-white/90 leading-relaxed">
+                        Entre com seus dados e veja como você está se sentindo — e como a empresa pode caminhar junto com você.
+                    </p>
+                </div>
+                <p class="text-xl text-center mt-6 mx-auto">© 2025 MindTechCare.</p>
+
             </div>
 
             <!-- Formulário de login -->
@@ -43,5 +57,6 @@
             </div>
 
         </div>
+
     </section>
 {% endblock content %}

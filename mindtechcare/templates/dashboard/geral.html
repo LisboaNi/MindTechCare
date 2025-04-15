@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
     <section class="min-h-screen bg-white text-black px-6 py-10">
         <div class="max-w-7xl mx-auto space-y-10">
@@ -6,7 +7,7 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-4xl font-bold text-[#047857]">Dashboard Geral</h2>
                 <a href="{% url 'user_profile' %}"
-                   class="text-md text-[#047857] hover:underline"><i class="fa-solid fa-arrow-left"></i> Voltar para a Home</a>
+                   class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150"><i class="fa-solid fa-arrow-left"></i> Voltar para Home</a>
             </div>
 
             <!-- Filtros -->
@@ -17,8 +18,8 @@
                     <select name="data"
                             id="data"
                             class="px-4 py-2 rounded-lg border-gray-300 focus:ring-[#047857] focus:border-[#047857]">
-                        <option value="7">Últimos 7 dias</option>
-                        <option value="30">Últimos 30 dias</option>
+                        <option value="7" {% if request.GET.data == "7" %}selected{% endif %}>Últimos 7 dias</option>
+                        <option value="30" {% if request.GET.data == "30" %}selected{% endif %}>Últimos 30 dias</option>
                     </select>
                 </div>
 
@@ -27,13 +28,16 @@
                     <select name="tipo"
                             id="tipo"
                             class="px-4 py-2 rounded-lg border-gray-300 focus:ring-[#047857] focus:border-[#047857]">
-                        <option value="todos">Todos</option>
-                        <option value="github">GitHub</option>
-                        <option value="trello">Trello</option>
+                        <option value="todos" {% if request.GET.tipo == "todos" %}selected{% endif %}>Todos</option>
+                        <option value="github"
+                                {% if request.GET.tipo == "github" %}selected{% endif %}>GitHub</option>
+                        <option value="trello"
+                                {% if request.GET.tipo == "trello" %}selected{% endif %}>Trello</option>
                     </select>
                 </div>
 
                 <button type="submit"
+                        id="filtro"
                         class="bg-[#047857] hover:bg-[#064e3b] text-white font-semibold px-6 py-2 rounded-xl transition-all">
                     Filtrar
                 </button>
@@ -43,14 +47,16 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Gráfico de Alertas de Todos os Funcionários</h3>
-                    <div class="h-80"> <!-- Definir altura fixa para todos os gráficos -->
+                    <div class="h-80">
+                        <!-- Definir altura fixa para todos os gráficos -->
                         <canvas id="graficoAlertasGeral" class="w-full h-full"></canvas>
                     </div>
                 </div>
 
                 <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Gráfico de Tipos de Alertas</h3>
-                    <div class="flex justify-center items-center" style="height: 20rem;"> <!-- Altura ajustada diretamente -->
+                    <div class="flex justify-center items-center" style="height: 20rem;">
+                        <!-- Altura ajustada diretamente -->
                         <canvas id="graficoAlertasTipo" class="w-full h-full"></canvas>
                     </div>
                 </div>
@@ -60,24 +66,26 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-8">
                 <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Gráfico de Cards Criados de Todos os Funcionários</h3>
-                    <div class="h-80"> <!-- Definir altura fixa para todos os gráficos -->
+                    <div class="h-80">
+                        <!-- Definir altura fixa para todos os gráficos -->
                         <canvas id="graficoCardsGeral" class="w-full h-full"></canvas>
                     </div>
                 </div>
 
                 <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Gráfico de Commits de Todos os Funcionários</h3>
-                    <div class="h-80"> <!-- Definir altura fixa para todos os gráficos -->
+                    <div class="h-80">
+                        <!-- Definir altura fixa para todos os gráficos -->
                         <canvas id="graficoCommitsGeral" class="w-full h-full"></canvas>
                     </div>
                 </div>
             </div>
 
 
-        <!-- Chart.js -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <!-- Chart.js -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <script>
+            <script>
             const commitsGeralCtx = document.getElementById('graficoCommitsGeral').getContext('2d');
             const cardsGeralCtx = document.getElementById('graficoCardsGeral').getContext('2d');
             const alertasGeralCtx = document.getElementById('graficoAlertasGeral').getContext('2d');
@@ -233,5 +241,7 @@
                     }
                 }
             });
-        </script>
+            </script>
+        </div>
+    </section>
 {% endblock content %}

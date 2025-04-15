@@ -18,9 +18,9 @@
     <section class="grid grid-cols-[300px_1fr] h-screen bg-gray-100 font-poppins">
         <!-- Sidebar -->
         <aside class="bg-primary text-white flex flex-col items-center p-6 relative">
-            {% if employee.profile_image %}
+            {% if employee.employee_image %}
                 <div class="w-40 h-40 rounded-xl overflow-hidden shadow-lg border-2 border-white/20 hover:scale-105 transition-transform duration-300">
-                    <img src="{{ employee.profile_image.url }}"
+                    <img src="{{ employee.employee_image.url }}"
                          alt="Foto do Funcionário"
                          class="w-full h-full object-cover">
                 </div>

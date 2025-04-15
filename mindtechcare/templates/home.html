@@ -1,17 +1,143 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
-    <header class="bg-White shadow-md">
-        <nav class="flex items-center justify-between px-80 mx-auto py-5">
-            <div class="text-4xl font-bold">
-                <h1>MindTechCare</h1>
+
+    <!-- Header original mantido -->
+    <header class="bg-white shadow-md">
+        <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <img src="{% static 'images/logo.png' %}"
+                     alt="MindTechCare Logo"
+                     class="w-18 h-14">
+                <h1 class="font-bold text-2xl md:text-3xl flex gap-1 items-center">
+                    <span class="text-[#047857]">Mind</span>
+                    <span class="text-[#10b981] font-semibold">TechCare</span>
+                </h1>
             </div>
-            <div class="flex items-center gap-5 text-xl font-bold ">
-                <a href="{% url "employee_login" %}"
-                   class="border-r-4 border-black py-1 pr-4">Comunidade</a>
-                <a href="{% url "login" %}"
-                   class="py-2 px-4 bg-[#1d5632] hover:bg-[#A4D4AE] text-white rounded-xl text-lg">Login</a>
-                <a href="{% url "user_create" %}" class="text-lg">Cadastro</a>
+
+            <!-- Botões -->
+            <div class="flex items-center gap-4 text-base md:text-lg font-medium">
+                <a href="{% url 'employee_login' %}"
+                   class="py-2 px-3 border-r border-gray-300 text-gray-700 hover:text-[#047857] transition">
+                    Comunidade
+                </a>
+                <a href="{% url 'login' %}"
+                   class="py-2 px-4 bg-[#047857] hover:bg-[#10b981] text-white rounded-xl transition">Login</a>
+                <a href="{% url 'user_create' %}"
+                   class="py-2 px-4 text-[#047857] hover:text-white hover:bg-[#047857] border border-[#047857] rounded-xl transition">
+                    Cadastro
+                </a>
             </div>
         </nav>
     </header>
+
+
+    <!-- HERO Section -->
+    <section class="bg-gradient-to-r from-[#e0f5ec] to-white py-20 px-6 md:px-20 text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-gray-800 mb-6 leading-tight">
+            Cuide da sua equipe,
+            <br>
+            <span class="text-[#047857]">antes que o burnout</span> bata na porta
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            A plataforma definitiva para monitoramento do bem-estar psicológico no trabalho.
+            Use dados reais do GitHub e Trello para identificar sobrecarga antes que ela afete sua equipe.
+        </p>
+        <div class="flex items-center justify-center gap-6">
+            <a href="{% url 'user_create' %}"
+               class="bg-[#047857] text-white px-6 py-3 rounded-xl hover:bg-[#10b981] transition">Comece Agora</a>
+            <a href="{% url 'login' %}"
+               class="text-[#047857] font-semibold underline hover:text-[#065f46] transition">Já tenho conta</a>
+        </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section class="bg-white py-20 px-6 md:px-20">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">Por que usar o MindTechCare?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+            <div class="bg-gray-50 p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <i class="fa-solid fa-chart-line text-4xl text-[#047857] mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Monitoramento Inteligente</h3>
+                <p class="text-gray-600">Detecte sobrecarga e riscos de burnout com base em produtividade real.</p>
+            </div>
+            <div class="bg-gray-50 p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <i class="fa-solid fa-file-waveform text-4xl text-[#047857] mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Relatórios em Tempo Real</h3>
+                <p class="text-gray-600">Gráficos e relatórios fáceis de entender, direto no painel da empresa.</p>
+            </div>
+            <div class="bg-gray-50 p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <i class="fa-solid fa-heart-circle-check text-4xl text-[#047857] mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Cultura de Bem-estar</h3>
+                <p class="text-gray-600">Mostre que sua empresa se importa com pessoas. De verdade.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- (Futuro) Depoimentos ou empresas que confiam -->
+    <!-- <section class="bg-gray-50 py-20 px-6 md:px-20 text-center">
+        <h2 class="text-3xl font-bold mb-8">Empresas que confiam em nós</h2>
+        <div class="flex justify-center gap-10 grayscale opacity-80">
+            <img src="{% static 'images/logo1.png' %}" alt="Logo1" class="h-12">
+            <img src="{% static 'images/logo2.png' %}" alt="Logo2" class="h-12">
+            <img src="{% static 'images/logo3.png' %}" alt="Logo3" class="h-12">
+        </div>
+</section> -->
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-10 text-gray-700 font-poppins">
+        <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold text-[#047857] mb-4">
+                    Mind<span class="text-[#10b981]">TechCare</span>
+                </h3>
+                <p class="text-sm text-gray-600">
+                    Plataforma inteligente para o bem-estar e saúde mental no ambiente de trabalho. Apoiamos empresas a prevenirem a sobrecarga e promoverem qualidade de vida.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Navegação</h4>
+                <ul class="space-y-2 text-sm">
+                    <li>
+                        <a href="{% url 'dashboard_geral' %}"
+                           class="hover:text-[#047857] transition-all">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'employee_list' %}"
+                           class="hover:text-[#047857] transition-all">Profissionais</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user_profile' %}"
+                           class="hover:text-[#047857] transition-all">Minha Conta</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user_logout' %}"
+                           class="hover:text-[#047857] transition-all">Sair</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Contato</h4>
+                <ul class="space-y-2 text-sm">
+                    <li>
+                        <i class="fa-solid fa-envelope mr-2 text-[#047857]"></i>suporte@mindtechcare.com
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-phone mr-2 text-[#047857]"></i>(11) 99999-0000
+                    </li>
+                </ul>
+                <div class="flex mt-4 space-x-4 text-[#047857]">
+                    <a href="#" class="hover:text-[#10b981] transition"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="hover:text-[#10b981] transition"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="hover:text-[#10b981] transition"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" class="hover:text-[#10b981] transition"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gray-100 text-center py-4 text-sm text-gray-500">
+            © {{ now|date:"Y" }} MindTechCare. Todos os direitos reservados.
+        </div>
+    </footer>
+
 {% endblock content %}

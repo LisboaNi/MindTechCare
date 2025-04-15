@@ -127,6 +127,13 @@ class EmployeeEditView(UpdateView):
     form_class = EmployeeForm
     template_name = "employees/employee_edit.html"
 
+    def form_valid(self, form):
+        employee_image = self.request.FILES.get("employee_image")
+        if employee_image:
+            form.instance.employee_image = employee_image
+            print("Employee image updated successfully")
+        return super().form_valid(form)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         employee = self.get_object()
