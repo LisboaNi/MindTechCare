@@ -2,13 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from utils.models import TimestampMixin
 from validations.validators import validate_cnpj, encrypt_password
-<<<<<<< HEAD
-import os
-from uuid import uuid4
-=======
 from uuid import uuid4
 import os
->>>>>>> main
 
 
 def user_directory_path(instance, filename):
@@ -33,11 +28,7 @@ class UserModel(TimestampMixin):
         upload_to=user_directory_path,
         null=True,
         blank=True,
-<<<<<<< HEAD
-        verbose_name="Imagem de perfil",
-=======
         verbose_name="Imagem de Perfil",
->>>>>>> main
     )
 
     def __str__(self):

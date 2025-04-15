@@ -1,123 +1,47 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
-<<<<<<< HEAD
+{% extends "base.html" %} {% load static %} {% block content %}
+<header class="bg-white shadow-md">
+  <nav class="mx-auto flex items-center justify-between px-80 py-5">
+    <div class="text-4xl font-bold">
+      <h1>MindTechCare</h1>
+    </div>
+  </nav>
+</header>
+<section class="font-poppins grid h-screen grid-cols-[300px_1fr] bg-gray-100">
+  <!-- Sidebar -->
+  <aside class="relative flex flex-col items-center bg-primary p-6 text-white">
+    {% if profile.profile_image %}
+    <div class="h-40 w-40 overflow-hidden rounded-xl border-2 border-white/20 shadow-lg transition-transform duration-300 hover:scale-105">
+      <img src="{{ profile.profile_image.url }}" alt="Imagem de Perfil" class="h-full w-full object-cover" />
+    </div>
+    {% else %}
+    <div class="flex h-40 w-40 items-center justify-center overflow-hidden rounded-xl border-2 border-white/20 bg-white shadow-lg">
+      <img src="{% static 'images/icon.png' %}" alt="Imagem de Perfil Padrão" class="h-20 w-20 object-contain" />
+    </div>
+    {% endif %}
 
-    <header class="py-3 shadow-md">
-        <a href="{% url 'user_update' profile.pk %}">Editar Perfil</a> |
-        <a href="{% url 'user_delete' profile.pk %}">Excluir Conta</a> |
-        <a href="{% url 'user_logout' %}">Sair</a> |
-        <a href="{% url 'employee_create' %}">Criar Profissional</a>
-        <a href="{% url 'employee_list' %}">Profissionais</a>
-        <a href="{% url 'dashboard_geral' %}">Dashboard Geral</a>
-    </header>
-    <main class="w-full h-screen flex">
-        <aside class="min-h-screen bg-primary">
-            <ul>
+    <!-- Informações do usuário -->
+    <div class="mt-6 space-y-2 text-center">
+      <p class="flex items-center justify-center gap-2 text-lg font-medium"><i class="fa-solid fa-user text-xl"></i>{{ profile.name }}</p>
+      <p class="flex items-center justify-center gap-2 text-sm text-white/80"><i class="fa-solid fa-envelope text-lg"></i>{{ profile.email }}</p>
+      <p class="flex items-center justify-center gap-2 text-sm text-white/80"><i class="fa-solid fa-passport text-lg"></i>{{ profile.cnpj }}</p>
+    </div>
 
-                <li>
-                    {% if profile.profile_image %}
-                        <img src="{{ profile.profile_image.url }}"
-                             alt="Imagem de Perfil"
-                             style="max-height: 200px;
-                                    border-radius: 10px;
-                                    object-fit: cover">
-                    {% else %}
-                        <img src="{% static "images/user-default.png" %}"
-                             alt="Imagem de perfil default">
-                    {% endif %}
-                </li>
-                <li>
-                    <strong>Nome:</strong> {{ profile.name }}
-                </li>
-                <li>
-                    <strong>Email:</strong> {{ profile.email }}
-                </li>
-                <li>
-                    <strong>CNPJ:</strong> {{ profile.cnpj }}
-                </li>
-            </ul>
-        </aside>
-        <section>
-            Oi
-        </section>
-    </main>
+    <!-- Botão de logout -->
+    <div class="mt-auto w-full">
+      <a href="{% url 'user_logout' %}" class="mt-10 block w-full rounded-xl bg-emerald-600 py-2 text-center font-semibold transition-all hover:bg-emerald-800"> <i class="fa-solid fa-sign-out-alt mr-2"></i>Sair </a>
+    </div>
+  </aside>
 
-
-
-=======
-    <header class="bg-white shadow-md">
-        <nav class="flex items-center justify-between px-80 mx-auto py-5">
-            <div class="text-4xl font-bold">
-                <h1>MindTechCare</h1>
-            </div>
-        </nav>
-    </header>
-    <section class="grid grid-cols-[300px_1fr] h-screen bg-gray-100 font-poppins">
-        <!-- Sidebar -->
-        <aside class="bg-primary text-white flex flex-col items-center p-6 relative">
-            {% if profile.profile_image %}
-                <div class="w-40 h-40 rounded-xl overflow-hidden shadow-lg border-2 border-white/20 hover:scale-105 transition-transform duration-300">
-                    <img src="{{ profile.profile_image.url }}"
-                         alt="Imagem de Perfil"
-                         class="w-full h-full object-cover" />
-                </div>
-            {% else %}
-                <div class="w-40 h-40 rounded-xl overflow-hidden shadow-lg border-2 border-white/20 bg-white flex items-center justify-center">
-                    <img src="{% static 'images/icon.png' %}"
-                         alt="Imagem de Perfil Padrão"
-                         class="w-20 h-20 object-contain" />
-                </div>
-            {% endif %}
-
-            <!-- Informações do usuário -->
-            <div class="mt-6 text-center space-y-2">
-                <p class="flex items-center justify-center gap-2 text-lg font-medium">
-                    <i class="fa-solid fa-user text-xl"></i>{{ profile.name }}
-                </p>
-                <p class="flex items-center justify-center gap-2 text-sm text-white/80">
-                    <i class="fa-solid fa-envelope text-lg"></i>{{ profile.email }}
-                </p>
-                <p class="flex items-center justify-center gap-2 text-sm text-white/80">
-                    <i class="fa-solid fa-passport text-lg"></i>{{ profile.cnpj }}
-                </p>
-            </div>
-
-            <!-- Botão de logout -->
-            <div class="mt-auto w-full">
-                <a href="{% url 'user_logout' %}"
-                   class="block text-center bg-emerald-600 py-2 mt-10 w-full rounded-xl hover:bg-emerald-800 transition-all font-semibold">
-                    <i class="fa-solid fa-sign-out-alt mr-2"></i>Sair
-                </a>
-            </div>
-        </aside>
-
-        <!-- Main content -->
-        <main class="p-10 overflow-y-auto">
-            <h2 class="text-2xl font-semibold mb-6 text-[#047857]">Minha Conta</h2>
-            <div class="grid gap-4">
-                <a href="{% url 'user_update' profile.pk %}"
-                   class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-pen text-blue-600"></i>Editar Perfil
-                </a>
-                <a href="{% url 'user_delete' profile.pk %}"
-                   class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-user-slash text-red-600"></i>Excluir Conta
-                </a>
-                <a href="{% url 'employee_create' %}"
-                   class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-user-plus text-green-600"></i>Criar Profissional
-                </a>
-                <a href="{% url 'employee_list' %}"
-                   class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-users text-indigo-600"></i>Profissionais
-                </a>
-                <a href="{% url 'dashboard_geral' %}"
-                   class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-chart-line text-purple-600"></i>Dashboard Geral
-                </a>
-            </div>
-        </main>
-    </section>
->>>>>>> main
+  <!-- Main content -->
+  <main class="overflow-y-auto p-10">
+    <h2 class="mb-6 text-2xl font-semibold text-[#047857]">Minha Conta</h2>
+    <div class="grid gap-4">
+      <a href="{% url 'user_update' profile.pk %}" class="flex items-center gap-2 rounded-lg bg-white p-4 shadow transition-all hover:bg-gray-50"> <i class="fa-solid fa-pen text-blue-600"></i>Editar Perfil </a>
+      <a href="{% url 'user_delete' profile.pk %}" class="flex items-center gap-2 rounded-lg bg-white p-4 shadow transition-all hover:bg-gray-50"> <i class="fa-solid fa-user-slash text-red-600"></i>Excluir Conta </a>
+      <a href="{% url 'employee_create' %}" class="flex items-center gap-2 rounded-lg bg-white p-4 shadow transition-all hover:bg-gray-50"> <i class="fa-solid fa-user-plus text-green-600"></i>Criar Profissional </a>
+      <a href="{% url 'employee_list' %}" class="flex items-center gap-2 rounded-lg bg-white p-4 shadow transition-all hover:bg-gray-50"> <i class="fa-solid fa-users text-indigo-600"></i>Profissionais </a>
+      <a href="{% url 'dashboard_geral' %}" class="flex items-center gap-2 rounded-lg bg-white p-4 shadow transition-all hover:bg-gray-50"> <i class="fa-solid fa-chart-line text-purple-600"></i>Dashboard Geral </a>
+    </div>
+  </main>
+</section>
 {% endblock content %}
