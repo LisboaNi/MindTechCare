@@ -1,10 +1,39 @@
-<h1>Excluir Board Trello</h1>
+{% extends "base.html" %}
+{% load static %}
 
-<p>Tem certeza que deseja excluir o board: "{{ object.nome }}"?</p>
+{% block content %}
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Confirmar Exclusão</button>
-</form>
+    <section class="min-h-screen bg-gray-100 font-poppins py-10 px-6">
+        <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-md border border-red-200">
 
-<p><a href="{% url 'board-list' %}">Cancelar</a></p>
+            <!-- Título com ícone de alerta -->
+            <h2 class="text-2xl font-bold text-red-600 mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-3xl"></i> Confirmar Exclusão
+            </h2>
+
+            <!-- Texto explicativo de confirmação -->
+            <p class="text-gray-700 text-md mb-6">
+                Tem certeza que deseja excluir esse board
+                <span class="font-semibold text-black">"{{ nome_board }}"</span>?
+                Essa ação <span class="text-red-600 font-bold">não pode ser desfeita</span>.
+            </p>
+
+            <!-- Formulário para confirmação com botões -->
+            <form method="post" class="flex flex-col sm:flex-row gap-4">
+                {% csrf_token %}
+                <!-- Botão de Exclusão -->
+                <button type="submit"
+                        class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-800 transition-all font-semibold w-full sm:w-auto">
+                    <i class="fa-solid fa-trash mr-2"></i>Sim, excluir
+                </button>
+
+                <!-- Link de Cancelar -->
+                <a href="{% url 'board-list' %}"
+                   class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 transition-all font-medium flex items-center justify-center w-full sm:w-auto">
+                    <i class="fa-solid fa-ban mr-2"></i>Cancelar
+                </a>
+            </form>
+        </div>
+    </section>
+
+{% endblock %}
