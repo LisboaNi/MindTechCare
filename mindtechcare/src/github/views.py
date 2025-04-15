@@ -120,10 +120,14 @@ class AtualizarCommitsView(View):
             if "error" in commits:
                 continue
 
-            # Filtrar apenas os commits feitos pelo github_username do employee
+            # Filtrar apenas os commits feitos ou aplicados pelo github_username do employee
             for commit in commits:
-                commit_author = commit.get("author")
-                if commit_author and commit_author.get("login") == github_username:
+                author = commit.get("author")
+                committer = commit.get("committer")
+
+                if (author and author.get("login") == employee.github_username) or \
+                (committer and committer.get("login") == employee.github_username):
+
                     criado, _ = AtividadeGitHub.objects.get_or_create(
                         employee=employee,
                         commit_mensagem=commit["message"],
@@ -131,5 +135,6 @@ class AtualizarCommitsView(View):
                     )
                     if criado:
                         total_commits += 1
+
 
         return JsonResponse({"success": f"{total_commits} commits atualizados."})
