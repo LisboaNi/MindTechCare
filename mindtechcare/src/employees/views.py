@@ -64,7 +64,26 @@ class EmployeeCreateView(LoginRequiredMixin, View):
     template_name = "employees/employee_create.html"
 
     def get(self, request):
-        form = EmployeeForm()
+        try:
+            empresa = request.user.usermodel  # Conta da empresa logada
+        except UserModel.DoesNotExist:
+            return redirect(
+                "login"
+            )  # Se não encontrar a empresa, redireciona para login
+
+        # Verifica o número de funcionários já cadastrados para a empresa
+        num_funcionarios = Employee.objects.filter(accounts=empresa).count()
+
+        # Defina o número máximo de funcionários permitidos, por exemplo, 5
+        max_funcionarios = (
+            empresa.max_funcionarios if hasattr(empresa, "max_funcionarios") else 5
+        )
+
+        if num_funcionarios >= max_funcionarios:
+            # Redireciona para a tela de compra de acesso se o limite for atingido
+            return redirect("buy_access")  # Ajuste o nome da URL conforme necessário
+
+        form = EmployeeForm()  # Exibe o formulário de criação de funcionário
         return render(request, self.template_name, {"form": form})
 
     def post(self, request):
@@ -79,7 +98,8 @@ class EmployeeCreateView(LoginRequiredMixin, View):
                 form.add_error(None, "Conta de empresa não encontrada.")
                 return render(request, self.template_name, {"form": form})
 
-            employee.accounts = empresa  # Associa o employee à empresa logada
+            # Associa o employee à empresa logada
+            employee.accounts = empresa
             employee.save()
             return redirect("employee_list")
 

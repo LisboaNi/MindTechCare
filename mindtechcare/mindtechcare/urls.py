@@ -5,11 +5,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
-    path('employees/', include('employees.urls')),
-    path('github/', include('github.urls')),
-    path('board/', include('trello.urls')),
-    path('dashboard/', include('dashboard.urls')),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("accounts.urls")),
+    path("employees/", include("employees.urls")),
+    path("github/", include("github.urls")),
+    path("board/", include("trello.urls")),
+    path("dashboard/", include("dashboard.urls")),
+    path("buy_access/", include("plan.urls")),
     path("", HomePageView, name="home"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

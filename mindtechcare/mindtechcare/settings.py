@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "github",
     "trello",
     "dashboard",
+    "plan",
     "rest_framework.authtoken",
 ]
 
