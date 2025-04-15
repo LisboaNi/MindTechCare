@@ -42,91 +42,196 @@
             <!-- Gráficos -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Atividades por Funcionário</h3>
-                    <canvas id="graficoGeral"></canvas>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Gráfico de Alertas de Todos os Funcionários</h3>
+                    <div class="h-80"> <!-- Definir altura fixa para todos os gráficos -->
+                        <canvas id="graficoAlertasGeral" class="w-full h-full"></canvas>
+                    </div>
                 </div>
 
                 <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Alertas de Sobrecarga e Burnout</h3>
-                    <canvas id="graficoAlertas"></canvas>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Gráfico de Commits de Todos os Funcionários</h3>
+                    <div class="h-80"> <!-- Definir altura fixa para todos os gráficos -->
+                        <canvas id="graficoCommitsGeral" class="w-full h-full"></canvas>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Gráficos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-8">
+                <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Gráfico de Cards Criados de Todos os Funcionários</h3>
+                    <div class="h-80"> <!-- Definir altura fixa para todos os gráficos -->
+                        <canvas id="graficoCardsGeral" class="w-full h-full"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Gráfico de Tipos de Alertas</h3>
+                    <div class="flex justify-center items-center" style="height: 20rem;"> <!-- Altura ajustada diretamente -->
+                        <canvas id="graficoAlertasTipo" class="w-full h-full"></canvas>
+                    </div>
+                </div>
+            </div>
+
 
         <!-- Chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <script>
-        const ctx = document.getElementById('graficoGeral').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: {{ grafico_labels|safe }},
-                datasets: [
-                    {
-                        label: 'Commits por Funcionário',
-                        data: {{ grafico_data|safe }},
-                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+            const commitsGeralCtx = document.getElementById('graficoCommitsGeral').getContext('2d');
+            const cardsGeralCtx = document.getElementById('graficoCardsGeral').getContext('2d');
+            const alertasGeralCtx = document.getElementById('graficoAlertasGeral').getContext('2d');
+            const alertasTipoCtx = document.getElementById('graficoAlertasTipo').getContext('2d');
+        
+            const grafico_labels = {{ grafico_labels|safe }};
+            const data_commits = {{ grafico_data|safe }};
+            const data_cards = {{ grafico_cards|safe }};
+            const alert_labels = {{ grafico_alert_labels|safe }};
+            const alert_data = {{ grafico_alert_data|safe }};
+            const total_commits_geral = {{ total_commits_geral|safe }};
+            const total_cards_geral = {{ total_cards_geral|safe }};
+            const alertas_tipo_labels = {{ alertas_tipo_labels|safe }};
+            const alertas_tipo_data = {{ alertas_tipo_data|safe }};
+        
+            // Gráfico de Commits de Todos os Funcionários
+            new Chart(commitsGeralCtx, {
+                type: 'bar',
+                data: {
+                    labels: grafico_labels,
+                    datasets: [{
+                        label: 'Commits Realizados',
+                        data: data_commits,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        title: {
+                            display: true,
+                            text: 'Commits Realizados por Funcionário'
+                        }
                     },
-                    {
-                        label: 'Cards Trello por Funcionário',
-                        data: {{ grafico_cards|safe }},
-                        backgroundColor: 'rgba(255, 159, 64, 0.5)',
-                        borderColor: 'rgba(255, 159, 64, 1)',
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        
+            // Gráfico de Cards Criados de Todos os Funcionários
+            new Chart(cardsGeralCtx, {
+                type: 'bar',
+                data: {
+                    labels: grafico_labels,
+                    datasets: [{
+                        label: 'Cards Criados',
+                        data: data_cards,
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
                         borderWidth: 1
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true
-                    },
-                    title: {
-                        display: false
-                    }
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        title: {
+                            display: true,
+                            text: 'Cards Criados por Funcionário'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        });
+            });
+        
+            // Gráfico de Alertas de Todos os Funcionários
+            new Chart(alertasGeralCtx, {
+                type: 'bar',
+                data: {
+                    labels: alert_labels,
+                    datasets: [{
+                        label: 'Alertas por Tipo',
+                        data: alert_data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(54, 162, 235, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(54, 162, 235, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        title: {
+                            display: true,
+                            text: 'Alertas por Funcionário'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
 
-        const alertCtx = document.getElementById('graficoAlertas').getContext('2d');
-        new Chart(alertCtx, {
-            type: 'bar',
-            data: {
-                labels: {{ grafico_alert_labels|safe }},
-                datasets: [{
-                    label: 'Alertas por Funcionário',
-                    data: {{ grafico_alert_data|safe }},
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true
-                    },
-                    title: {
-                        display: false
-                    }
+            // Gráfico de Tipos de Alertas
+            new Chart(alertasTipoCtx, {
+                type: 'pie',  // Usando gráfico de pizza para mostrar a distribuição
+                data: {
+                    labels: alertas_tipo_labels,
+                    datasets: [{
+                        label: 'Distribuição de Alertas por Tipo',
+                        data: alertas_tipo_data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',  // Sobrecarga
+                            'rgba(255, 206, 86, 0.5)',  // Exaustão
+                            'rgba(54, 162, 235, 0.5)'   // Burnout
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(54, 162, 235, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 10  // Diminuir o tamanho da fonte da legenda
+                                }
+                            }
+                        }
                     }
                 }
-            }
-        });
+            });
         </script>
-    </section>
 {% endblock content %}
