@@ -1,10 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
 {% block content %}
-  <h2>Editar Repositório GitHub</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Atualizar</button>
-  </form>
-  <br>
-  <a href="{% url 'repositorio_list' %}">Voltar para a lista de repositórios</a>
+  <section class="min-h-screen bg-gray-100 font-poppins py-10 px-6">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
+      <h2 class="text-2xl font-bold text-[#047857] mb-6 flex items-center gap-2">
+        <i class="fa-brands fa-github text-black text-2xl"></i> Editar Repositório GitHub
+      </h2>
+
+      <form method="post" class="space-y-6 formulario-login">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition-all font-semibold">
+          <i class="fa-solid fa-save mr-2"></i>Atualizar
+        </button>
+      </form>
+
+      <div class="mt-6">
+        <a href="{% url 'repositorio_list' %}"
+           class="text-sm text-gray-600 hover:text-[#047857] transition-all flex items-center gap-1">
+          <i class="fa-solid fa-arrow-left"></i> Voltar para a lista de repositórios
+        </a>
+      </div>
+    </div>
+  </section>
 {% endblock %}

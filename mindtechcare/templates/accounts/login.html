@@ -1,37 +1,49 @@
-{% extends "base.html" %} {% block content %}
-<section class="flex min-h-screen items-center justify-center px-4 text-black">
-  <div class="relative flex h-[600px] w-full max-w-6xl overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur-lg">
-    <div class="absolute left-5 top-4">
-      <a href="{% url 'home' %}" class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md transition hover:bg-gray-100">
-        <i class="fa-solid fa-arrow-left text-xl text-[#047857]"></i>
-      </a>
-    </div>
+{% extends "base.html" %}
+{% block content %}
+  <section class="flex min-h-screen items-center justify-center px-4 text-black">
+    <div class="relative flex h-[600px] w-full max-w-6xl overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur-lg">
+      <div class="absolute left-5 top-4">
+        <a href="{% url 'home' %}"
+           class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md transition hover:bg-gray-100">
+          <i class="fa-solid fa-arrow-left text-xl text-[#047857]"></i>
+        </a>
+      </div>
 
-    <!-- Lado esquerdo com imagem -->
-    <div class="flex w-1/2 flex-col items-start gap-6 bg-[url('/static/images/Persona.png')] bg-cover bg-center px-12 pt-20">
-      <h1 class="mx-auto text-5xl font-extrabold leading-tight text-white drop-shadow-md">Welcome, <span class="text-[#a7f3d0]">Minder</span></h1>
-      <p class="text-xl leading-relaxed text-white/90">O cuidado pra quem cuida do código. Sua jornada de bem-estar se inicia aqui.</p>
-    </div>
-
-    <!-- Formulário de login -->
-    <div class="flex w-1/2 flex-col items-center justify-center gap-6 px-10 py-12">
-      <form method="post" class="formulario-login flex w-full max-w-md flex-col gap-4">
-        {% csrf_token %} {{ form.as_p }}
-
-        <button type="submit" class="mt-4 w-full rounded-xl bg-[#047857] py-3 font-bold text-white shadow-lg transition-colors hover:bg-[#ID5632]">Entrar</button>
-      </form>
-
-      <div class="mt-4 flex flex-col gap-2 text-center text-lg text-black/70">
-        <p>
-          Esqueceu a senha?
-          <a href="{% url 'password_reset' %}" class="font-bold text-primary hover:underline">Recuperar senha</a>
-        </p>
-        <p>
-          Não tem uma conta?
-          <a href="{% url 'user_create' %}" class="font-bold text-primary hover:underline">Crie uma conta</a>
+      <!-- Lado esquerdo com imagem -->
+      <div class="flex w-1/2 flex-col items-start gap-6 bg-[url('/static/images/bg.png')] bg-cover bg-center px-12 pt-20">
+        <h1 class="mx-auto text-5xl font-extrabold leading-tight text-white drop-shadow-md">
+          Welcome, <span class="text-[#a7f3d0]">Minder</span>
+        </h1>
+        <p class="text-xl leading-relaxed text-white/90">
+          O cuidado pra quem cuida do código. Sua jornada de bem-estar se inicia aqui.
         </p>
       </div>
+
+      <!-- Formulário de login -->
+      <div class="flex w-1/2 flex-col items-center justify-center gap-6 px-10 py-12">
+        <form method="post"
+              class="formulario-login flex w-full max-w-md flex-col gap-4">
+          {% csrf_token %} {{ form.as_p }}
+
+          <button type="submit"
+                  class="mt-4 w-full rounded-xl bg-[#047857] py-3 font-bold text-white shadow-lg transition-colors hover:bg-[#ID5632]">
+            Entrar
+          </button>
+        </form>
+
+        <div class="mt-4 flex flex-col gap-2 text-center text-lg text-black/70">
+          <p>
+            Esqueceu a senha?
+            <a href="{% url 'password_reset' %}"
+               class="font-bold text-primary hover:underline">Recuperar senha</a>
+          </p>
+          <p>
+            Não tem uma conta?
+            <a href="{% url 'user_create' %}"
+               class="font-bold text-primary hover:underline">Crie uma conta</a>
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endblock content %}

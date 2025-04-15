@@ -1,10 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
 
-<h1>Editar Board</h1>
+{% block content %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Atualizar</button>
-</form>
+    <section class="min-h-screen bg-gray-100 font-poppins py-10 px-6">
+        <div class="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow-md">
+            <!-- Título da página -->
+            <h1 class="text-3xl font-bold text-[#047857] mb-6 flex items-center gap-2">
+                <i class="fa-brands fa-trello text-3xl"></i> Editar Board
+            </h1>
 
-<p><a href="{% url 'board-list' %}">Voltar para a lista</a></p>
+            <!-- Formulário de edição de board -->
+            <form method="post" class="space-y-4 formulario-login">
+                {% csrf_token %}
+                <div class="space-y-2">{{ form.as_p }}</div>
+                <button type="submit"
+                        class="bg-[#047857] text-white px-6 py-3 rounded-lg hover:bg-[#065f46] transition-all font-semibold w-full">
+                    <i class="fa-solid fa-check mr-2"></i>Atualizar
+                </button>
+            </form>
+
+            <!-- Link para voltar à lista -->
+            <div class="mt-10 text-center">
+                <a href="{% url 'board-list' %}"
+                   class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150"><i class="fa-solid fa-arrow-left"></i>Voltar para a lista de boards</a>
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

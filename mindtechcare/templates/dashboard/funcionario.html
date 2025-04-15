@@ -5,8 +5,13 @@
 
             <div class="flex items-center justify-between">
                 <h2 class="text-4xl font-bold text-[#047857]">Dashboard do Funcionário</h2>
-                <a href="{% url 'employee_list' %}"
-                   class="text-sm text-[#047857] hover:underline">← Voltar</a>
+                {% if user.usermodel %}
+                    <a href="{% url 'employee_list' %}"
+                       class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+                {% else %}
+                    <a href="{% url 'employee_profile' %}"
+                       class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+                {% endif %}
             </div>
 
             <!-- Filtros -->

@@ -1,24 +1,59 @@
+{% extends "base.html" %}
 {% load static %}
-<script src="{% static 'js/github.js' %}"></script>
 
 {% block content %}
-    <h2>Lista de Repositórios GitHub</h2>
 
-    <a href="{% url 'repositorio_create' %}">Criar novo repositório</a>
-
-    <button onclick="atualizarTodosCommits()"> Atualizar TODOS os Commits</button>
-
-    <ul>
-        {% for repositorio in repositorios %}
-            <li>
-                <a href="{% url 'repositorio_update' repositorio.id %}">
-                    {{ repositorio.github_username }}/{{ repositorio.nome_repositorio }}
+    <section class="min-h-screen bg-gray-100 font-poppins py-10 px-6">
+        <div class="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow-md">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-[#047857] flex items-center gap-2">
+                    <i class="fa-brands fa-github text-black text-2xl"></i> Lista de Repositórios GitHub
+                </h2>
+                <a href="{% url 'repositorio_create' %}"
+                   class="bg-[#047857] text-white px-4 py-2 rounded-lg hover:bg-[#065f46] transition-all font-semibold">
+                    <i class="fa-solid fa-plus mr-1"></i> Criar Repositório
                 </a>
-                - <a href="{% url 'repositorio_delete' repositorio.id %}">Excluir</a>
-                - <a href="{% url 'repositorio_update' repositorio.id %}">Editar</a>
-            </li>
-        {% empty %}
-            <li>Nenhum repositório encontrado.</li>
-        {% endfor %}
-    </ul>
+            </div>
+
+            <button onclick="atualizarTodosCommits()"
+                    class="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-all font-semibold mb-6">
+                <i class="fa-solid fa-rotate mr-2"></i>Atualizar TODOS os Commits
+            </button>
+
+            {% if repositorios %}
+                <ul class="space-y-4">
+                    {% for repositorio in repositorios %}
+                        <li class="bg-gray-50 p-4 rounded-lg shadow-sm flex justify-between items-center hover:bg-gray-100 transition-all">
+                            <div class="text-gray-800">
+                                <a href="{% url 'repositorio_update' repositorio.id %}"
+                                   class="font-medium hover:underline">
+                                    <i class="fa-brands fa-github mr-1"></i>{{ repositorio.github_username }}/{{ repositorio.nome_repositorio }}
+                                </a>
+                            </div>
+                            <div class="flex gap-4 text-sm">
+                                <a href="{% url 'repositorio_update' repositorio.id %}"
+                                   class="text-blue-600 hover:underline font-semibold">
+                                    <i class="fa-solid fa-pen mr-1"></i>Editar
+                                </a>
+                                <a href="{% url 'repositorio_delete' repositorio.id %}"
+                                   class="text-red-600 hover:underline font-semibold">
+                                    <i class="fa-solid fa-trash mr-1"></i>Excluir
+                                </a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-gray-500 text-sm">Nenhum repositório encontrado.</p>
+            {% endif %}
+
+            <!-- Link de voltar, ajustado para ficar mais visível no final da lista -->
+            <div class="mt-10 text-center">
+                <a href="{% url 'employee_profile' %}"
+                   class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150"><i class="fa-solid fa-arrow-left"></i>Voltar para o Perfil</a>
+            </div>
+        </div>
+
+    </section>
+    <script src="{% static 'js/github.js' %}"></script>
 {% endblock %}
