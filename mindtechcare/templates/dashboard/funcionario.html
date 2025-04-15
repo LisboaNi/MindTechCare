@@ -54,13 +54,17 @@
                     Total de Cards: <span class="font-semibold">{{ employee.total_cards }}</span>
                 </p>
 
-                {% if employee.alertas %}
-                    <div>
-                        <h4 class="text-lg font-semibold text-gray-800 mb-2">Alertas:</h4>
-                        <ul class="list-disc list-inside text-sm text-red-600 space-y-1">
-                            {% for alerta in employee.alertas %}<li>{{ alerta }}</li>{% endfor %}
-                        </ul>
-                    </div>
+                {% if alertas %}
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Alertas:</h4>
+                    <ul class="list-disc list-inside text-sm text-red-600 space-y-1">
+                        {% for alerta in alertas %}
+                            <li>{{ alerta }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% else %}
+                    <p class="text-sm text-gray-500">Nenhum alerta detectado neste período.</p>
                 {% endif %}
             </div>
 
@@ -70,41 +74,135 @@
                 <canvas id="graficoAlertas"></canvas>
             </div>
 
-        </div>
+            <!-- Gráfico de Commits -->
+            <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10 mt-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Commits Realizados</h3>
+                <canvas id="graficoCommits"></canvas>
+            </div>
 
+            <!-- Gráfico de Cards -->
+            <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10 mt-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Cards Criados</h3>
+                <canvas id="graficoCards"></canvas>
+            </div>
+
+        </div>
         <!-- Chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-    const alertCtx = document.getElementById('graficoAlertas').getContext('2d');
-    new Chart(alertCtx, {
-        type: 'bar',
-        data: {
-            labels: {{ grafico_alert_labels|safe }},
-            datasets: [{
-                label: 'Alertas por Tipo',
-                data: {{ grafico_alert_data|safe }},
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true
+            const alertCtx = document.getElementById('graficoAlertas').getContext('2d');
+            const commitsCtx = document.getElementById('graficoCommits').getContext('2d');
+            const cardsCtx = document.getElementById('graficoCards').getContext('2d');
+
+            // Dados para gráficos
+            const diasCommits = {{ dias_commits|safe }};  // Datas dos commits
+            const commitsData = {{ commits_data|safe }};  // Quantidade de commits por dia
+            const diasCards = {{ dias_cards|safe }};  // Datas dos cards
+            const cardsData = {{ cards_data|safe }};  // Quantidade de cards por dia
+            const alertLabels = {{ grafico_alert_labels|safe }};  // Labels de alertas
+            const alertData = {{ grafico_alert_data|safe }};  // Dados de alertas
+
+            // Gráfico de Alertas
+            new Chart(alertCtx, {
+                type: 'bar',
+                data: {
+                    labels: alertLabels,
+                    datasets: [{
+                        label: 'Alertas por Tipo',
+                        data: alertData,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(54, 162, 235, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(54, 162, 235, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
                 },
-                title: {
-                    display: false
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        title: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
                 }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
+            });
+
+            // Gráfico de Commits
+            new Chart(commitsCtx, {
+                type: 'line',
+                data: {
+                    labels: diasCommits,  // Utiliza as datas como labels
+                    datasets: [{
+                        label: 'Commits Realizados',
+                        data: commitsData,  // Utiliza os dados de commits por dia
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        title: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
                 }
-            }
-        }
-    });
+            });
+
+            // Gráfico de Cards
+            new Chart(cardsCtx, {
+                type: 'line',
+                data: {
+                    labels: diasCards,  // Utiliza as datas como labels
+                    datasets: [{
+                        label: 'Cards Criados',
+                        data: cardsData,  // Utiliza os dados de cards por dia
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        title: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         </script>
+
     </section>
 {% endblock content %}
