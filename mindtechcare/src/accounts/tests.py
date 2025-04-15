@@ -2,96 +2,114 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 from .models import UserModel
-from rest_framework.test import APIClient
-from rest_framework import status
 
+class UserModelCRUDTests(TestCase):
 
-class UserModelViewSetTestCase(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpassword")
-        self.client = APIClient()
-        self.client.login(username="testuser", password="testpassword")
-        self.user_model = UserModel.objects.create(user=self.user, name="Test User", cnpj="12345678000195", email="test@example.com", password="testpassword")
-    
-    def test_user_model_viewset_list(self):
-        """Test if the user can view their profile using the API"""
-        response = self.client.get(reverse('usermodel-list'))  # Use the correct name for your viewset URL
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)  # Only one user should exist in the DB
-
-    def test_user_model_viewset_create(self):
-        """Test if the user can create a new profile"""
-        data = {
-            "user": self.user.id,
-            "name": "New User",
-            "cnpj": "12345678000196",
-            "email": "new@example.com",
-            "password": "newpassword"
+        self.user = User.objects.create_user(
+            username='testuser@example.com',
+            email='testuser@example.com',
+            password='testpassword123'
+        )
+        self.user_model = UserModel.objects.create(
+            user=self.user,
+            name='Test User Profile',
+            cnpj='11.222.333/0001-55',
+            email='testuser@example.com'
+        )
+        self.user_model_data = {
+            'name': 'New Test User',
+            'cnpj': '12.345.678/0001-90',
+            'email': 'newtestuser@example.com',
+            'password': 'newpassword456'
         }
-        response = self.client.post(reverse('usermodel-list'), data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_user_model_viewset_update(self):
-        """Test if the user can update their profile"""
-        data = {
-            "name": "Updated User",
-            "cnpj": "12345678000197",
-            "email": "updated@example.com",
-            "password": "updatedpassword"
-        }
-        response = self.client.put(reverse('usermodel-detail', kwargs={'pk': self.user_model.pk}), data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.user_model.refresh_from_db()
-        self.assertEqual(self.user_model.name, "Updated User")
+    def test_create_user(self):
+        """Testa a criação de um novo usuário."""
+        self.assertEqual(UserModel.objects.count(), 1)
+        response = self.client.post(reverse('user_create'), self.user_model_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(UserModel.objects.count(), 2)
+        new_user = UserModel.objects.last()
+        self.assertEqual(new_user.name, 'New Test User')
+        self.assertEqual(new_user.cnpj, '12.345.678/0001-90')
+        self.assertEqual(new_user.email, 'newtestuser@example.com')
+        self.assertNotEqual(new_user.password, 'newpassword456')
 
-    def test_user_model_viewset_delete(self):
-        """Test if the user can delete their profile"""
-        response = self.client.delete(reverse('usermodel-detail', kwargs={'pk': self.user_model.pk}))
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertFalse(UserModel.objects.filter(pk=self.user_model.pk).exists())
+    def test_read_user_profile(self):
+        """Testa a visualização do perfil do usuário."""
+        self.client.login(username='testuser@example.com', password='testpassword123')
+        response = self.client.get(reverse('user_profile'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Test User Profile')
+        self.assertContains(response, '11.222.333/0001-55')
+        self.assertContains(response, 'testuser@example.com')
+        self.client.logout()
 
-
-class UserViewsTestCase(TestCase):
-    def setUp(self):
-        # Criação de um usuário válido para o teste de login
-        self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpassword")
-        self.user_model = UserModel.objects.create(user=self.user, name="Test User", cnpj="12345678000195", email="test@example.com", password="testpassword")
-
-    def test_user_login(self):
-        """Test login functionality"""
-        response = self.client.post(reverse('user_login'), {'email': 'test@example.com', 'password': 'testpassword'})
-        self.assertEqual(response.status_code, 302)  # Espera redirecionamento para user_list após login
-        self.assertRedirects(response, reverse('user_list'))
-
-    def test_user_logout(self):
-        """Test logout functionality"""
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get(reverse('user_logout'))
-        self.assertEqual(response.status_code, 302)  # Espera redirecionamento para login após logout
-        self.assertRedirects(response, reverse('user_login'))
-
-    def test_user_create(self):
-        """Test profile creation functionality"""
-        response = self.client.post(reverse('user_create'), {'name': 'New User', 'cnpj': '12345678000196', 'email': 'new@example.com', 'password': 'newpassword'})
-        self.assertEqual(response.status_code, 302)  # Redirect to user list after creating the profile
-        self.assertRedirects(response, reverse('user_login'))
-
-    def test_user_update(self):
-        """Test if the user can update their profile"""
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.post(reverse('user_update', kwargs={'pk': self.user_model.id}), {
-            'name': 'Updated User',
-            'cnpj': '12345678000197',
+    def test_update_user(self):
+        """Testa a atualização do perfil do usuário."""
+        self.client.login(username='testuser@example.com', password='testpassword123')
+        updated_data = {
+            'name': 'Updated Name',
+            'cnpj': '11.222.333/0001-44',
             'email': 'updated@example.com',
-            'password': 'updatedpassword'
-        })
-        self.assertEqual(response.status_code, 302)  # Espera redirecionamento após atualização
-        self.assertRedirects(response, reverse('user_list'))
+            'password': 'updatedpassword789'
+        }
+        response = self.client.post(reverse('user_update', kwargs={'pk': self.user_model.pk}), updated_data)
+        self.assertEqual(response.status_code, 302)
+        self.user_model.refresh_from_db()
+        self.assertEqual(self.user_model.name, 'Updated Name')
+        self.assertEqual(self.user_model.cnpj, '11.222.333/0001-44')
+        self.assertEqual(self.user_model.email, 'updated@example.com')
+        self.assertNotEqual(self.user_model.password, 'updatedpassword789')
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, 'updated@example.com')
+        self.client.logout()
 
-    def test_user_delete(self):
-        """Test profile deletion functionality"""
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.post(reverse('user_delete', kwargs={'pk': self.user_model.id}))
-        self.assertEqual(response.status_code, 302)  # Espera redirecionamento após exclusão
-        self.assertRedirects(response, reverse('user_login'))  # Espera redirecionamento para user_list
-        self.assertFalse(UserModel.objects.filter(user=self.user).exists())  # Certifica que o perfil foi excluído
+    def test_delete_user(self):
+        """Testa a exclusão do usuário."""
+        self.client.login(username='testuser@example.com', password='testpassword123')
+        user_model_to_delete = UserModel.objects.create(
+            user=User.objects.create_user(
+                username='deleteuser@example.com',
+                email='deleteuser@example.com',
+                password='deletepassword'
+            ),
+            name='To Delete',
+            cnpj='66.777.888/0001-55',
+            email='delete@example.com'
+        )
+        self.assertEqual(UserModel.objects.count(), 2)
+        self.assertEqual(User.objects.count(), 2)
+        response = self.client.post(reverse('user_delete', kwargs={'pk': user_model_to_delete.pk}))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(UserModel.objects.count(), 1)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertNotIn('_auth_user_id', self.client.session)
+
+    def test_login_user(self):
+        """Testa o processo de login do usuário."""
+        response = self.client.post(
+            reverse('login'),
+            {'email': 'testuser@example.com', 'password': 'testpassword123'}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(self.client.session.get('_auth_user_id', False))
+
+    def test_login_invalid_credentials(self):
+        """Testa o login com credenciais inválidas."""
+        response = self.client.post(
+            reverse('login'),
+            {'email': 'testuser@example.com', 'password': 'wrongpassword'}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(response.context['form'], None, 'Email ou senha inválidos.')
+        self.assertFalse(self.client.session.get('_auth_user_id', False))
+    
+    def test_logout_user(self):
+        """Testa o processo de logout do usuário."""
+        self.client.login(username='testuser@example.com', password='testpassword123')
+        self.assertTrue(self.client.session.get('_auth_user_id', False))
+        response = self.client.post(reverse('user_logout'))
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(self.client.session.get('_auth_user_id', False))

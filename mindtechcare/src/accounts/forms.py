@@ -1,29 +1,24 @@
 from django import forms
 from django.contrib.auth import authenticate
 from .models import UserModel
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class UserModelForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput, label='Senha')
+    password = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(attrs={"placeholder": "Digite sua nova senha"}),
+        label="Senha",
+    )
 
     class Meta:
         model = UserModel
-        fields = ['name', 'cnpj', 'email', 'password']
+        fields = ["name", "cnpj", "email", "password"]
 
 
-class UserLoginForm(forms.Form):
-    email = forms.EmailField(label='Email')
-    password = forms.CharField(widget=forms.PasswordInput, label='Senha')
+class UserLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(UserLoginForm, self).__init__(*args, **kwargs)
+        self.fields["username"].label = "Email"
 
-    def clean(self):
-        cleaned_data = super().clean()
-        email = cleaned_data.get('email')
-        password = cleaned_data.get('password')
-
-        if email and password:
-            user = authenticate(username=email, password=password)
-            if user is None:
-                raise forms.ValidationError("Email ou senha inválidos.")
-            if not user.is_active:
-                raise forms.ValidationError("Este usuário está desativado.")
-        return cleaned_data
+    pass

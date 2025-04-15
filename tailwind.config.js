@@ -1,10 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./mindtechcare/templates/**/*.html", "./mindtechcare/static/**/*.js"],
+  content: ["**/templates/**/*.html", "**/static/**/*.js"],
   theme: {
     extend: {
       backgroundImage: {
-        "bg-login": "url('/mindtechcare/static/images/bg.png')",
+        "bg-login": "url('/mindtechcare/static/images/Persona.png')",
       },
       colors: {
         primary: "#10b981",

@@ -1,66 +1,105 @@
+{% extends "base.html" %}
 {% block content %}
-<h2>Dashboard do Funcionário</h2>
+    <section class="min-h-screen bg-white text-black px-6 py-10">
+        <div class="max-w-7xl mx-auto space-y-10">
 
-<form method="get">
-    <label>Filtrar por data:</label>
-    <select name="data">
-        <option value="7">Últimos 7 dias</option>
-        <option value="30">Últimos 30 dias</option>
-    </select>
-    <label>Tipo:</label>
-    <select name="tipo">
-        <option value="todos">Todos</option>
-        <option value="github">GitHub</option>
-        <option value="trello">Trello</option>
-    </select>
-    <button type="submit">Filtrar</button>
-</form>
+            <div class="flex items-center justify-between">
+                <h2 class="text-4xl font-bold text-[#047857]">Dashboard do Funcionário</h2>
+                <a href="{% url 'employee_list' %}"
+                   class="text-sm text-[#047857] hover:underline">← Voltar</a>
+            </div>
 
-<h3>{{ employee.name }}</h3>
-<p>Total de Commits: {{ employee.total_commits }}</p>
-<p>Total de Cards: {{ employee.total_cards }}</p>
-<ul>
-    {% for alerta in employee.alertas %}
-        <li>{{ alerta }}</li>
-    {% endfor %}
-</ul>
+            <!-- Filtros -->
+            <form method="get"
+                  class="bg-white/60 p-6 rounded-xl shadow-lg flex flex-wrap gap-6 items-end border border-white/20 backdrop-blur-md">
+                <div class="flex flex-col">
+                    <label for="data" class="text-sm font-semibold text-gray-700">Filtrar por data</label>
+                    <select name="data"
+                            id="data"
+                            class="px-4 py-2 rounded-lg border-gray-300 focus:ring-[#047857] focus:border-[#047857]">
+                        <option value="7">Últimos 7 dias</option>
+                        <option value="30">Últimos 30 dias</option>
+                    </select>
+                </div>
 
-<canvas id="graficoAlertas"></canvas>
+                <div class="flex flex-col">
+                    <label for="tipo" class="text-sm font-semibold text-gray-700">Tipo</label>
+                    <select name="tipo"
+                            id="tipo"
+                            class="px-4 py-2 rounded-lg border-gray-300 focus:ring-[#047857] focus:border-[#047857]">
+                        <option value="todos">Todos</option>
+                        <option value="github">GitHub</option>
+                        <option value="trello">Trello</option>
+                    </select>
+                </div>
 
-<!-- Adiciona o Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <button type="submit"
+                        class="bg-[#047857] hover:bg-[#064e3b] text-white font-semibold px-6 py-2 rounded-xl transition-all">
+                    Filtrar
+                </button>
+            </form>
 
-<script>
-const alertCtx = document.getElementById('graficoAlertas').getContext('2d');
-new Chart(alertCtx, {
-    type: 'bar',
-    data: {
-        labels: {{ grafico_alert_labels|safe }},
-        datasets: [{
-            label: 'Alertas por Tipo',
-            data: {{ grafico_alert_data|safe }},
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true
-            },
-            title: {
-                display: true,
-                text: 'Alertas de Sobrecarga e Burnout'
-            }
+            <!-- Dados do Funcionário -->
+            <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10 space-y-4">
+                <h3 class="text-2xl font-bold text-gray-800">{{ employee.name }}</h3>
+                <p class="text-gray-700">
+                    Total de Commits: <span class="font-semibold">{{ employee.total_commits }}</span>
+                </p>
+                <p class="text-gray-700">
+                    Total de Cards: <span class="font-semibold">{{ employee.total_cards }}</span>
+                </p>
+
+                {% if employee.alertas %}
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-800 mb-2">Alertas:</h4>
+                        <ul class="list-disc list-inside text-sm text-red-600 space-y-1">
+                            {% for alerta in employee.alertas %}<li>{{ alerta }}</li>{% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Gráfico de Alertas -->
+            <div class="bg-white/70 p-6 rounded-xl shadow-lg border border-white/10">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Alertas de Sobrecarga e Burnout</h3>
+                <canvas id="graficoAlertas"></canvas>
+            </div>
+
+        </div>
+
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+    const alertCtx = document.getElementById('graficoAlertas').getContext('2d');
+    new Chart(alertCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ grafico_alert_labels|safe }},
+            datasets: [{
+                label: 'Alertas por Tipo',
+                data: {{ grafico_alert_data|safe }},
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
         },
-        scales: {
-            y: {
-                beginAtZero: true
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true
+                },
+                title: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
             }
         }
-    }
-});
-</script>
-{% endblock %}
+    });
+        </script>
+    </section>
+{% endblock content %}
