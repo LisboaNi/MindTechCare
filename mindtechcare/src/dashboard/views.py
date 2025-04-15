@@ -6,6 +6,7 @@ from github.models import AtividadeGitHub
 from trello.models import CardTrello
 import json
 
+
 class DashboardGeralView(View):
     def get(self, request):
         filtro_dias = int(request.GET.get("data", 7))
@@ -21,8 +22,12 @@ class DashboardGeralView(View):
         alert_data = []
 
         for employee in employees:
-            commits = AtividadeGitHub.objects.filter(employee=employee, data_commit__gte=data_limite)
-            cards = CardTrello.objects.filter(employee=employee, data_criacao__gte=data_limite)
+            commits = AtividadeGitHub.objects.filter(
+                employee=employee, data_commit__gte=data_limite
+            )
+            cards = CardTrello.objects.filter(
+                employee=employee, data_criacao__gte=data_limite
+            )
 
             # Filtro por tipo
             if tipo_atividade == "github":
@@ -37,19 +42,21 @@ class DashboardGeralView(View):
             alertas = []
             dias_ativos = commits.dates("data_commit", "day").distinct().count()
 
-            if total_commits > 10 and total_cards > 5:
+            if total_commits > 5 and total_cards > 3:
                 alertas.append("🚨 Alta atividade detectada — risco de sobrecarga.")
             if dias_ativos > 6 and (total_commits / filtro_dias) > 8:
                 alertas.append("⚠️ Risco de exaustão — considere uma pausa.")
             if (total_commits < (filtro_dias * 2)) and total_cards > 5:
-                alertas.append("🧠 Mudança repentina de padrão — possível sinal de burnout.")
+                alertas.append(
+                    "🧠 Mudança repentina de padrão — possível sinal de burnout."
+                )
 
             # Dados para os gráficos
             grafico_labels.append(employee.name)
             data_commits.append(total_commits)
             data_cards.append(total_cards)
             alert_labels.append(employee.name)
-            alert_data.append(len(alertas)) # total de alertas
+            alert_data.append(len(alertas))  # total de alertas
 
             # Atributos extras pro template
             employee.total_commits = total_commits
@@ -66,7 +73,8 @@ class DashboardGeralView(View):
         }
 
         return render(request, "dashboard/geral.html", context)
-    
+
+
 class DashboardFuncionarioView(View):
     def get(self, request, pk):
         filtro_dias = int(request.GET.get("data", 7))
@@ -74,8 +82,12 @@ class DashboardFuncionarioView(View):
         data_limite = now() - timedelta(days=filtro_dias)
 
         employee = get_object_or_404(Employee, pk=pk)
-        commits = AtividadeGitHub.objects.filter(employee=employee, data_commit__gte=data_limite)
-        cards = CardTrello.objects.filter(employee=employee, data_criacao__gte=data_limite)
+        commits = AtividadeGitHub.objects.filter(
+            employee=employee, data_commit__gte=data_limite
+        )
+        cards = CardTrello.objects.filter(
+            employee=employee, data_criacao__gte=data_limite
+        )
 
         if tipo_atividade == "github":
             cards = CardTrello.objects.none()
@@ -87,11 +99,7 @@ class DashboardFuncionarioView(View):
         dias_ativos = commits.dates("data_commit", "day").distinct().count()
 
         alertas = []
-        cont_alertas = {
-            "Sobrecarga": 0,
-            "Exaustão": 0,
-            "Burnout": 0
-        }
+        cont_alertas = {"Sobrecarga": 0, "Exaustão": 0, "Burnout": 0}
 
         if total_commits > 10 and total_cards > 5:
             alertas.append("🚨 Alta atividade detectada — risco de sobrecarga.")
@@ -100,7 +108,9 @@ class DashboardFuncionarioView(View):
             alertas.append("⚠️ Risco de exaustão — considere uma pausa.")
             cont_alertas["Exaustão"] += 1
         if (total_commits < (filtro_dias * 2)) and total_cards > 5:
-            alertas.append("🧠 Mudança repentina de padrão — possível sinal de burnout.")
+            alertas.append(
+                "🧠 Mudança repentina de padrão — possível sinal de burnout."
+            )
             cont_alertas["Burnout"] += 1
 
         # Dados para o gráfico de alertas
