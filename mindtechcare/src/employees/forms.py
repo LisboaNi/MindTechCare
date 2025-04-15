@@ -6,31 +6,40 @@ from django.contrib.auth.forms import AuthenticationForm
 
 class EmployeeForm(forms.ModelForm):
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Digite sua nova senha'}),
-        label="Senha"
+        required=False,
+        widget=forms.PasswordInput(attrs={"placeholder": "Digite sua nova senha"}),
+        label="Senha",
     )
 
     class Meta:
         model = Employee
-        fields = ['name', 'email', 'password', 'function']
+        fields = ["name", "email", "password", "function"]
 
 
 class EmployeeLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(EmployeeLoginForm, self).__init__(*args, **kwargs)
+        self.fields["username"].label = "Email"
+
     pass
 
 
 class TokenForm(forms.ModelForm):
     trello_token = forms.CharField(
         required=False,
-        widget=forms.PasswordInput(attrs={'placeholder': 'Cole aqui seu  novo token do Trello'}),
-        label="Token Trello"
+        widget=forms.PasswordInput(
+            attrs={"placeholder": "Cole aqui seu  novo token do Trello"}
+        ),
+        label="Token Trello",
     )
     github_token = forms.CharField(
         required=False,
-        widget=forms.PasswordInput(attrs={'placeholder': 'Cole aqui seu novo token do GitHub'}),
-        label="Token GitHub"
+        widget=forms.PasswordInput(
+            attrs={"placeholder": "Cole aqui seu novo token do GitHub"}
+        ),
+        label="Token GitHub",
     )
 
     class Meta:
         model = Employee
-        fields = ['trello_username', 'trello_token', 'github_username', 'github_token']
+        fields = ["trello_username", "trello_token", "github_username", "github_token"]

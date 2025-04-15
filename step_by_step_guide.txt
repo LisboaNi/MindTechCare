@@ -22,6 +22,7 @@
 
    pip install -r requirements.txt
    python.exe -m pip install --upgrade pip
+   python -m pip install Pillow
 
 4. Entrar na pasta do projeto:
    Navegue até a pasta do projeto usando o comando:
