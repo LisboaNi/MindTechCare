@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        "bg-login": "url('/mindtechcare/static/images/bg.png')",
+        "bg-login": "url('/mindtechcare/static/images/Persona.png')",
       },
       colors: {
         primary: "#10b981",
