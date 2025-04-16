@@ -5,10 +5,27 @@ from django.contrib.auth.forms import AuthenticationForm
 
 
 class EmployeeForm(forms.ModelForm):
+
+    name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Digite o nome"}),
+        label="Nome",
+    )
+
+    email = forms.CharField(
+        required=False, widget=forms.TextInput(attrs={"placeholder": "Digite o email"})
+    )
+
     password = forms.CharField(
         required=False,
-        widget=forms.PasswordInput(attrs={"placeholder": "Digite sua nova senha"}),
+        widget=forms.PasswordInput(attrs={"placeholder": "Digite a senha"}),
         label="Senha",
+    )
+
+    function = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Digite a função"}),
+        label="Função",
     )
 
     class Meta:

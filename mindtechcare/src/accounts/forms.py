@@ -5,9 +5,28 @@ from django.contrib.auth.forms import AuthenticationForm
 
 
 class UserModelForm(forms.ModelForm):
+
+    name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Digite o nome da Empresa"}),
+        label="Nome",
+    )
+
+    cnpj = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Digite o CNPJ da empresa"}),
+        label="CNPJ",
+    )
+
+    email = forms.CharField(
+        required=False,
+        widget=forms.EmailInput(attrs={"placeholder": "Digite o email"}),
+        label="Email",
+    )
+
     password = forms.CharField(
         required=False,
-        widget=forms.PasswordInput(attrs={"placeholder": "Digite sua nova senha"}),
+        widget=forms.PasswordInput(attrs={"placeholder": "Digite sua senha"}),
         label="Senha",
     )
 

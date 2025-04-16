@@ -8,20 +8,36 @@
     <section class="min-h-screen flex items-center justify-center text-black px-4">
         <div class="flex w-full max-w-6xl h-[600px] shadow-2xl rounded-2xl relative overflow-hidden bg-white/5 backdrop-blur-lg border border-white/10">
             <!-- Botão de voltar -->
-            <div class="absolute top-4 left-5">
+            <div class="absolute top-4 left-5 z-20">
                 <a href="{% url 'home' %}"
                    class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition">
                     <i class="fa-solid fa-arrow-left text-[#047857] text-xl"></i>
                 </a>
             </div>
 
-            <!-- Lado esquerdo com imagem e texto -->
-            <div class="w-1/2 bg-[url('/static/images/bg.png')] bg-cover bg-center flex flex-col items-start px-12 gap-6 pt-20">
-                <h1 class="text-5xl font-extrabold leading-tight drop-shadow-md text-white mx-auto">
-                    Se torne um <span class="text-[#a7f3d0]">Minder</span>
-                </h1>
-                <p class="text-xl leading-relaxed text-white/90">Crie sua conta e comece sua jornada de bem-estar no mundo dev.</p>
+            <!-- Seção da esquerda com imagem e texto -->
+            <div class="relative w-1/2 bg-[url('/static/images/bg.png')] bg-cover bg-center flex flex-col items-start px-12 gap-6 pt-20 text-white h-full">
+                <!-- Overlay escuro -->
+                <div class="absolute inset-0 bg-black/15 z-0"></div>
+
+                <!-- Conteúdo -->
+                <div class="relative z-10 space-y-4 text-justify">
+                    <h1 class="text-5xl font-extrabold leading-tight drop-shadow-md mx-auto">
+                        Se torne um <span class="text-[#a7f3d0]">Minder</span>
+                    </h1>
+
+                    <p class="text-xl leading-relaxed text-white/90 font-semibold">
+                        Crie sua conta e comece sua jornada de bem-estar no mundo dev.
+                    </p>
+                </div>
+
+                <!-- Espaço que empurra o copyright pro final -->
+                <div class="flex-grow"></div>
+
+                <!-- Copyright -->
+                <p class="w-full text-xl text-center z-20 py-4">© 2025 MindTechCare.</p>
             </div>
+
 
             <!-- Formulário de cadastro -->
             <div class="w-1/2 flex flex-col items-center justify-center px-10 py-12 gap-6">
