@@ -4,12 +4,14 @@ function atualizarCards(employeeId) {
   const progressBar = document.getElementById("progressBar");
   const progressContainer = document.getElementById("progressContainer");
   const mensagemFinal = document.getElementById("mensagemFinal");
+  const mascote = document.getElementById("mascote");
 
   // Reset inicial
   progressBar.style.width = "0%";
   progressBar.textContent = "0%";
   progressContainer.classList.remove("hidden");
   mensagemFinal.classList.add("hidden");
+  mascote.classList.add("hidden");
 
   // Mostrar a barra
   progressContainer.classList.add("block");
@@ -37,6 +39,7 @@ function atualizarCards(employeeId) {
       progressBar.textContent = "100%";
 
       mensagemFinal.classList.remove("hidden");
+      mascote.classList.remove("hidden");
 
       // Mostra a mensagem final
     })
@@ -61,6 +64,7 @@ function atualizarCards(employeeId) {
 
       setTimeout(() => {
         mensagemFinal.classList.add("hidden");
+        mascote.classList.add("hidden");
       }, 2000);
     });
 }

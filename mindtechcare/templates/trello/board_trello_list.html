@@ -34,9 +34,15 @@
                 </div>
 
                 <!-- Mensagem final -->
-                <div class="mt-2 text-center">
-                    <span id="mensagemFinal" class="text-green-600 font-medium hidden">Cards atualizados com sucesso!</span>
+                <div class="mt-2 text-center flex items-center justify-center">
+                    <img src="{% static "images/mascote-ok.png" %}"
+                         alt="Mascote da MindTechCare"
+                         id="mascote"
+                         class=" w-24 h-24 hidden">
+                    <span id="mensagemFinal"
+                          class="bg-[#047857] text-white font-medium py-2 px-4 rounded-lg hidden">Cards atualizados com sucesso!</span>
                 </div>
+
             </div>
 
             <!-- Lista de boards -->

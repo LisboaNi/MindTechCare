@@ -4,12 +4,14 @@ function atualizarTodosCommits() {
   const progressBar = document.getElementById("progressBarGithub");
   const progressContainer = document.getElementById("progressContainerGithub");
   const mensagemFinal = document.getElementById("mensagemFinalGithub");
+  const mascote = document.getElementById("mascote");
 
   // Reset inicial
   progressBar.style.width = "0%";
   progressBar.textContent = "0%";
   progressContainer.classList.remove("hidden");
   mensagemFinal.classList.add("hidden");
+  mascote.classList.add("hidden");
 
   progressContainer.classList.add("block");
 
@@ -41,6 +43,7 @@ function atualizarTodosCommits() {
       progressBar.textContent = "100%";
 
       mensagemFinal.classList.remove("hidden");
+      mascote.classList.remove("hidden");
 
       if (data.success) console.log(data.success);
       if (data.errors && data.errors.length > 0) console.warn("Erros:", data.errors);
@@ -60,10 +63,11 @@ function atualizarTodosCommits() {
         progressContainer.classList.remove("block");
         progressBar.style.width = "0%";
         progressBar.textContent = "0%";
-      }, 1000);
+      }, 2);
 
       setTimeout(() => {
         mensagemFinal.classList.add("hidden");
+        mascote.classList.add("hidden");
       }, 2000);
     });
 }
