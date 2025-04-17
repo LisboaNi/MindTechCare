@@ -179,9 +179,10 @@ REST_FRAMEWORK = {
 }
 
 JAZZMIN_UI_TWEAKS = {
-    "theme": "lux",
-    # "dark_mode_theme": "solar ",
+    "theme": "lumen",
+    "dark_mode_theme": None,
 }
+
 
 JAZZMIN_SETTINGS = {
     # Título da janela (será o padrão de current_admin_site.site_title se estiver ausente ou None)
@@ -290,7 +291,7 @@ JAZZMIN_SETTINGS = {
     # Usar fontes do Google Fonts CDN (ou use custom_css para fornecer sua fonte)
     "use_google_fonts_cdn": True,
     # Mostrar o personalizador de UI na barra lateral
-    "show_ui_builder": False,
+    "show_ui_builder": True,
     ###############
     # Tela de Edição #
     ###############
