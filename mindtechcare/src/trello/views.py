@@ -7,6 +7,7 @@ from .models import BoardTrello, CardTrello
 from .forms import BoardTrelloForm, CardTrelloForm
 from employees.models import Employee
 
+
 # CRUD para BoardTrello
 class BoardTrelloCreateView(CreateView):
     model = BoardTrello
@@ -15,11 +16,12 @@ class BoardTrelloCreateView(CreateView):
     success_url = reverse_lazy('board-list')
 
     def form_valid(self, form):
-        repo = form.save(commit=False) 
+        repo = form.save(commit=False)
         employee_instance = Employee.objects.get(user=self.request.user)
         repo.employee = employee_instance
         repo.save()
         return super().form_valid(form)
+
 
 class BoardTrelloListView(ListView):
     model = BoardTrello
@@ -35,17 +37,20 @@ class BoardTrelloListView(ListView):
         # Busca o employee logado para passar ao template
         context['employee'] = Employee.objects.get(user=self.request.user)
         return context
-    
+
+
 class BoardTrelloUpdateView(UpdateView):
     model = BoardTrello
     form_class = BoardTrelloForm
     template_name = 'trello/board_trello_update.html'
     success_url = reverse_lazy('board-list')
 
+
 class BoardTrelloDeleteView(DeleteView):
     model = BoardTrello
     template_name = 'trello/board_trello_confirm_delete.html'
     success_url = reverse_lazy('board-list')
+
 
 # CRUD para CardTrello
 class CardTrelloCreateView(CreateView):
@@ -55,11 +60,12 @@ class CardTrelloCreateView(CreateView):
     success_url = reverse_lazy('card-list')
 
     def form_valid(self, form):
-        repo = form.save(commit=False) 
+        repo = form.save(commit=False)
         employee_instance = Employee.objects.get(user=self.request.user)
         repo.employee = employee_instance
         repo.save()
         return super().form_valid(form)
+
 
 class CardTrelloListView(ListView):
     model = CardTrello
@@ -69,16 +75,19 @@ class CardTrelloListView(ListView):
     def get_queryset(self):
         return CardTrello.objects.filter(board__employee=self.request.user.employee)
 
+
 class CardTrelloUpdateView(UpdateView):
     model = CardTrello
     form_class = CardTrelloForm
     template_name = 'card_trello_update.html'
     success_url = reverse_lazy('card-list')
 
+
 class CardTrelloDeleteView(DeleteView):
     model = CardTrello
     template_name = 'card_trello_confirm_delete.html'
     success_url = reverse_lazy('card-list')
+
 
 # Atualizar Cards do Trello
 def atualizar_cards(request, employee_id):

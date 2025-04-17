@@ -5,20 +5,39 @@
 
     <section class="min-h-screen bg-gray-100 font-poppins py-10 px-6">
         <div class="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow-md">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-[#047857] flex items-center gap-2">
-                    <i class="fa-brands fa-github text-black text-2xl"></i> Lista de Repositórios GitHub
-                </h2>
+
+            <h2 class="text-2xl font-bold text-[#047857] flex items-center gap-2 mb-6">
+                <i class="fa-brands fa-github text-black text-2xl"></i> Lista de Repositórios GitHub
+            </h2>
+
+
+            <div class="flex items-center gap-4 mb-6">
                 <a href="{% url 'repositorio_create' %}"
                    class="bg-[#047857] text-white px-4 py-2 rounded-lg hover:bg-[#065f46] transition-all font-semibold">
                     <i class="fa-solid fa-plus mr-1"></i> Criar Repositório
                 </a>
+                <a href="#"
+                   id="btnAtualizar"
+                   onclick="atualizarTodosCommits()"
+                   class="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-all font-semibold inline-flex items-center">
+                    <i id="btnIcon" class="fa-brands fa-github mr-2"></i> <span>Atualizar Commits do GitHub</span>
+                </a>
             </div>
 
-            <button onclick="atualizarTodosCommits()"
-                    class="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-all font-semibold mb-6">
-                <i class="fa-solid fa-rotate mr-2"></i>Atualizar TODOS os Commits
-            </button>
+
+            <div class="mb-6">
+                <div id="progressContainerGithub"
+                     class="w-full h-6 bg-gray-200 rounded overflow-hidden hidden">
+                    <div id="progressBarGithub"
+                         class="h-full bg-emerald-500 text-white text-xs font-semibold flex items-center justify-center transition-all duration-200"
+                         style="width: 0%">0%</div>
+                </div>
+
+                <div class="mt-2 text-center">
+                    <span id="mensagemFinalGithub" class="text-green-600 font-medium hidden">Commits atualizados com sucesso!</span>
+                </div>
+            </div>
+
 
             {% if repositorios %}
                 <ul class="space-y-4">
