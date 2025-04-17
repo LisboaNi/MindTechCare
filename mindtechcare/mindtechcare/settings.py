@@ -184,53 +184,49 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 JAZZMIN_SETTINGS = {
-    # title of the window (Will default to current_admin_site.site_title if absent or None)
+    # Título da janela (será o padrão de current_admin_site.site_title se estiver ausente ou None)
     "site_title": "Library Admin",
-    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    # Título na tela de login (máximo 19 caracteres) (padrão: current_admin_site.site_header)
     "site_header": "Library",
-    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    # Título da marca no canto superior esquerdo (máximo 19 caracteres) (padrão: current_admin_site.site_header)
     "site_brand": "MindTechCare",
-    # Logo to use for your site, must be present in static files, used for brand on top left
+    # Logo do site (deve estar nos arquivos estáticos), usado na marca no canto superior esquerdo
     "site_logo": "../static/images/favicon/logowhite.png",
-    # Logo to use for your site, must be present in static files, used for login form logo (defaults to site_logo)
+    # Logo usada no formulário de login (padrão: site_logo)
     "login_logo": "../static/images/logo_mindtechcare.png",
-    # Logo to use for login form in dark themes (defaults to login_logo)
+    # Logo para formulário de login no tema escuro (padrão: login_logo)
     "login_logo_dark": None,
-    # CSS classes that are applied to the logo above
+    # Classes CSS aplicadas à logo acima
     "site_logo_classes": "img-circle",
-    # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
+    # Caminho relativo para o favicon do site (padrão: site_logo) (idealmente 32x32 px)
     "site_icon": None,
-    # Welcome text on the login screen
+    # Texto de boas-vindas na tela de login
     "welcome_sign": "Welcome to the library",
-    # Copyright on the footer
+    # Texto de direitos autorais no rodapé
     "copyright": "Acme Library Ltd",
-    # List of model admins to search from the search bar, search bar omitted if excluded
-    # If you want to use a single search field you dont need to use a list, you can use a simple string
+    # Lista de modelos para buscar na barra de pesquisa. Se omitido, a barra de busca é escondida.
+    # Pode ser uma lista ou uma string simples (campo de pesquisa único)
     "search_model": ["auth.User", "auth.Group"],
-    # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user
+    # Campo do modelo User que contém a imagem/avatar (ImageField/URLField/CharField ou função)
     "user_avatar": None,
     ############
-    # Top Menu #
+    # Menu Topo #
     ############
-    # Links to put along the top menu
+    # Links colocados no menu superior
     "topmenu_links": [
-        # Url that gets reversed (Permissions can be added)
         {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
-        # external url that opens in a new window (Permissions can be added)
         {
             "name": "Support",
             "url": "https://github.com/farridav/django-jazzmin/issues",
             "new_window": True,
         },
-        # model admin to link to (Permissions checked against model)
         {"model": "auth.User"},
-        # App with dropdown menu to all its models pages (Permissions checked against models)
         {"app": "books"},
     ],
     #############
-    # User Menu #
+    # Menu Usuário #
     #############
-    # Additional links to include in the user menu on the top right ("app" url type is not allowed)
+    # Links adicionais no menu do usuário no canto superior direito (não permite tipo "app" na URL)
     "usermenu_links": [
         {
             "name": "Support",
@@ -240,19 +236,19 @@ JAZZMIN_SETTINGS = {
         {"model": "auth.user"},
     ],
     #############
-    # Side Menu #
+    # Menu Lateral #
     #############
-    # Whether to display the side menu
+    # Exibir ou não o menu lateral
     "show_sidebar": True,
-    # Whether to aut expand the menu
+    # Expande o menu automaticamente
     "navigation_expanded": True,
-    # Hide these apps when generating side menu e.g (auth)
+    # Ocultar estes apps no menu lateral (ex: "auth")
     "hide_apps": [],
-    # Hide these models when generating side menu (e.g auth.user)
+    # Ocultar estes modelos no menu lateral (ex: "auth.user")
     "hide_models": [],
-    # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
+    # Ordenar o menu lateral com base nessa lista (não precisa conter todos os apps/modelos)
     "order_with_respect_to": ["auth", "books", "books.author", "books.book"],
-    # Custom links to append to app groups, keyed on app name
+    # Links personalizados agrupados por app
     "custom_links": {
         "books": [
             {
@@ -263,46 +259,53 @@ JAZZMIN_SETTINGS = {
             }
         ]
     },
-    # Custom icons for side menu apps/models See https://fontawesome.com/icons?d=gallery&m=free&v=5.0.0,5.0.1,5.0.10,5.0.11,5.0.12,5.0.13,5.0.2,5.0.3,5.0.4,5.0.5,5.0.6,5.0.7,5.0.8,5.0.9,5.1.0,5.1.1,5.2.0,5.3.0,5.3.1,5.4.0,5.4.1,5.4.2,5.13.0,5.12.0,5.11.2,5.11.1,5.10.0,5.9.0,5.8.2,5.8.1,5.7.2,5.7.1,5.7.0,5.6.3,5.5.0,5.4.2
-    # for the full list of 5.13.0 free icon classes
+    # Ícones personalizados para apps/modelos no menu lateral (ver link com lista de ícones FontAwesome)
     "icons": {
         "auth": "fas fa-users-cog",
         "auth.user": "fas fa-user",
         "auth.Group": "fas fa-users",
+        "authtoken.TokenProxy": "fa-solid fa-key",
+        "github.AtividadeGitHub": "fa-brands fa-github",
+        "github.RepositorioGitHub": "fa-brands fa-github",
+        "trello.BoardTrello": "fa-brands fa-trello",
+        "trello.CardTrello": "fa-brands fa-trello",
+        "employees.Employee": "fas fa-users",
+        "accounts.UserModel": "fas fa-user",
     },
-    # Icons that are used when one is not manually specified
+    # Ícone padrão para apps (quando não especificado)
     "default_icon_parents": "fas fa-chevron-circle-right",
+    # Ícone padrão para modelos (quando não especificado)
     "default_icon_children": "fas fa-circle",
     #################
-    # Related Modal #
+    # Modal de Relacionamento #
     #################
-    # Use modals instead of popups
+    # Usar modais em vez de pop-ups
     "related_modal_active": False,
     #############
-    # UI Tweaks #
+    # Ajustes de Interface #
     #############
-    # Relative paths to custom CSS/JS scripts (must be present in static files)
-    "custom_css": None,
+    # Caminhos relativos para seus CSS/JS customizados (devem estar nos arquivos estáticos)
+    "custom_css": "../static/css/custom_admin.css",
     "custom_js": None,
-    # Whether to link font from fonts.googleapis.com (use custom_css to supply font otherwise)
+    # Usar fontes do Google Fonts CDN (ou use custom_css para fornecer sua fonte)
     "use_google_fonts_cdn": True,
-    # Whether to show the UI customizer on the sidebar
+    # Mostrar o personalizador de UI na barra lateral
     "show_ui_builder": False,
     ###############
-    # Change view #
+    # Tela de Edição #
     ###############
-    # Render out the change view as a single form, or in tabs, current options are
-    # - single
-    # - horizontal_tabs (default)
+    # Formato da tela de edição: opções possíveis:
+    # - single (tudo em um formulário só)
+    # - horizontal_tabs (padrão)
     # - vertical_tabs
     # - collapsible
     # - carousel
     "changeform_format": "horizontal_tabs",
-    # override change forms on a per modeladmin basis
+    # Substituir formato da tela de edição por modelo específico
     "changeform_format_overrides": {
         "auth.user": "collapsible",
         "auth.group": "vertical_tabs",
     },
-    # Add a language dropdown into the admin
+    # Adicionar seletor de idioma no admin
     # "language_chooser": True,
 }
