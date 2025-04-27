@@ -157,32 +157,37 @@ class AtualizarCommitsViewTests(TestCase):
         request.user = self.test_user
         return request
 
-    @mock.patch('github.views.get_github_commits') # Substitua 'github.views' pelo caminho correto da sua função
+    @mock.patch('github.views.get_github_commits')
     def test_atualizar_commits_view(self, mock_get_commits):
-        # Configurar o comportamento mockado da get_github_commits
+        # Configurar o comportamento mockado
         mock_get_commits.side_effect = [
-            [
+            [  # Para o repo1
                 {"message": "Commit 1 from repo1", "date": "2025-04-09T10:00:00Z"},
                 {"message": "Commit 2 from repo1", "date": "2025-04-09T11:00:00Z"},
             ],
-            [
+            [  # Para o repo2
                 {"message": "Commit 1 from repo2", "date": "2025-04-09T12:00:00Z"},
             ],
         ]
 
-        request = self._authenticate_user()
-        self.client.force_login(self.test_user) # Manter por segurança
-        response = self.client.post(reverse('atualizar_todos_commits'), request=request) # Passando a requisição autenticada
+        # Verifique se o mock é chamado
+        print(mock_get_commits.call_count)  # Quantas vezes o mock é chamado
+
+        self.client.force_login(self.test_user)
+        response = self.client.post(reverse('atualizar_todos_commits'))
+
+        # Verifique a resposta
+        print(response.json())  # Verifique a resposta completa
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"success": "3 commits atualizados."})
         self.assertEqual(AtividadeGitHub.objects.count(), 3)
 
-        # Verificar se as atividades foram criadas corretamente para o employee
+        # Verifique os commits
         atividade1 = AtividadeGitHub.objects.get(employee=self.employee, commit_mensagem="Commit 1 from repo1")
         atividade2 = AtividadeGitHub.objects.get(employee=self.employee, commit_mensagem="Commit 2 from repo1")
         atividade3 = AtividadeGitHub.objects.get(employee=self.employee, commit_mensagem="Commit 1 from repo2")
 
-        self.assertEqual(atividade1.data_commit.isoformat()[:-6] + 'Z', "2025-04-09T10:00:00Z") # Ajustar formato de data para comparação
+        self.assertEqual(atividade1.data_commit.isoformat()[:-6] + 'Z', "2025-04-09T10:00:00Z")
         self.assertEqual(atividade2.data_commit.isoformat()[:-6] + 'Z', "2025-04-09T11:00:00Z")
         self.assertEqual(atividade3.data_commit.isoformat()[:-6] + 'Z', "2025-04-09T12:00:00Z")

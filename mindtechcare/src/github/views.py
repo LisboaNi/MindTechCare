@@ -125,8 +125,9 @@ class AtualizarCommitsView(View):
                 author = commit.get("author")
                 committer = commit.get("committer")
 
-                if (author and author.get("login") == employee.github_username) or \
-                (committer and committer.get("login") == employee.github_username):
+                # Adicionando verificações para o author e committer
+                if (author and author.get("login") == github_username) or \
+                   (committer and committer.get("login") == github_username):
 
                     criado, _ = AtividadeGitHub.objects.get_or_create(
                         employee=employee,
@@ -135,6 +136,7 @@ class AtualizarCommitsView(View):
                     )
                     if criado:
                         total_commits += 1
-
+            
+        print(f"Total de commits atualizados: {total_commits}")  # Debug
 
         return JsonResponse({"success": f"{total_commits} commits atualizados."})
