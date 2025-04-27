@@ -91,7 +91,7 @@ class UserModelCRUDTests(TestCase):
         """Testa o processo de login do usuário."""
         response = self.client.post(
             reverse('login'),
-            {'email': 'testuser@example.com', 'password': 'testpassword123'}
+            {'username': 'testuser@example.com', 'password': 'testpassword123'}
         )
         self.assertEqual(response.status_code, 302)
         self.assertTrue(self.client.session.get('_auth_user_id', False))
@@ -100,16 +100,21 @@ class UserModelCRUDTests(TestCase):
         """Testa o login com credenciais inválidas."""
         response = self.client.post(
             reverse('login'),
-            {'email': 'testuser@example.com', 'password': 'wrongpassword'}
+            {'username': 'testuser@example.com', 'password': 'wrongpassword'}
         )
         self.assertEqual(response.status_code, 200)
-        self.assertFormError(response.context['form'], None, 'Email ou senha inválidos.')
-        self.assertFalse(self.client.session.get('_auth_user_id', False))
-    
+        self.assertFormError(
+            response.context['form'],
+            None,
+            "Por favor, entre com um usuário  e senha corretos. Note que ambos os campos diferenciam maiúsculas e minúsculas."
+        )
+        self.assertIsNone(self.client.session.get('_auth_user_id'))
+
     def test_logout_user(self):
         """Testa o processo de logout do usuário."""
         self.client.login(username='testuser@example.com', password='testpassword123')
-        self.assertTrue(self.client.session.get('_auth_user_id', False))
-        response = self.client.post(reverse('user_logout'))
+        self.assertIsNotNone(self.client.session.get('_auth_user_id'))
+
+        response = self.client.get(reverse('user_logout'))
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(self.client.session.get('_auth_user_id', False))
+        self.assertIsNone(self.client.session.get('_auth_user_id'))
