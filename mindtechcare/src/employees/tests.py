@@ -154,7 +154,10 @@ class EmployeeCRUDTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn('Please enter a correct username and password', response.content.decode('utf-8'))
+        self.assertIn(
+            'Por favor, entre com um usuário  e senha corretos.',
+            response.content.decode('utf-8')
+        )
         self.assertFalse(self.client.session.get('_auth_user_id', False))  # Verifique depois (ainda deve ser False)
         
     def test_employee_logout_view(self):
