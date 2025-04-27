@@ -1,39 +1,97 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="max-w-xl mx-auto mt-14 p-8 bg-white shadow-xl rounded-2xl border-t-4 border-[#047857]">
-        <h2 class="text-3xl font-extrabold text-[#047857] mb-8 flex items-center gap-3">
-            <i class="fas fa-key text-[#10b981]"></i>
-            Configuração do Token do Trello
-        </h2>
+    <section class="flex flex-col md:flex-row justify-center items-center gap-48 mt-14 p-6">
+        <!-- Formulário de Configuração -->
+        <div class="w-full md:max-w-lg bg-white shadow-xl rounded-2xl border-t-4 border-[#047857] p-8">
+            <h2 class="text-3xl font-extrabold text-[#047857] mb-8 flex items-center gap-3">
+                <i class="fas fa-key text-[#10b981]"></i>
+                Configuração do Token do Trello
+            </h2>
 
-        {% if trello_auth_url %}
-            <div class="mb-6 p-4 bg-[#f0fdf4] border border-[#10b981] rounded-lg text-[#065f46] flex items-start gap-3">
-                <i class="fas fa-external-link-alt mt-1 text-[#10b981]"></i>
-                <p class="text-sm leading-relaxed">
-                    Para integrar com o Trello,
-                    <a href="{{ trello_auth_url }}"
-                       target="_blank"
-                       class="text-[#047857] font-semibold underline hover:text-[#065f46]">
-                        clique aqui para gerar seu token Trello
-                    </a>
-                    e cole no campo abaixo.
-                </p>
+            {% if trello_auth_url %}
+                <div class="mb-6 p-4 bg-[#f0fdf4] border border-[#10b981] rounded-lg text-[#065f46] flex items-start gap-3">
+                    <i class="fas fa-external-link-alt mt-1 text-[#10b981]"></i>
+                    <p class="text-sm leading-relaxed">
+                        Para integrar com o Trello,
+                        <a href="{{ trello_auth_url }}"
+                           target="_blank"
+                           class="text-[#047857] font-semibold underline hover:text-[#065f46]">
+                            clique aqui para gerar seu token Trello
+                        </a>
+                        e cole no campo abaixo.
+                    </p>
+                </div>
+            {% endif %}
+
+            <form method="post" class="space-y-5 formulario-login">
+                {% csrf_token %}
+                <div class="space-y-2 text-sm text-gray-700">{{ form.as_p }}</div>
+                <button type="submit"
+                        class="w-full bg-[#10b981] hover:bg-[#047857] text-white font-semibold py-2.5 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center gap-2">
+                    <i class="fas fa-save"></i> Salvar token
+                </button>
+            </form>
+
+            <div class="mt-10 text-center">
+                <a href="{% url 'employee_profile' %}"
+                   class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150">
+                    <i class="fa-solid fa-arrow-left"></i>Voltar para o perfil
+                </a>
             </div>
-        {% endif %}
-
-        <form method="post" class="space-y-5 formulario-login">
-            {% csrf_token %}
-            <div class="space-y-2 text-sm text-gray-700">{{ form.as_p }}</div>
-            <button type="submit"
-                    class="w-full bg-[#10b981] hover:bg-[#047857] text-white font-semibold py-2.5 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center gap-2">
-                <i class="fas fa-save"></i> Salvar token
-            </button>
-        </form>
-
-        <div class="mt-10 text-center">
-            <a href="{% url 'employee_profile' %}"
-               class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150"><i class="fa-solid fa-arrow-left"></i>Voltar para o perfil</a>
         </div>
-    </div>
+
+        <!-- Tutoriais -->
+        <div class="w-full md:max-w-2xl flex flex-col gap-20">
+            <!-- Caixa GitHub -->
+            <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-[#333]">
+                <h3 class="text-xl font-bold text-[#333] mb-4 flex items-center gap-2">
+                    <i class="fab fa-github"></i> Configurar Token do GitHub
+                </h3>
+                <ol class="list-decimal list-inside text-gray-700 space-y-3 text-sm">
+                    <li>
+                        Acesse o site
+                        <a href="https://github.com/settings/personal-access-tokens"
+                           target="_blank"
+                           class="text-[#047857] hover:underline">github.com/settings/tokens</a>.
+                    </li>
+                    <li>
+                        Clique em <strong>Generate new token</strong> para criar um novo token de acesso.
+                    </li>
+                    <li>
+                        Defina um nome que facilite a identificação do propósito deste token (por exemplo, "MindTechCare Integration").
+                    </li>
+                    <li>(Opcional) Adicione uma breve descrição para facilitar a gestão futura.</li>
+                    <li>
+                        Escolha o período de validade do token.
+                        <br>
+                        <span class="italic">Por segurança, recomendamos um prazo máximo de 30 dias.</span>
+                    </li>
+                    <li>
+                        Clique em <strong>Generate token</strong> para gerar o token.
+                    </li>
+                    <li>
+                        Copie o token gerado e cole no formulário ao lado.
+                        <br>
+                        <span class="italic text-red-600">Importante: o token é exibido apenas uma vez. Guarde-o com segurança.</span>
+                    </li>
+                </ol>
+            </div>
+
+            <!-- Caixa Trello -->
+            <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-[#0079BF]">
+                <h3 class="text-xl font-bold text-[#0079BF] mb-4 flex items-center gap-2">
+                    <i class="fab fa-trello"></i> Configurar Token do Trello
+                </h3>
+                <ol class="list-decimal list-inside text-gray-700 space-y-3 text-sm">
+                    <li>No formulário ao lado, clique no link disponível para ser direcionado à página de autorização do Trello.</li>
+                    <li>
+                        Conceda permissão para que a <strong>MindTechCare</strong> acesse suas informações do Trello.
+                    </li>
+                    <li>Após autorizar, copie o token gerado e cole no campo indicado no formulário ao lado.</li>
+                </ol>
+            </div>
+        </div>
+
+    </section>
 {% endblock %}

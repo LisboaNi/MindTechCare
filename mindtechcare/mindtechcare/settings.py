@@ -198,13 +198,13 @@ JAZZMIN_SETTINGS = {
     # Logo para formulário de login no tema escuro (padrão: login_logo)
     "login_logo_dark": None,
     # Classes CSS aplicadas à logo acima
-    "site_logo_classes": "img-circle",
+    "site_logo_classes": None,
     # Caminho relativo para o favicon do site (padrão: site_logo) (idealmente 32x32 px)
     "site_icon": None,
     # Texto de boas-vindas na tela de login
-    "welcome_sign": "Welcome to the library",
+    "welcome_sign": "Bem-Vindo",
     # Texto de direitos autorais no rodapé
-    "copyright": "Acme Library Ltd",
+    "copyright": "MindTechCare",
     # Lista de modelos para buscar na barra de pesquisa. Se omitido, a barra de busca é escondida.
     # Pode ser uma lista ou uma string simples (campo de pesquisa único)
     "search_model": ["auth.User", "auth.Group"],
