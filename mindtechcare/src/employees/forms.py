@@ -2,7 +2,8 @@
 from django import forms
 from .models import Employee
 from django.contrib.auth.forms import AuthenticationForm
-
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 class EmployeeForm(forms.ModelForm):
 
@@ -31,6 +32,17 @@ class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
         fields = ["name", "email", "password", "function"]
+    
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        
+        if password:
+            try:
+                validate_password(password)  # Usa validação padrão do Django
+            except ValidationError as e:
+                raise forms.ValidationError(e.messages)
+        
+        return password
 
 
 class EmployeeLoginForm(AuthenticationForm):
