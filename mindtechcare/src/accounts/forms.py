@@ -1,8 +1,8 @@
 from django import forms
-from django.contrib.auth import authenticate
 from .models import UserModel
 from django.contrib.auth.forms import AuthenticationForm
-
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 class UserModelForm(forms.ModelForm):
 
@@ -33,6 +33,17 @@ class UserModelForm(forms.ModelForm):
     class Meta:
         model = UserModel
         fields = ["name", "cnpj", "email", "password"]
+    
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        
+        if password:
+            try:
+                validate_password(password)  # Usa validação padrão do Django
+            except ValidationError as e:
+                raise forms.ValidationError(e.messages)
+        
+        return password
 
 
 class UserLoginForm(AuthenticationForm):
