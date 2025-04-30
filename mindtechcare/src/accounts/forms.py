@@ -7,19 +7,19 @@ from django.core.exceptions import ValidationError
 class UserModelForm(forms.ModelForm):
 
     name = forms.CharField(
-        required=False,
+        required=True,
         widget=forms.TextInput(attrs={"placeholder": "Digite o nome da Empresa"}),
         label="Nome",
     )
 
     cnpj = forms.CharField(
-        required=False,
+        required=True,
         widget=forms.TextInput(attrs={"placeholder": "Digite o CNPJ da empresa"}),
         label="CNPJ",
     )
 
     email = forms.CharField(
-        required=False,
+        required=True,
         widget=forms.EmailInput(attrs={"placeholder": "Digite o email"}),
         label="Email",
     )
@@ -45,6 +45,10 @@ class UserModelForm(forms.ModelForm):
         
         return password
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk is None:
+            self.fields["password"].required = True
 
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):

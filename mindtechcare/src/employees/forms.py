@@ -8,13 +8,13 @@ from django.core.exceptions import ValidationError
 class EmployeeForm(forms.ModelForm):
 
     name = forms.CharField(
-        required=False,
+        required=True,
         widget=forms.TextInput(attrs={"placeholder": "Digite o nome"}),
         label="Nome",
     )
 
     email = forms.CharField(
-        required=False, widget=forms.TextInput(attrs={"placeholder": "Digite o email"})
+        required=True, widget=forms.TextInput(attrs={"placeholder": "Digite o email"})
     )
 
     password = forms.CharField(
@@ -24,7 +24,7 @@ class EmployeeForm(forms.ModelForm):
     )
 
     function = forms.CharField(
-        required=False,
+        required=True,
         widget=forms.TextInput(attrs={"placeholder": "Digite a função"}),
         label="Função",
     )
@@ -43,6 +43,11 @@ class EmployeeForm(forms.ModelForm):
                 raise forms.ValidationError(e.messages)
         
         return password
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk is None:
+            self.fields["password"].required = True
 
 
 class EmployeeLoginForm(AuthenticationForm):
@@ -72,3 +77,4 @@ class TokenForm(forms.ModelForm):
     class Meta:
         model = Employee
         fields = ["trello_username", "trello_token", "github_username", "github_token"]
+    
