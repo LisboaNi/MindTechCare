@@ -9,10 +9,10 @@ class BuyAccessView(LoginRequiredMixin, View):
     def get(self, request):
         # Defina seus planos de forma simples, sem usar um modelo no banco de dados
         planos = [
-            {"nome": "Plano Essência", "preco": 0.00, "max_funcionarios": 5},
-            {"nome": "Plano Crescimento", "preco": 80.00, "max_funcionarios": 7},
-            {"nome": "Plano Vitalidade", "preco": 190.00, "max_funcionarios": 15},
-            {"nome": "Plano Evolução", "preco": 350.00, "max_funcionarios": 30},
+            {"nome": "Plano Básico", "preco": 0.00, "max_funcionarios": 5},
+            {"nome": "Plano Intermediário", "preco": 80.00, "max_funcionarios": 7},
+            {"nome": "Plano Avançado", "preco": 190.00, "max_funcionarios": 15},
+            {"nome": "Plano Empresarial", "preco": 350.00, "max_funcionarios": 30},
         ]
         return render(request, self.template_name, {"planos": planos})
 
@@ -22,10 +22,10 @@ class BuyAccessView(LoginRequiredMixin, View):
         if plano_id:
             # Converte o plano_id para um dicionário de plano correspondente
             planos = [
-                {"nome": "Plano Essência", "preco": 0.00, "max_funcionarios": 5},
-                {"nome": "Plano Crescimento", "preco": 80.00, "max_funcionarios": 7},
-                {"nome": "Plano Vitalidade", "preco": 190.00, "max_funcionarios": 15},
-                {"nome": "Plano Evolução", "preco": 350.00, "max_funcionarios": 30},
+                {"nome": "Plano Básico", "preco": 0.00, "max_funcionarios": 5},
+                {"nome": "Plano Intermediário", "preco": 80.00, "max_funcionarios": 7},
+                {"nome": "Plano Avançado", "preco": 190.00, "max_funcionarios": 15},
+                {"nome": "Plano Empresarial", "preco": 350.00, "max_funcionarios": 30},
             ]
             plano = planos[int(plano_id)]  # Encontra o plano selecionado
 
