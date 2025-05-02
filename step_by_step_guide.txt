@@ -22,19 +22,25 @@
 
    python.exe -m pip install --upgrade pip
    pip install -r requirements.txt
-   python -m pip install Pillow
 
 4. Entrar na pasta do projeto:
    Navegue até a pasta do projeto usando o comando:
 
    cd mindtechcare
 
-5. Rodar as migrações para preparar o banco de dados:
+5. Configuração do banco
+   Rode o seguinte comando
+
+   cp .env.example .env
+
+   Isso irá gerar um arquivo .env a partir do .env.example e nesse arquivo .env preencha com os dados do seu banco MySql
+
+6. Rodar as migrações para preparar o banco de dados:
    Execute o comando para criar as migrações de todos os aplicativos do Django:
    
    python manage.py makemigrations
 
-6. Aplicar as migrações no banco de dados:
+7. Aplicar as migrações no banco de dados:
    Após rodar o comando anterior, aplique as migrações executando:
 
    python manage.py migrate
