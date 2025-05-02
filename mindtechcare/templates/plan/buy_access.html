@@ -1,82 +1,95 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<header class="bg-white shadow-md">
-    <nav class="flex items-center justify-between py-2">
-        <div class="flex items-center text-3xl font-bold ml-4">
-            <img src="{% static 'images/logo.png' %}" alt="Logo" class="w-18 h-14 ">
-            <h1 class="font-bold text-3xl flex gap-1">
-                <span class="text-[#047857]">Mind</span>
-                <span class="text-[#10b981] font-semibold">TechCare</span>
-            </h1>
-        </div>
-    </nav>
-</header>
-<section class="grid grid-cols-[300px_1fr] h-screen bg-gray-100 font-poppins">
-    <!-- Sidebar -->
-    <aside class="bg-primary text-white flex flex-col items-center p-6 relative">
-        {% if profile.profile_image %}
-            <div class="w-40 h-40 rounded-xl overflow-hidden shadow-lg border-2 border-white/20 hover:scale-105 transition-transform duration-300">
-                <img src="{{ profile.profile_image.url }}" alt="Imagem de Perfil" class="w-full h-full object-cover" />
+    <header class="bg-white shadow-md">
+        <nav class="flex items-center justify-between py-2">
+            <div class="flex items-center text-3xl font-bold ml-4">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" class="w-18 h-14 ">
+                <h1 class="font-bold text-3xl flex gap-1">
+                    <span class="text-[#047857]">Mind</span>
+                    <span class="text-[#10b981] font-semibold">TechCare</span>
+                </h1>
             </div>
-        {% else %}
-            <div class="w-40 h-40 rounded-xl overflow-hidden shadow-lg border-2 border-white/20 bg-white flex items-center justify-center">
-                <img src="{% static 'images/icon.png' %}" alt="Imagem de Perfil Padrão" class="w-20 h-20 object-contain" />
-            </div>
-        {% endif %}
-        <!-- Informações do usuário -->
-        <div class="mt-6 text-center space-y-2">
-            <p class="flex items-center justify-center gap-2 text-lg font-medium">
-                <i class="fa-solid fa-user text-xl"></i>{{ profile.name }}
-            </p>
-            <p class="flex items-center justify-center gap-2 text-sm text-white/80">
-                <i class="fa-solid fa-envelope text-lg"></i>{{ profile.email }}
-            </p>
-            <p class="flex items-center justify-center gap-2 text-sm text-white/80">
-                <i class="fa-solid fa-passport text-lg"></i>{{ profile.cnpj }}
-            </p>
-        </div>
-        <!-- Botão de logout -->
-        <div class="mt-auto w-full">
-            <a href="{% url 'user_logout' %}" class="block text-center bg-emerald-600 py-2 mt-10 w-full rounded-xl hover:bg-emerald-800 transition-all font-semibold">
-                <i class="fa-solid fa-sign-out-alt mr-2"></i>Sair
-            </a>
-        </div>
-    </aside>
-
-    <!-- Main content -->
-    <main class="p-10 overflow-y-auto">
-        <h2 class="text-2xl font-semibold mb-6 text-[#047857]">Comprar Acesso</h2>
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-            <p class="text-lg font-medium text-gray-800 mb-4">Sua empresa atingiu o limite de funcionários permitidos no plano atual. Escolha um dos planos abaixo para aumentar a quantidade de colaboradores que podem ser cadastrados.</p>
-
-            {% if error %}
-                <p class="text-red-600 font-semibold mb-4">{{ error }}</p>
-            {% endif %}
-
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Escolha o seu plano:</h3>
-
-            <form method="POST">
-                {% csrf_token %}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {% for plano in planos %}
-                        <div class="border border-gray-300 rounded-lg p-6 hover:bg-gray-50 transition duration-200">
-                            <div class="text-lg font-semibold text-gray-800">{{ plano.nome }}</div>
-                            <p class="text-sm text-gray-600">Máximo de Funcionários: {{ plano.max_funcionarios }}</p>
-                            <p class="text-md font-bold text-green-600">R$ {{ plano.preco|floatformat:2 }}</p>
-
-                            <button type="submit" name="plano_id" value="{{ forloop.counter0 }}"
-                                    class="w-full mt-4 bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-800 transition-all">
-                                Escolher Plano
-                            </button>
-                        </div>
-                    {% endfor %}
+        </nav>
+    </header>
+    <section class="grid grid-cols-[300px_1fr] h-screen bg-gray-100 font-poppins">
+        <!-- Sidebar -->
+        <aside class="bg-primary text-white flex flex-col items-center p-6 relative">
+            {% if profile.profile_image %}
+                <div class="w-40 h-40 rounded-xl overflow-hidden shadow-lg border-2 border-white/20 hover:scale-105 transition-transform duration-300">
+                    <img src="{{ profile.profile_image.url }}"
+                         alt="Imagem de Perfil"
+                         class="w-full h-full object-cover" />
                 </div>
-            </form>
-        </div>
+            {% else %}
+                <div class="w-40 h-40 rounded-xl overflow-hidden shadow-lg border-2 border-white/20 bg-white flex items-center justify-center">
+                    <img src="{% static 'images/icon.png' %}"
+                         alt="Imagem de Perfil Padrão"
+                         class="w-20 h-20 object-contain" />
+                </div>
+            {% endif %}
+            <!-- Informações do usuário -->
+            <div class="mt-6 text-center space-y-2">
+                <p class="flex items-center justify-center gap-2 text-lg font-medium">
+                    <i class="fa-solid fa-user text-xl"></i>{{ profile.name }}
+                </p>
+                <p class="flex items-center justify-center gap-2 text-sm text-white/80">
+                    <i class="fa-solid fa-envelope text-lg"></i>{{ profile.email }}
+                </p>
+                <p class="flex items-center justify-center gap-2 text-sm text-white/80">
+                    <i class="fa-solid fa-passport text-lg"></i>{{ profile.cnpj }}
+                </p>
+            </div>
+            <!-- Botão de logout -->
+            <div class="mt-auto w-full">
+                <a href="{% url 'user_logout' %}"
+                   class="block text-center bg-emerald-600 py-2 mt-10 w-full rounded-xl hover:bg-emerald-800 transition-all font-semibold">
+                    <i class="fa-solid fa-sign-out-alt mr-2"></i>Sair
+                </a>
+            </div>
+        </aside>
 
-        <br>
-        <a href="{% url 'employee_list' %}" class="text-blue-600 hover:underline">Voltar para a lista de funcionários</a>
-    </main>
-</section>
+        <!-- Main content -->
+        <main class="p-10 overflow-y-auto">
+            <h2 class="text-2xl font-semibold mb-6 text-[#047857]">Comprar Acesso</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <p class="text-lg font-medium text-gray-800 mb-4">
+                    Sua empresa atingiu o limite de funcionários permitidos no plano atual. Escolha um dos planos abaixo para aumentar a quantidade de colaboradores que podem ser cadastrados.
+                </p>
+
+                {% if error %}<p class="text-red-600 font-semibold mb-4">{{ error }}</p>{% endif %}
+
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Escolha o seu plano:</h3>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {% for plano in planos %}
+                            <div class="border border-gray-300 rounded-lg p-6 hover:bg-gray-50 transition duration-200">
+                                <div class="text-lg font-semibold text-gray-800">{{ plano.nome }}</div>
+                                <p class="text-sm text-gray-600">Máximo de Funcionários: {{ plano.max_funcionarios }}</p>
+                                <p class="text-md font-bold text-green-600">R$ {{ plano.preco|floatformat:2 }}</p>
+
+                                <button type="submit"
+                                        name="plano_id"
+                                        value="{{ forloop.counter0 }}"
+                                        class="w-full mt-4 bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-800 transition-all">
+                                    Escolher Plano
+                                </button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+
+            <br>
+
+            <a href="{% url 'employee_list' %}"
+               class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-bold transition duration-150">
+                <i class="fa-solid fa-arrow-left self-center"></i>
+                Voltar para a lista de funcionários
+            </a>
+
+        </main>
+    </section>
 {% endblock content %}
