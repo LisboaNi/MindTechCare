@@ -8,3 +8,4 @@ mindtechcare/db.sqlite3
 node_modules
 employee_images/
 profile_images/
+.env
