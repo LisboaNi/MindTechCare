@@ -2,65 +2,72 @@
 {% load static %}
 
 {% block content %}
-    <div class="min-h-screen flex flex-col justify-between bg-gray-100">
-        <section class="flex items-center justify-center flex-grow">
-            <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg">
-                <h2 class="text-3xl font-bold mb-8 text-center text-[#047857]">Editar Perfil</h2>
+<div class="min-h-screen flex flex-col justify-between bg-gray-100 px-4 sm:px-6 lg:px-8">
+    <!-- Main Section -->
+    <section class="flex items-center justify-center flex-grow py-10">
+        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl w-full max-w-md sm:max-w-lg">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-8 text-center text-[#047857]">Editar Perfil</h2>
 
-                <form method="post"
-                      enctype="multipart/form-data"
-                      class="space-y-6 formulario-login">
-                    {% csrf_token %}
+            <form method="post"
+                  enctype="multipart/form-data"
+                  class="space-y-6 formulario-login">
+                {% csrf_token %}
 
-                    <!-- Campo de imagem com preview estilizado -->
-                    <div class="flex flex-col items-center">
-                        <label class="text-sm font-medium text-gray-700 mb-2">Imagem de Perfil</label>
+                <!-- Campo de imagem com preview estilizado -->
+                <div class="flex flex-col items-center">
+                    <label class="text-sm font-medium text-gray-700 mb-2">Imagem de Perfil</label>
 
-                        <img src="{{ user.profile_image.url }}"
-                             id="preview"
-                             class="w-32 h-32 rounded-full object-cover shadow-md border border-gray-300 mb-4" />
+                    <img src="{{ user.profile_image.url }}"
+                         id="preview"
+                         class="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover shadow-md border border-gray-300 mb-4" />
 
-                        <input type="file"
-                               name="profile_image"
-                               id="id_profile_image"
-                               accept="image/*"
-                               onchange="previewImage(event)"
-                               class="hidden" />
+                    <input type="file"
+                           name="profile_image"
+                           id="id_profile_image"
+                           accept="image/*"
+                           onchange="previewImage(event)"
+                           class="hidden" />
 
-                        <label for="id_profile_image"
-                               class="cursor-pointer inline-block bg-primary text-white font-medium py-2 px-4 rounded-lg hover:bg-emerald-700 transition-all text-sm">
-                            <i class="fa-solid fa-upload mr-2 text-white"></i><span class="text-white">Escolher Imagem</span>
-                        </label>
+                    <label for="id_profile_image"
+                           class="cursor-pointer inline-block bg-primary text-white font-medium py-2 px-4 rounded-lg hover:bg-emerald-700 transition-all text-sm">
+                        <i class="fa-solid fa-upload mr-2 text-white"></i><span class="text-white">Escolher Imagem</span>
+                    </label>
 
-                        <p class="text-gray-500 text-xs mt-1">Clique no botão acima para selecionar uma imagem</p>
+                    <p class="text-gray-500 text-xs mt-1 text-center">Clique no botão acima para selecionar uma imagem</p>
+                </div>
+
+                <!-- Demais campos do formulário -->
+                {% for field in form %}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <p class="text-sm text-red-600 mt-1">{{ field.errors }}</p>
+                        {% endif %}
                     </div>
+                {% endfor %}
 
-                    <!-- Demais campos do formulário -->
-                    {% for field in form %}
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.errors %}<p class="text-sm text-red-600 mt-1">{{ field.errors }}</p>{% endif %}
-                        </div>
-                    {% endfor %}
+                <!-- Ações -->
+                <div class="flex flex-col sm:flex-row items-center justify-between pt-4 gap-4">
+                    <a href="{% url 'user_profile' %}"
+                       class="w-full sm:w-auto text-center text-white font-bold bg-red-600 py-2 px-4 rounded-xl hover:bg-red-800 transition-all">
+                        Cancelar
+                    </a>
+                    <button type="submit"
+                            class="w-full sm:w-auto flex items-center justify-center gap-2 bg-primary hover:bg-[#064e3b] text-white font-semibold py-2 px-6 rounded-xl transition-all">
+                        <i class="fas fa-save"></i>
+                        Salvar Alterações
+                    </button>
+                </div>
+            </form>
 
-                    <!-- Ações -->
-                    <div class="flex items-center justify-between pt-4">
-                        <a href="{% url 'user_profile' %}"
-                           class="text-md text-white font-bold bg-red-600 py-2 px-4 rounded-xl hover:bg-red-800 transition-all">Cancelar</a>
-                        <button type="submit"
-                                class="flex items-center gap-2 bg-primary hover:bg-[#064e3b] text-white font-semibold py-2 px-6 rounded-xl transition-all">
-                            <i class="fas fa-save"></i>
-                            Salvar Alterações
-                        </button>
-                    </div>
-                </form>
+            <script src="{% static 'js/previewImage.js' %}"></script>
+        </div>
+    </section>
 
-                <script src="{% static 'js/previewImage.js' %}"></script>
-            </div>
-        </section>
-        <footer class="text-center py-4 text-sm text-gray-500">
-            © {{ now|date:"Y" }} MindTechCare. Todos os direitos reservados.
-        </footer>
-    </div>
+    <!-- Footer -->
+    <footer class="text-center py-4 text-sm text-gray-500">
+        © {{ now|date:"Y" }} MindTechCare. Todos os direitos reservados.
+    </footer>
+</div>
 {% endblock content %}
