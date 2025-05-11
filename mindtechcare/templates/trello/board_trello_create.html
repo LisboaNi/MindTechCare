@@ -2,31 +2,34 @@
 {% load static %}
 
 {% block content %}
+<section class="min-h-screen bg-gray-100 font-poppins py-10 px-4 sm:px-6">
+  <div class="w-full max-w-2xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-md">
 
-    <section class="min-h-screen bg-gray-100 font-poppins py-10 px-6">
-        <div class="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow-md">
-            <!-- Título da página -->
-            <h1 class="text-3xl font-bold text-[#047857] mb-6 flex items-center gap-2">
-                <i class="fa-brands fa-trello text-3xl"></i> Criar Novo Board Trello
-            </h1>
+    <!-- Título -->
+    <h1 class="text-2xl sm:text-3xl font-bold text-[#047857] mb-6 flex items-center gap-2">
+      <i class="fa-brands fa-trello text-2xl sm:text-3xl"></i> Criar Novo Board Trello
+    </h1>
 
-            <!-- Formulário de criação de board -->
-            <form method="post" class="space-y-4 formulario-login">
-                {% csrf_token %}
-                <div class="space-y-2">{{ form.as_p }}</div>
-                <button type="submit"
-                        class="bg-[#047857] text-white px-6 py-3 rounded-lg hover:bg-[#065f46] transition-all font-semibold w-full">
-                    <i class="fa-solid fa-check mr-2"></i>Salvar
-                </button>
-            </form>
+    <!-- Formulário -->
+    <form method="post" class="space-y-6 formulario-login">
+      {% csrf_token %}
+      <div class="space-y-2">
+        {{ form.as_p }}
+      </div>
+      <button type="submit"
+              class="w-full bg-[#047857] text-white px-4 py-3 rounded-lg hover:bg-[#065f46] transition-all font-semibold">
+        <i class="fa-solid fa-check mr-2"></i>Salvar
+      </button>
+    </form>
 
-            <!-- Link para voltar à lista -->
-            <div class="mt-10 text-center">
-                <a href="{% url 'board-list' %}"
-                   class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150"><i class="fa-solid fa-arrow-left"></i>Voltar para a lista de boards</a>
-            </div>
+    <!-- Voltar -->
+    <div class="mt-10 text-center">
+      <a href="{% url 'board-list' %}"
+         class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150">
+        <i class="fa-solid fa-arrow-left"></i>Voltar para a lista de boards
+      </a>
+    </div>
 
-        </div>
-    </section>
-
+  </div>
+</section>
 {% endblock %}

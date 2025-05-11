@@ -3,81 +3,88 @@
 
 {% block content %}
 
-    <section class="min-h-screen bg-gray-100 font-poppins py-10 px-6">
-        <div class="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow-md">
-            <!-- Título da página -->
-            <h1 class="text-3xl font-bold text-[#047857] mb-6 flex items-center gap-2">
-                <i class="fa-brands fa-trello text-3xl"></i> Boards Trello
-            </h1>
+<section class="min-h-screen bg-gray-100 font-poppins py-10 px-4 sm:px-6">
+  <div class="w-full max-w-5xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-md">
 
-            <!-- Botões de ação -->
-            <div class="flex items-center gap-4 mb-6">
-                <a href="{% url 'board-create' %}"
-                   class="bg-[#047857] text-white px-4 py-2 rounded-lg hover:bg-[#065f46] transition-all font-semibold">
-                    <i class="fa-solid fa-plus mr-1"></i> Criar Novo Board
+    <!-- Título -->
+    <h1 class="text-2xl sm:text-3xl font-bold text-[#047857] mb-6 flex items-center gap-2">
+      <i class="fa-brands fa-trello text-2xl sm:text-3xl"></i> Boards Trello
+    </h1>
+
+    <!-- Botões de ação -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <a href="{% url 'board-create' %}"
+         class="w-full sm:w-auto text-center bg-[#047857] text-white px-4 py-2 rounded-lg hover:bg-[#065f46] transition-all font-semibold">
+        <i class="fa-solid fa-plus mr-1"></i> Criar Novo Board
+      </a>
+
+      <a href="#" id="btnAtualizar"
+         onclick="atualizarCards({{ employee.id }})"
+         class="w-full sm:w-auto text-center bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-all font-semibold inline-flex justify-center items-center">
+        <i id="btnIcon" class="fa-solid fa-rotate mr-2"></i> Atualizar Todos os Cards
+      </a>
+    </div>
+
+    <!-- Barra de progresso -->
+    <div class="mb-6">
+      <div id="progressContainer"
+           class="w-full h-6 bg-gray-200 rounded overflow-hidden hidden">
+        <div id="progressBar"
+             class="h-full bg-emerald-500 text-white text-xs font-semibold flex items-center justify-center transition-all duration-200"
+             style="width: 0%">0%</div>
+      </div>
+
+      <!-- Mensagem final -->
+      <div class="mt-2 text-center flex flex-col items-center justify-center">
+        <img src="{% static "images/mascote-ok.png" %}"
+             alt="Mascote da MindTechCare"
+             id="mascote"
+             class="w-20 h-20 sm:w-24 sm:h-24 hidden">
+        <span id="mensagemFinal"
+              class="mt-2 bg-[#047857] text-white font-medium py-2 px-4 rounded-lg hidden">
+          Cards atualizados com sucesso!
+        </span>
+      </div>
+    </div>
+
+    <!-- Lista de boards -->
+    {% if boards %}
+      <ul class="space-y-4">
+        {% for board in boards %}
+          <li class="bg-gray-50 p-4 rounded-lg shadow-sm hover:bg-gray-100 transition-all">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <div class="text-gray-800">
+                <strong class="font-medium text-lg">{{ board.nome_board }}</strong>
+              </div>
+              <div class="flex gap-4 text-sm">
+                <a href="{% url 'board-update' board.pk %}"
+                   class="text-blue-600 hover:underline font-semibold flex items-center">
+                  <i class="fa-solid fa-pen mr-1"></i>Editar
                 </a>
-                <a href="#"
-                   id="btnAtualizar"
-                   onclick="atualizarCards({{ employee.id }})"
-                   class="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-all font-semibold inline-flex items-center">
-                    <i id="btnIcon" class="fa-solid fa-rotate mr-2"></i>
-                    <span>Atualizar Todos os Cards</span>
+                <a href="{% url 'board-delete' board.pk %}"
+                   class="text-red-600 hover:underline font-semibold flex items-center">
+                  <i class="fa-solid fa-trash mr-1"></i>Excluir
                 </a>
+              </div>
             </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-gray-500 text-sm">Nenhum board cadastrado.</p>
+    {% endif %}
 
-            <div class="mb-6">
-                <div id="progressContainer"
-                     class="w-full h-6 bg-gray-200 rounded overflow-hidden hidden">
-                    <div id="progressBar"
-                         class="h-full bg-emerald-500 text-white text-xs font-semibold flex items-center justify-center transition-all duration-200"
-                         style="width: 0%">0%</div>
-                </div>
+    <!-- Link voltar -->
+    <div class="mt-10 text-center">
+      <a href="{% url 'employee_profile' %}"
+         class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150">
+        <i class="fa-solid fa-arrow-left"></i>Voltar para o Perfil
+      </a>
+    </div>
 
-                <!-- Mensagem final -->
-                <div class="mt-2 text-center flex items-center justify-center">
-                    <img src="{% static "images/mascote-ok.png" %}"
-                         alt="Mascote da MindTechCare"
-                         id="mascote"
-                         class=" w-24 h-24 hidden">
-                    <span id="mensagemFinal"
-                          class="bg-[#047857] text-white font-medium py-2 px-4 rounded-lg hidden">Cards atualizados com sucesso!</span>
-                </div>
+  </div>
+</section>
 
-            </div>
-
-            <!-- Lista de boards -->
-            {% if boards %}
-                <ul class="space-y-4">
-                    {% for board in boards %}
-                        <li class="bg-gray-50 p-4 rounded-lg shadow-sm flex justify-between items-center hover:bg-gray-100 transition-all">
-                            <div class="text-gray-800">
-                                <strong class="font-medium text-lg">{{ board.nome_board }}</strong>
-                            </div>
-                            <div class="flex gap-4 text-sm">
-                                <a href="{% url 'board-update' board.pk %}"
-                                   class="text-blue-600 hover:underline font-semibold">
-                                    <i class="fa-solid fa-pen mr-1"></i>Editar
-                                </a>
-                                <a href="{% url 'board-delete' board.pk %}"
-                                   class="text-red-600 hover:underline font-semibold">
-                                    <i class="fa-solid fa-trash mr-1"></i>Excluir
-                                </a>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p class="text-gray-500 text-sm">Nenhum board cadastrado.</p>
-            {% endif %}
-
-            <div class="mt-10 text-center">
-                <a href="{% url 'employee_profile' %}"
-                   class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150"><i class="fa-solid fa-arrow-left"></i>Voltar para o Perfil</a>
-            </div>
-
-        </div>
-    </section>
-
-    <script src="{% static 'js/trello.js' %}"></script>
+<script src="{% static 'js/trello.js' %}"></script>
 
 {% endblock %}

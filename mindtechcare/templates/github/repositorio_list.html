@@ -3,80 +3,88 @@
 
 {% block content %}
 
-    <section class="min-h-screen bg-gray-100 font-poppins py-10 px-6">
-        <div class="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow-md">
+<section class="min-h-screen bg-gray-100 font-poppins py-10 px-4 sm:px-6">
+  <div class="w-full max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-md">
 
-            <h2 class="text-2xl font-bold text-[#047857] flex items-center gap-2 mb-6">
-                <i class="fa-brands fa-github text-black text-2xl"></i> Lista de Repositórios GitHub
-            </h2>
+    <!-- Título -->
+    <h2 class="text-xl sm:text-2xl font-bold text-[#047857] flex items-center gap-2 mb-6">
+      <i class="fa-brands fa-github text-black text-xl sm:text-2xl"></i> Lista de Repositórios GitHub
+    </h2>
 
+    <!-- Botões -->
+    <div class="flex flex-col sm:justify-between sm:flex-row sm:items-center gap-4 mb-6">
+      <a href="{% url 'repositorio_create' %}"
+         class="w-full sm:w-auto text-center bg-[#047857] text-white px-4 py-2 rounded-lg hover:bg-[#065f46] transition-all font-semibold">
+        <i class="fa-solid fa-plus mr-1"></i> Criar Repositório
+      </a>
 
-            <div class="flex items-center gap-4 mb-6">
-                <a href="{% url 'repositorio_create' %}"
-                   class="bg-[#047857] text-white px-4 py-2 rounded-lg hover:bg-[#065f46] transition-all font-semibold">
-                    <i class="fa-solid fa-plus mr-1"></i> Criar Repositório
+      <a href="#"
+         id="btnAtualizar"
+         onclick="atualizarTodosCommits()"
+         class="w-full sm:w-auto text-center bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-all font-semibold inline-flex justify-center items-center">
+        <i id="btnIcon" class="fa-brands fa-github mr-2"></i> Atualizar Commits do GitHub
+      </a>
+    </div>
+
+    <!-- Barra de progresso -->
+    <div class="mb-6">
+      <div id="progressContainerGithub"
+           class="w-full h-6 bg-gray-200 rounded overflow-hidden hidden">
+        <div id="progressBarGithub"
+             class="h-full bg-emerald-500 text-white text-xs font-semibold flex items-center justify-center transition-all duration-200"
+             style="width: 0%">0%</div>
+      </div>
+
+      <!-- Mensagem final -->
+      <div class="mt-2 flex flex-col items-center justify-center text-center">
+        <img src="{% static 'images/mascote-ok.png' %}"
+             alt="Mascote da MindTechCare"
+             id="mascote"
+             class="w-20 h-20 sm:w-24 sm:h-24 hidden">
+        <span id="mensagemFinalGithub"
+              class="text-green-600 font-medium hidden mt-2">Commits atualizados com sucesso!</span>
+      </div>
+    </div>
+
+    <!-- Lista de repositórios -->
+    {% if repositorios %}
+      <ul class="space-y-4">
+        {% for repositorio in repositorios %}
+          <li class="bg-gray-50 p-4 rounded-lg shadow-sm hover:bg-gray-100 transition-all">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div class="text-gray-800 break-words">
+                <a href="{% url 'repositorio_update' repositorio.id %}"
+                   class="font-medium hover:underline break-all">
+                  <i class="fa-brands fa-github mr-1"></i>{{ repositorio.github_username }}/{{ repositorio.nome_repositorio }}
                 </a>
-                <a href="#"
-                   id="btnAtualizar"
-                   onclick="atualizarTodosCommits()"
-                   class="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-all font-semibold inline-flex items-center">
-                    <i id="btnIcon" class="fa-brands fa-github mr-2"></i> <span>Atualizar Commits do GitHub</span>
+              </div>
+              <div class="flex gap-4 text-sm justify-end sm:justify-start">
+                <a href="{% url 'repositorio_update' repositorio.id %}"
+                   class="text-blue-600 hover:underline font-semibold whitespace-nowrap flex items-center">
+                  <i class="fa-solid fa-pen mr-1"></i>Editar
                 </a>
+                <a href="{% url 'repositorio_delete' repositorio.id %}"
+                   class="text-red-600 hover:underline font-semibold whitespace-nowrap flex items-center">
+                  <i class="fa-solid fa-trash mr-1"></i>Excluir
+                </a>
+              </div>
             </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-gray-500 text-sm">Nenhum repositório encontrado.</p>
+    {% endif %}
 
+    <!-- Voltar -->
+    <div class="mt-10 text-center">
+      <a href="{% url 'employee_profile' %}"
+         class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150">
+        <i class="fa-solid fa-arrow-left"></i>Voltar para o Perfil
+      </a>
+    </div>
+  </div>
+</section>
 
-            <div class="mb-6">
-                <div id="progressContainerGithub"
-                     class="w-full h-6 bg-gray-200 rounded overflow-hidden hidden">
-                    <div id="progressBarGithub"
-                         class="h-full bg-emerald-500 text-white text-xs font-semibold flex items-center justify-center transition-all duration-200"
-                         style="width: 0%">0%</div>
-                </div>
-
-                <div class="mt-2 text-center flex items-center justify-center">
-                    <img src="{% static "images/mascote-ok.png" %}"
-                         alt="Mascote da MindTechCare"
-                         id="mascote"
-                         class=" w-24 h-24 hidden">
-                    <span id="mensagemFinalGithub" class="text-green-600 font-medium hidden">Commits atualizados com sucesso!</span>
-                </div>
-            </div>
-
-
-            {% if repositorios %}
-                <ul class="space-y-4">
-                    {% for repositorio in repositorios %}
-                        <li class="bg-gray-50 p-4 rounded-lg shadow-sm flex justify-between items-center hover:bg-gray-100 transition-all">
-                            <div class="text-gray-800">
-                                <a href="{% url 'repositorio_update' repositorio.id %}"
-                                   class="font-medium hover:underline">
-                                    <i class="fa-brands fa-github mr-1"></i>{{ repositorio.github_username }}/{{ repositorio.nome_repositorio }}
-                                </a>
-                            </div>
-                            <div class="flex gap-4 text-sm">
-                                <a href="{% url 'repositorio_update' repositorio.id %}"
-                                   class="text-blue-600 hover:underline font-semibold">
-                                    <i class="fa-solid fa-pen mr-1"></i>Editar
-                                </a>
-                                <a href="{% url 'repositorio_delete' repositorio.id %}"
-                                   class="text-red-600 hover:underline font-semibold">
-                                    <i class="fa-solid fa-trash mr-1"></i>Excluir
-                                </a>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p class="text-gray-500 text-sm">Nenhum repositório encontrado.</p>
-            {% endif %}
-
-            <!-- Link de voltar, ajustado para ficar mais visível no final da lista -->
-            <div class="mt-10 text-center">
-                <a href="{% url 'employee_profile' %}"
-                   class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150"><i class="fa-solid fa-arrow-left"></i>Voltar para o Perfil</a>
-            </div>
-        </div>
-
-    </section>
-    <script src="{% static 'js/github.js' %}"></script>
+<script src="{% static 'js/github.js' %}"></script>
 {% endblock %}
