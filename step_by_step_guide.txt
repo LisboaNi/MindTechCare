@@ -23,7 +23,7 @@ macOS/Linux:
 Com o ambiente virtual ativado:
 
     python -m pip install --upgrade pip
-    pip install -r requirements.txt
+    pip install -r mindtechcare/requirements.txt
 
 4️⃣ Navegar até a pasta do projeto Django:
 
