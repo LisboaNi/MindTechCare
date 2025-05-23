@@ -1,37 +1,30 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="min-h-screen flex flex-col justify-between bg-gray-100">
-    <section class="flex items-center justify-center flex-grow px-4 py-12 text-black">
-        <div class="w-full max-w-5xl bg-white/5 backdrop-blur-lg border border-white/10 shadow-2xl rounded-2xl px-4 sm:px-10 py-8 sm:py-10">
+{% extends "base.html" %} {% block content %}
+<div class="flex min-h-screen flex-col justify-between bg-gray-100">
+  <section class="flex flex-grow items-center justify-center px-4 py-12 text-black">
+    <div class="w-full max-w-5xl rounded-2xl border border-white/10 bg-white/5 px-4 py-8 shadow-2xl backdrop-blur-lg sm:px-10 sm:py-10">
+      <!-- Cabeçalho -->
+      <div class="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+        <h2 class="text-3xl font-bold text-[#047857] sm:text-4xl">Lista de Funcionários</h2>
+        <a href="{% url 'user_profile' %}" class="text-md inline-flex items-center gap-2 font-medium text-[#047857] transition duration-150 hover:text-[#065f46]"> <i class="fa-solid fa-arrow-left"></i> Voltar </a>
+      </div>
 
-            <!-- Cabeçalho -->
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
-                <h2 class="text-3xl sm:text-4xl font-bold text-[#047857]">Lista de Funcionários</h2>
-                <a href="{% url 'user_profile' %}"
-                   class="inline-flex items-center gap-2 text-[#047857] hover:text-[#065f46] font-medium text-md transition duration-150">
-                    <i class="fa-solid fa-arrow-left"></i> Voltar
-                </a>
-            </div>
-
-            <!-- Lista -->
-            <ul class="space-y-4 overflow-x-auto">
-                {% for employee in employees %}
-                    <li class="bg-white/10 border border-white/10 rounded-xl px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 shadow-lg">
-                        <span class="text-base sm:text-lg font-medium text-primary break-words">{{ employee.name }}</span>
-                        <div class="flex flex-wrap sm:flex-nowrap gap-3 text-sm">
-                            <a href="{% url 'employee_edit' employee.id %}" class="text-[#047857] hover:underline font-semibold">Editar</a>
-                            <a href="{% url 'employee_delete' employee.id %}" class="text-red-600 hover:underline font-semibold">Excluir</a>
-                            <a href="{% url 'dashboard_funcionario' employee.pk %}" class="text-blue-500 hover:underline font-semibold">Ver Dashboard</a>
-                        </div>
-                    </li>
-                {% empty %}
-                    <li class="text-white text-center">Nenhum funcionário cadastrado ainda.</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </section>
-    <footer class="text-center py-4 text-sm text-gray-500">
-        © {{ now|date:"Y" }} MindTechCare. Todos os direitos reservados.
-    </footer>
+      <!-- Lista -->
+      <ul class="space-y-4 overflow-x-auto">
+        {% for employee in employees %}
+        <li class="flex flex-col gap-2 rounded-xl border border-white/10 bg-white/10 px-4 py-4 shadow-lg sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <span class="break-words text-base font-medium text-primary sm:text-lg">{{ employee.name }}</span>
+          <div class="flex flex-wrap gap-3 text-sm sm:flex-nowrap">
+            <a href="{% url 'employee_edit' employee.id %}" class="font-semibold text-[#047857] hover:underline">Editar</a>
+            <a href="{% url 'employee_delete' employee.id %}" class="font-semibold text-red-600 hover:underline">Excluir</a>
+            {% comment %} <a href="{% url 'dashboard_funcionario' employee.pk %}" class="font-semibold text-blue-500 hover:underline">Ver Dashboard</a> {% endcomment %}
+          </div>
+        </li>
+        {% empty %}
+        <li class="text-center text-white">Nenhum funcionário cadastrado ainda.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+  <footer class="py-4 text-center text-sm text-gray-500">© {{ now|date:"Y" }} MindTechCare. Todos os direitos reservados.</footer>
 </div>
 {% endblock content %}
