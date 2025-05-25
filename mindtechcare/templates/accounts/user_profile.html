@@ -1,73 +1,43 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
-<section class="h-screen bg-gray-100 font-poppins flex flex-col md:grid md:grid-cols-[300px_1fr]">
-    <!-- Sidebar -->
-    <aside class="bg-primary text-white flex flex-col items-center p-6 md:relative w-full md:w-auto">
-        <!-- Perfil -->
-        <div class="w-32 h-32 md:w-40 md:h-40 rounded-xl overflow-hidden shadow-lg border-2 border-white/20 hover:scale-105 transition-transform duration-300">
-            {% if profile.profile_image %}
-                <img src="{{ profile.profile_image.url }}"
-                     alt="Imagem de Perfil"
-                     class="w-full h-full object-cover" />
-            {% else %}
-                <div class="bg-white w-full h-full flex items-center justify-center">
-                    <img src="{% static 'images/icon.png' %}"
-                         alt="Imagem de Perfil Padrão"
-                         class="w-16 h-16 md:w-20 md:h-20 object-contain" />
-                </div>
-            {% endif %}
-        </div>
+{% extends "base.html" %} {% load static %} {% block content %}
+<section class="font-poppins flex h-screen flex-col bg-gray-100 md:grid md:grid-cols-[300px_1fr]">
+  <!-- Sidebar -->
+  <aside class="flex w-full flex-col items-center bg-primary p-6 text-white md:relative md:w-auto">
+    <!-- Perfil -->
+    <div class="h-32 w-32 overflow-hidden rounded-xl border-2 border-white/20 shadow-lg transition-transform duration-300 hover:scale-105 md:h-40 md:w-40">
+      {% if profile.profile_image %}
+      <img src="{{ profile.profile_image.url }}" alt="Imagem de Perfil" class="h-full w-full object-cover" />
+      {% else %}
+      <div class="flex h-full w-full items-center justify-center bg-white">
+        <img src="{% static 'images/icon.png' %}" alt="Imagem de Perfil Padrão" class="h-16 w-16 object-contain md:h-20 md:w-20" />
+      </div>
+      {% endif %}
+    </div>
 
-        <!-- Informações -->
-        <div class="mt-6 text-center space-y-2">
-            <p class="flex items-center justify-center gap-2 text-base md:text-lg font-medium">
-                <i class="fa-solid fa-user text-lg"></i>{{ profile.name }}
-            </p>
-            <p class="flex items-center justify-center gap-2 text-sm text-white">
-                <i class="fa-solid fa-envelope text-base"></i>{{ profile.email }}
-            </p>
-            <p class="flex items-center justify-center gap-2 text-sm text-white">
-                <i class="fa-solid fa-passport text-base"></i>{{ profile.cnpj }}
-            </p>
-        </div>
+    <!-- Informações -->
+    <div class="mt-6 space-y-2 text-center">
+      <p class="flex items-center justify-center gap-2 text-base font-medium md:text-lg"><i class="fa-solid fa-user text-lg"></i>{{ profile.name }}</p>
+      <p class="flex items-center justify-center gap-2 text-sm text-white"><i class="fa-solid fa-envelope text-base"></i>{{ profile.email }}</p>
+      <p class="flex items-center justify-center gap-2 text-sm text-white"><i class="fa-solid fa-passport text-base"></i>{{ profile.cnpj }}</p>
+    </div>
 
-        <!-- Logout -->
-        <div class="w-full">
-            <a href="{% url 'user_logout' %}"
-               class="block text-center bg-emerald-600 py-2 mt-10 w-full rounded-xl hover:bg-emerald-800 transition-all font-semibold">
-                <i class="fa-solid fa-sign-out-alt mr-2"></i>Sair
-            </a>
-        </div>
-    </aside>
+    <!-- Logout -->
+    <div class="w-full">
+      <a href="{% url 'user_logout' %}" class="mt-10 block w-full rounded-xl bg-emerald-600 py-2 text-center font-semibold transition-all hover:bg-emerald-800"> <i class="fa-solid fa-sign-out-alt mr-2"></i>Sair </a>
+    </div>
+  </aside>
 
-    <!-- Conteúdo principal -->
-    <main class="p-6 md:p-10 overflow-y-auto w-full">
-        <h2 class="text-xl md:text-2xl font-semibold mb-6 text-[#047857]">Minha Conta</h2>
-        <div class="grid gap-4">
-            <a href="{% url 'user_update' profile.pk %}"
-               class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-all flex items-center gap-2 text-sm md:text-base">
-                <i class="fa-solid fa-pen text-blue-600"></i>Editar Perfil
-            </a>
-            <a href="{% url 'user_delete' profile.pk %}"
-               class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-all flex items-center gap-2 text-sm md:text-base">
-                <i class="fa-solid fa-user-slash text-red-600"></i>Excluir Conta
-            </a>
-            <a href="{% url 'employee_create' %}"
-               class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-all flex items-center gap-2 text-sm md:text-base">
-                <i class="fa-solid fa-user-plus text-green-600"></i>Criar Profissional
-            </a>
-            <a href="{% url 'employee_list' %}"
-               class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-all flex items-center gap-2 text-sm md:text-base">
-                <i class="fa-solid fa-users text-indigo-600"></i>Profissionais
-            </a>
-            <a href="{% url 'dashboard_geral' %}"
-               class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-all flex items-center gap-2 text-sm md:text-base">
-                <i class="fa-solid fa-chart-line text-purple-600"></i>Dashboard Geral
-            </a>
-        </div>
-    </main>
+  <!-- Conteúdo principal -->
+  <main class="w-full overflow-y-auto p-6 md:p-10">
+    <h2 class="mb-6 text-xl font-semibold text-[#047857] md:text-2xl">Minha Conta</h2>
+    <div class="grid gap-4">
+      <a href="{% url 'user_update' profile.pk %}" class="flex items-center gap-2 rounded-lg bg-white p-4 text-sm shadow transition-all hover:bg-gray-50 md:text-base"> <i class="fa-solid fa-pen text-blue-600"></i>Editar Perfil </a>
+      <a href="{% url 'user_delete' profile.pk %}" class="flex items-center gap-2 rounded-lg bg-white p-4 text-sm shadow transition-all hover:bg-gray-50 md:text-base"> <i class="fa-solid fa-user-slash text-red-600"></i>Excluir Conta </a>
+      <a href="{% url 'employee_create' %}" class="flex items-center gap-2 rounded-lg bg-white p-4 text-sm shadow transition-all hover:bg-gray-50 md:text-base"> <i class="fa-solid fa-user-plus text-green-600"></i>Criar Profissional </a>
+      <a href="{% url 'employee_list' %}" class="flex items-center gap-2 rounded-lg bg-white p-4 text-sm shadow transition-all hover:bg-gray-50 md:text-base"> <i class="fa-solid fa-users text-indigo-600"></i>Profissionais </a>
+      <a href="{% url 'dashboard_geral' %}" class="flex items-center gap-2 rounded-lg bg-white p-4 text-sm shadow transition-all hover:bg-gray-50 md:text-base"> <i class="fa-solid fa-chart-line text-purple-600"></i>Dashboard Geral </a>
+      <a href="https://app.powerbi.com/links/tN82-ESGSW?ctid=f61a289e-b887-4f63-9160-2844a5024b1a&pbi_source=linkShare&bookmarkGuid=0ba49f32-74df-4a56-9514-e538911bc191" class="flex items-center gap-2 rounded-lg bg-white p-4 shadow transition-all hover:bg-gray-50"> <i class="fa-solid fa-chart-line text-purple-600"></i>Ver Dashboard (Power BI) </a>
+    </div>
+  </main>
 </section>
-
 
 {% endblock content %}
