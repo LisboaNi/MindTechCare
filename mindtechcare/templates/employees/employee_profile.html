@@ -31,7 +31,8 @@
     <h2 class="mb-6 text-center text-xl font-semibold text-[#047857] md:text-left md:text-2xl">Área do Funcionário</h2>
     <div class="grid gap-4">
       <a href="{% url 'employee_edit' employee.pk %}" class="flex items-center gap-2 rounded-lg bg-white p-4 shadow transition-all hover:bg-gray-50"> <i class="fa-solid fa-pen text-blue-600"></i>Editar Perfil </a>
-      {% comment %} <a href="{% url 'dashboard_funcionario' employee.pk %}" class="flex items-center gap-2 rounded-lg bg-white p-4 shadow transition-all hover:bg-gray-50"> <i class="fa-solid fa-chart-line text-purple-600"></i>Ver Dashboard </a> {% endcomment %}
+
+      <a href="{% url 'dashboard_funcionario' employee.pk %}" class="flex items-center gap-2 rounded-lg bg-white p-4 shadow transition-all hover:bg-gray-50"> <i class="fa-solid fa-chart-line text-purple-600"></i>Ver Dashboard </a>
 
       <a href="https://app.powerbi.com/links/iqPkg-LvXH?ctid=f61a289e-b887-4f63-9160-2844a5024b1a&pbi_source=linkShare" class="flex items-center gap-2 rounded-lg bg-white p-4 shadow transition-all hover:bg-gray-50"> <i class="fa-solid fa-chart-line text-purple-600"></i>Ver Dashboard (Power BI) </a>
 
