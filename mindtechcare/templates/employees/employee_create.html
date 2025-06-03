@@ -1,43 +1,38 @@
-{% extends "base.html" %}
-{% block content %}
-    <div class="min-h-screen flex flex-col justify-between bg-gray-100">
-        <section class="flex items-center justify-center text-black px-4 flex-grow">
-            <div class="flex w-full max-w-6xl h-[600px] shadow-2xl rounded-2xl relative overflow-hidden bg-white/5 backdrop-blur-lg border border-white/10">
+{% extends "base.html" %} {% block content %}
+<div class="flex min-h-screen flex-col justify-between bg-gray-100">
+  <section class="flex flex-grow items-center justify-center px-4 text-black">
+    <div class="relative flex h-[600px] w-full max-w-6xl overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur-lg">
+      <!-- Botão voltar -->
+      <div class="absolute left-5 top-4 z-20">
+        <a href="javascript:history.back()" class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md transition hover:bg-gray-100">
+          <i class="fa-solid fa-arrow-left text-xl text-[#047857]"></i>
+        </a>
+      </div>
 
-                <!-- Botão voltar -->
-                <div class="absolute top-4 left-5">
-                    <a href="javascript:history.back()"
-                       class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition">
-                        <i class="fa-solid fa-arrow-left text-[#047857] text-xl"></i>
-                    </a>
-                </div>
+      <!-- Lado esquerdo com imagem e frase -->
+      <div class="relative flex min-h-[300px] w-full flex-col items-start gap-6 bg-[url('/static/images/bg.png')] bg-cover bg-center px-6 pt-20 text-white md:h-full md:w-1/2 md:px-12">
+        <div class="absolute inset-0 z-0 bg-black/15"></div>
 
-                <!-- Lado esquerdo com imagem e frase -->
-                <div class="w-1/2 bg-[url('/static/images/bg.png')] bg-cover bg-center flex flex-col items-start px-12 gap-6 pt-20">
-                    <h1 class="text-5xl font-extrabold leading-tight drop-shadow-md text-white mx-auto">
-                        Novo <span class="text-[#a7f3d0]">Cadastro</span>
-                    </h1>
-                    <p class="text-xl leading-relaxed text-white/90">Adicione um novo membro à sua equipe.</p>
-                </div>
+        <div class="relative z-10 space-y-4">
+          <h1 class="mx-auto text-center text-4xl font-extrabold leading-tight drop-shadow-md md:mx-0 md:text-5xl">Novo <span class="text-[#a7f3d0]">Cadastro</span></h1>
+          <p class="text-justify text-xl leading-relaxed text-white/90">Cadastre um novo colaborador e inicie o acompanhamento contínuo da sua saúde mental, promovendo um ambiente de trabalho mais saudável e produtivo.</p>
+        </div>
 
-                <!-- Formulário -->
-                <div class="w-1/2 flex flex-col items-center justify-center px-10 py-12 gap-6">
-                    <form method="post"
-                          class="w-full max-w-md flex flex-col gap-4 formulario-login">
-                        {% csrf_token %}
-                        {{ form.as_p }}
+        <div class="flex-grow"></div>
 
-                        <button type="submit"
-                                class="w-full bg-[#047857] hover:bg-[#064e3b] transition-colors text-white font-bold py-3 rounded-xl shadow-lg mt-4">
-                            Criar
-                        </button>
-                    </form>
-                </div>
+        <p class="z-10 w-full py-4 text-center text-sm text-white md:text-xl">© 2025 MindTechCare.</p>
+      </div>
 
-            </div>
-        </section>
-        <footer class="text-center py-4 text-sm text-gray-500">
-            © {{ now|date:"Y" }} MindTechCare. Todos os direitos reservados.
-        </footer>
+      <!-- Formulário -->
+      <div class="flex w-full flex-col items-center justify-center gap-6 bg-white bg-opacity-80 px-6 py-12 md:w-1/2 md:bg-opacity-100 md:px-10">
+        <form method="post" class="formulario-login flex w-full max-w-md flex-col gap-4">
+          {% csrf_token %} {{ form.as_p }}
+
+          <button type="submit" class="mt-4 w-full rounded-xl bg-[#047857] py-3 font-bold text-white shadow-lg transition-colors hover:bg-[#064e3b]">Criar</button>
+        </form>
+      </div>
     </div>
+  </section>
+  <footer class="py-4 text-center text-sm text-gray-500">© {{ now|date:"Y" }} MindTechCare. Todos os direitos reservados.</footer>
+</div>
 {% endblock content %}
